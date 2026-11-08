@@ -12,7 +12,11 @@
         href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css?v=7.1">
+    <link rel="stylesheet" href="assets/css/styles.css?v=7.9">
+    <link rel="stylesheet" href="assets/css/home-animations.css?v=1.1">
+    <!-- GSAP & ScrollTrigger for cinematic scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 
 <body data-page="home">
@@ -51,10 +55,13 @@
                             aria-hidden="true">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg></a>
-                    <div class="dropdown-menu"><a href="services.html">All Services</a><a
+                    <div class="dropdown-menu"><a
                             href="service-detail.html#alignment">Wheel Alignment</a><a
-                            href="service-detail.html#fitting">Tyre Fitting & Balancing</a><a
-                            href="service-detail.html#servicing">Vehicle Servicing</a></div>
+                            href="service-detail.html#rotation">Tyre Rotation</a><a
+                            href="service-detail.html#fitting">Tyre Fitting</a><a
+                            href="service-detail.html#balancing">Tyre Balancing</a><a
+                            href="service-detail.html#tyres">Stock Tyres</a><a
+                            href="service-detail.html#servicing">Basic Car Servicing</a></div>
                 </div>
                 <div class="nav-dropdown"><a href="blog.html" class="dropdown-toggle " data-nav="more">More <svg
                             class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -185,13 +192,6 @@
                 </div>
                 <div class="shop-showcase-stage" id="shopCarousel">
                     <div class="shop-showcase-track" id="shopCarouselTrack"></div>
-                    <div class="showcase-controls-bar">
-                        <div class="showcase-pagination-meta"><span class="showcase-counter" id="shopSlideCounter">01 /
-                                06</span>
-                            <div class="shop-indicators" id="shopIndicators" role="tablist"
-                                aria-label="Choose product slide"></div>
-                        </div>
-                    </div>
                 </div>
                 <div class="shop-showcase-footer">
                     <a class="btn btn-primary showcase-catalog-link showcase-bottom-link" href="shop.html"><span>Browse
@@ -236,8 +236,6 @@
                                         <span class="service-slide-index">01</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-wrench"
-                                                aria-hidden="true"></i> Vehicle Care</span>
                                         <h3 class="service-slide-title">Basic car servicing</h3>
                                         <p class="service-slide-desc">An oil change is the most important part of any
                                             car service. If oil is not changed regularly, sludge can build up and stop
@@ -265,8 +263,6 @@
                                         <span class="service-slide-index">02</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-circle-notch"
-                                                aria-hidden="true"></i> Tyre Supply</span>
                                         <h3 class="service-slide-title">Stock tyres</h3>
                                         <p class="service-slide-desc">Our tyres are on more vehicles in Uganda than any
                                             other brand. Delivering trusted quality, durability, and safety across every
@@ -294,8 +290,6 @@
                                         <span class="service-slide-index">03</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-arrows-spin"
-                                                aria-hidden="true"></i> Precision Balancing</span>
                                         <h3 class="service-slide-title">Tyre Balancing</h3>
                                         <p class="service-slide-desc">Wheel balancing is the process of matching the
                                             weight of the combined tyre and wheel assembly so that it spins smoothly at
@@ -323,8 +317,6 @@
                                         <span class="service-slide-index">04</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-screwdriver-wrench"
-                                                aria-hidden="true"></i> Fitment & Mounting</span>
                                         <h3 class="service-slide-title">Tyre Fitting</h3>
                                         <p class="service-slide-desc">An incorrectly fitted tyre can become damaged and
                                             burst and could lead to traffic accidents involving vehicle damage and
@@ -352,8 +344,6 @@
                                         <span class="service-slide-index">05</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-arrows-rotate"
-                                                aria-hidden="true"></i> Longevity & Wear</span>
                                         <h3 class="service-slide-title">Tyre Rotation</h3>
                                         <p class="service-slide-desc">Tyres are expensive, so you want to make them last
                                             as long as possible. It is essential to rotate your tyres periodically to
@@ -381,8 +371,6 @@
                                         <span class="service-slide-index">06</span>
                                     </div>
                                     <div class="service-slide-bottom">
-                                        <span class="service-slide-tag"><i class="fa-solid fa-crosshairs"
-                                                aria-hidden="true"></i> 3D Laser Alignment</span>
                                         <h3 class="service-slide-title">Wheel Alignment</h3>
                                         <p class="service-slide-desc">At Sesco tyres, we believe one of the most
                                             important considerations to vehicle maintenance is to ensure your wheels are
@@ -465,7 +453,7 @@
                                 </div>
                                 <span class="quote-step-badge">Step 03</span>
                             </div>
-                            <h3 class="quote-step-title">Receive All-Inclusive Pricing</h3>
+                            <h3 class="quote-step-title">Receive All Inclusive Pricing</h3>
                             <p class="quote-step-desc">
                                 We deliver an itemized, zero-surprise quote covering tyre prices, precision fitment,
                                 wheel
@@ -486,15 +474,6 @@
                                         competitive proposal for your vehicle.
                                     </p>
                                 </div>
-                                <div class="quote-header-whatsapp">
-                                    <span class="quote-header-whatsapp-text">Need a 5-min quote?</span>
-                                    <a href="https://wa.me/256709828766?text=Hello%20Sesco%20Tyres%2C%20I%20would%20like%20to%20get%20a%20quote%20for%20tyres%2Fservice%20for%20my%20vehicle."
-                                        target="_blank" rel="noopener noreferrer" class="quote-whatsapp-pill"
-                                        title="Chat directly with Sesco Tyres on WhatsApp">
-                                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-                                        <span>Chat on WhatsApp</span>
-                                    </a>
-                                </div>
                             </div>
 
                             <form id="quoteRequestForm" class="quote-form" novalidate>
@@ -503,11 +482,12 @@
                                         <label for="quoteService"><i class="fa-solid fa-wrench" aria-hidden="true"></i>
                                             Service Needed *</label>
                                         <select id="quoteService" name="quoteService" required>
-                                            <option value="New Tyres & Fitting">New Tyres & Fitting</option>
-                                            <option value="3D Wheel Alignment">Computerized 3D Wheel Alignment</option>
-                                            <option value="Tyre Balancing & Rotation">Tyre Balancing & Rotation</option>
-                                            <option value="Routine Car Servicing">Routine Car Servicing & Oil</option>
-                                            <option value="Fleet & Bulk Tyres">Fleet / Commercial Tyres</option>
+                                            <option value="Wheel Alignment">Wheel Alignment</option>
+                                            <option value="Basic Car Servicing">Basic Car Servicing</option>
+                                            <option value="Stock Tyres">Stock Tyres</option>
+                                            <option value="Tyre Fitting">Tyre Fitting</option>
+                                            <option value="Tyre Rotation">Tyre Rotation</option>
+                                            <option value="Tyre Balancing">Tyre Balancing</option>
                                         </select>
                                     </div>
 
@@ -609,13 +589,11 @@
                                             <select id="appServices" name="appServices" required>
                                                 <option value="">Select Services</option>
                                                 <option value="Wheel Alignment">Wheel Alignment</option>
-                                                <option value="Tyre Fitting & Balancing">Tyre Fitting & Balancing
-                                                </option>
-                                                <option value="Tyre Rotation">Tyre Rotation</option>
                                                 <option value="Basic Car Servicing">Basic Car Servicing</option>
-                                                <option value="Tyre Inspection & Repair">Tyre Inspection & Repair
-                                                </option>
-                                                <option value="Full Vehicle Check">Full Vehicle Check</option>
+                                                <option value="Stock Tyres">Stock Tyres</option>
+                                                <option value="Tyre Fitting">Tyre Fitting</option>
+                                                <option value="Tyre Rotation">Tyre Rotation</option>
+                                                <option value="Tyre Balancing">Tyre Balancing</option>
                                             </select>
                                         </div>
                                     </div>
@@ -820,9 +798,6 @@
                                     <i class="fa-solid fa-star" aria-hidden="true"></i>
                                     <i class="fa-solid fa-star" aria-hidden="true"></i>
                                 </div>
-                            </div>
-                            <div class="testimonial-quote-icon" aria-hidden="true">
-                                <i class="fa-solid fa-quote-left"></i>
                             </div>
                             <h3 class="testimonial-heading testimonial-main-heading" id="mainTestimonialHeading">
                                 "Transformed my Prado's highway stability completely"
@@ -1037,8 +1012,7 @@
                     <a class="text-link footer-about-link" href="about.html">More about us →</a>
                 </div>
                 <div class="footer-col">
-                    <h4>Explore</h4><a href="shop.html">Shop all tyres</a><a href="services.html">Tyre & vehicle
-                        services</a><a href="about.html">About Sesco Tyres</a><a href="blog.html">Driving insights</a>
+                    <h4>Explore</h4><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="services.html">Services</a><a href="about.html">About Sesco Tyres</a>
                 </div>
                 <div class="footer-col">
                     <h4>Customer care</h4><a href="contact.html">Contact us</a><a href="faq.html">FAQs</a><a
@@ -1046,14 +1020,13 @@
                 </div>
                 <div class="footer-col">
                     <h4>Get in touch</h4>
-                    <p>📍 Contact us for location and directions</p>
-                    <p>☎ Speak to our team</p>
-                    <p>✉ info@sescotyres.com</p>
-                    <p>Hours: Please confirm with our team</p>
+                    <p><i class="fa-solid fa-location-dot"></i>   Plot 27 Queens Way, Entebbe Road Kampala, Uganda</p>
+                    <p><i class="fa-solid fa-phone"></i>   +256-709-828-766</p>
+                    <p><i class="fa-solid fa-envelope"></i>   info@sescotyres.com</p>
+                    <p><i class="fa-solid fa-clock"></i>   We're Open: Monday - Saturday, 9:30 am - 6:00 pm</p>
                 </div>
             </div>
-            <div class="footer-bottom"><span>© <span id="year"></span> Sesco Tyres. Frontend redesign
-                    concept.</span><span><a href="faq.html">FAQs</a><a href="contact.html">Contact</a></span></div>
+            <div class="footer-bottom"><span>© <span id="year"></span> Sesco Tyres. Frontend redesign concept. | Developed by <a href="https://sofdas.com" target="_blank" rel="noopener noreferrer">Sofdas Technologies</a></span><span><a href="faq.html">FAQs</a><a href="contact.html">Contact</a></span></div>
         </div>
     </footer>
     <!-- Floating WhatsApp Action Button (Icon Only) -->
@@ -1077,7 +1050,8 @@
         </svg>
     </button>
     <div class="toast" aria-live="polite"></div>
-    <script src="assets/js/main.js?v=6.2"></script>
+    <script src="assets/js/main.js?v=7.7"></script>
+    <script src="assets/js/home-animations.js?v=1.1"></script>
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 

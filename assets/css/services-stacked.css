@@ -1,0 +1,760 @@
+/* ==========================================================================
+   SESCO TYRES - OUR SERVICES PAGE SCROLL ANIMATION & COMPOSITION
+   Cinematic, reversible scroll-driven timeline:
+   Stage 1: Centered Hexagonal circular-path entrance & center title reveal
+   Stage 2: Horizontal alignment & heading placement above
+   Stage 3: Seamless transition to solid black background (#000000)
+            Wheel Alignment card elongates (longer than other cards)
+            Full-width service description panel appears below
+   Interactive: Clicking any other card elongates it and displays its description
+   Section ends 40px below description, revealing CTA band & Footer cleanly
+   ========================================================================== */
+
+/* Main Page Content Container */
+.services-page-container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Services Stacked Grid Parent - runway for sticky scroll */
+.services-stacked-grid {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 20px auto 0;
+  min-height: 2740px; /* Calibrated so all stages complete and section ends exactly 40px below description */
+  padding: 0 0 40px 0;
+  z-index: 20;
+}
+
+/* Solid Black Background Overlay - Fixed behind content */
+.services-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000; /* Pure solid black as requested - NO gradients */
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5; /* Behind .services-stacked-grid (20) */
+  will-change: opacity;
+  transition: opacity 0.08s linear;
+}
+
+/* Sticky Stage Container - Stays pinned throughout all stages */
+.services-hex-container {
+  position: sticky;
+  top: 65px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: clamp(670px, 86vh, 740px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  overflow: visible;
+  pointer-events: none; /* Changed: inactive/entering container does not capture pointer events */
+  transform: translateZ(0);
+}
+
+.services-hex-container.is-interactive {
+  pointer-events: auto;
+}
+
+/* "Our Services" Title - Starts centered in hexagon, smoothly glides above cards in horizontal stage */
+.services-center-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 45;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity, color;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.services-center-title.visible {
+  opacity: 1;
+}
+
+.services-eyebrow {
+  display: block;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #0284c7;
+  margin-bottom: 6px;
+  transition: color 0.4s ease;
+}
+
+.services-heading-text {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: #163687;
+  letter-spacing: -0.8px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.9);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+/* In dark/black mode, the heading transitions smoothly to white */
+.services-center-title.dark-mode .services-eyebrow {
+  color: #38bdf8;
+}
+
+.services-center-title.dark-mode .services-heading-text {
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+/* ==========================================================================
+   Service Cards Base & Active Elongation Styling
+   ========================================================================== */
+.service-stack-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 185px;
+  height: 220px;
+  background: #0f172a;
+  border-radius: 0; /* Flat corners per Sesco automotive brand rule */
+  overflow: hidden;
+  box-shadow: none; /* AI-generated shadow removed completely */
+  cursor: pointer;
+  opacity: 0;
+  z-index: 40;
+  will-change: transform, opacity, width, height;
+  pointer-events: none; /* Inactive/entering cards cannot capture pointer events or hover */
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  transition: height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.25s ease, 
+              opacity 0.25s ease;
+}
+
+/* Only enable pointer events when in the horizontal/interactive stage */
+.service-stack-card.in-horizontal,
+.service-stack-card.active-card {
+  pointer-events: auto;
+}
+
+/* Standard cards in horizontal mode have slight dimming to highlight active card */
+.service-stack-card.in-horizontal {
+  opacity: 0.82;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none !important;
+}
+
+/* Hover: Zoom-in with light navbar blue border and NO artificial shadow */
+.service-stack-card.in-horizontal:hover {
+  opacity: 1 !important;
+  border-color: #3261c7 !important; /* Light navbar blue border */
+  box-shadow: none !important; /* AI-generated shadow removed */
+}
+
+/* ACTIVE CARD: Longer than other cards per prompt requirement */
+.service-stack-card.active-card {
+  height: 275px; /* Default elongated card height; JS manages responsive heights dynamically */
+  opacity: 1 !important;
+  z-index: 46 !important;
+  border: 2px solid #163687 !important; /* Primary navbar blue */
+  box-shadow: none !important; /* AI-generated shadow removed */
+}
+
+.service-stack-card.active-card:hover {
+  border-color: #3261c7 !important; /* Light navbar blue border */
+  box-shadow: none !important; /* AI-generated shadow removed */
+}
+
+/* Card Image */
+.service-stack-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.service-stack-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Hover Zoom-In Effect */
+.service-stack-card.in-horizontal:hover .service-stack-image img,
+.service-stack-card.active-card:hover .service-stack-image img {
+  transform: scale(1.12);
+}
+
+/* Dark gradient overlay on card image ensuring contrast for white text at bottom */
+.service-stack-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.58) 72%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Card Title Container - Service name at bottom center of each card in white text */
+.service-stack-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 10px;
+  text-align: center;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1 !important;
+  transition: opacity 0.3s ease, padding 0.3s ease;
+}
+
+.service-stack-content h3 {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff !important;
+  margin: 0;
+  letter-spacing: -0.2px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.9);
+  line-height: 1.25;
+  text-align: center;
+}
+
+/* On the active elongated card: prominent white text at bottom center */
+.service-stack-card.active-card .service-stack-content {
+  opacity: 1 !important;
+  padding: 20px 12px;
+}
+
+.service-stack-card.active-card .service-stack-content h3 {
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffffff !important;
+  letter-spacing: 0.1px;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 1), 0 0 18px rgba(0, 0, 0, 0.85);
+}
+
+/* ==========================================================================
+   Full-Width Service Description Panel (Beneath the cards)
+   Occupies almost full width of screen - sits directly on section background
+   ========================================================================== */
+.service-description-panel-full {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 245px));
+  width: 100%;
+  max-width: 1340px;
+  background: transparent !important; /* No background per user requirement */
+  backdrop-filter: none !important;
+  border: none !important;
+  border-left: none !important;
+  box-shadow: none !important;
+  padding: 10px 48px 10px 140px; /* Generous space at the left */
+  opacity: 0;
+  pointer-events: none;
+  z-index: 45;
+  will-change: transform, opacity;
+  transition: opacity 0.25s ease;
+}
+
+.service-description-panel-full.visible {
+  pointer-events: auto;
+}
+
+/* Panel Body - 2 Distinct Subsections separated by a vertical line */
+.service-panel-body {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+/* Left Subsection: Title, Description & Action Button */
+.service-panel-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 56px;
+}
+
+.service-panel-title {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 24px 0; /* Space between title and description */
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.service-panel-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #cbd5e1;
+  margin: 0;
+  font-weight: 400;
+}
+
+.service-panel-actions {
+  margin-top: 28px; /* Space between description and button */
+}
+
+/* Action Button: Navbar blue (#163687) with white text & 3D door-flip / perspective twist hover effect */
+.service-panel-btn {
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  color: #ffffff !important;
+  background: #163687;
+  border: 1px solid #163687;
+  border-radius: 0;
+  padding: 13px 26px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(22, 54, 135, .4);
+  position: relative;
+  transform-style: preserve-3d;
+  overflow: visible;
+  transition: color .25s ease, border-color .25s ease, box-shadow .25s ease;
+  z-index: 1;
+}
+
+.service-panel-btn::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: #ffffff;
+  z-index: 1;
+  transform-origin: left center;
+  transform: perspective(600px) rotateY(-90deg);
+  transition: transform .36s cubic-bezier(.22, 1.25, .36, 1), opacity .2s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.service-panel-btn span,
+.service-panel-btn i {
+  color: #ffffff !important;
+  position: relative;
+  z-index: 2;
+  transition: color .25s ease, transform .25s ease;
+  display: inline-block;
+}
+
+.service-panel-btn:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .28) !important;
+  animation: navTwist .38s cubic-bezier(.22, 1.25, .36, 1) forwards;
+}
+
+.service-panel-btn:hover::before {
+  transform: perspective(600px) rotateY(0deg);
+  opacity: 1;
+}
+
+.service-panel-btn:hover span,
+.service-panel-btn:hover i {
+  color: #163687 !important;
+}
+
+.service-panel-btn:hover > span:last-child,
+.service-panel-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+@keyframes navTwist {
+  0% {
+    transform: perspective(600px) rotateY(-24deg);
+    transform-origin: left center;
+  }
+  65% {
+    transform: perspective(600px) rotateY(6deg);
+    transform-origin: left center;
+  }
+  100% {
+    transform: perspective(600px) rotateY(0deg);
+    transform-origin: left center;
+  }
+}
+
+/* Right Subsection: Words with a tick */
+.service-panel-features {
+  position: relative;
+  padding-left: 56px;
+  display: flex;
+  align-items: center;
+}
+
+/* Vertical Line separator between left and right subsections */
+.service-panel-features::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(56, 189, 248, 0.45) 20%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(56, 189, 248, 0.45) 80%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+}
+
+/* Feature checklist (Words with a tick) */
+.service-features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.service-features-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+.service-features-list li i {
+  color: #38bdf8;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Section Transition & Footer / CTA Stacking Order
+   Section ends 40px below the service description
+   ========================================================================== */
+.cta-band {
+  position: relative;
+  z-index: 30;
+  margin-top: 0;
+}
+
+body[data-page="services"] .cta-band {
+  background: #000000 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+body[data-page="services"] .cta-band h2 {
+  color: #ffffff !important;
+}
+
+body[data-page="services"] .cta-band p {
+  color: #cbd5e1 !important;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 30;
+}
+
+/* Ensure background remains solid black with white text from elongated cards section into the footer */
+body[data-page="services"] .site-footer {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+body[data-page="services"] .site-footer h4,
+body[data-page="services"] .site-footer .footer-brand-name {
+  color: #ffffff !important;
+}
+
+body[data-page="services"] .site-footer p,
+body[data-page="services"] .site-footer .footer-brand-desc,
+body[data-page="services"] .site-footer span {
+  color: #cbd5e1 !important;
+}
+
+body[data-page="services"] .site-footer .footer-col p i {
+  color: #38bdf8 !important;
+  margin-right: 6px;
+}
+
+body[data-page="services"] .site-footer .footer-brand-tagline {
+  color: #38bdf8 !important;
+}
+
+body[data-page="services"] .site-footer a {
+  color: #e2e8f0 !important;
+  transition: color 0.2s ease;
+}
+
+body[data-page="services"] .site-footer a:hover {
+  color: #38bdf8 !important;
+}
+
+body[data-page="services"] .site-footer .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+}
+
+body[data-page="services"] .site-footer .footer-bottom a {
+  color: #38bdf8 !important;
+}
+
+/* Scroll Progress Hint */
+.scroll-progress-hint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+  transition: opacity 0.4s ease, transform 0.4s ease, color 0.4s ease;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.scroll-progress-hint.hidden {
+  opacity: 0;
+  transform: translate(-50%, 15px);
+  pointer-events: none;
+}
+
+.scroll-progress-hint svg {
+  animation: scrollHintBounce 2s infinite ease-in-out;
+  stroke: #38bdf8;
+}
+
+@keyframes scrollHintBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+/* Tablet (1024px to 1280px) */
+@media (max-width: 1280px) {
+  .service-stack-card {
+    width: 155px;
+    height: 195px;
+  }
+  .service-description-panel-full {
+    max-width: 1140px;
+    padding: 10px 36px 10px 100px;
+    transform: translate(-50%, calc(-50% + 235px));
+  }
+  .service-panel-title {
+    font-size: 24px;
+    margin: 0 0 18px 0;
+  }
+  .service-panel-desc {
+    font-size: 13.5px;
+  }
+  .service-panel-main {
+    padding-right: 40px;
+  }
+  .service-panel-features {
+    padding-left: 40px;
+  }
+}
+
+/* Small Tablet (769px to 1024px) */
+@media (max-width: 1024px) {
+  .services-center-title .services-heading-text {
+    font-size: 34px;
+  }
+  .service-stack-card {
+    width: 130px;
+    height: 170px;
+  }
+  .service-description-panel-full {
+    max-width: 95%;
+    padding: 10px 24px 10px 64px;
+    transform: translate(-50%, calc(-50% + 220px));
+  }
+  .service-panel-title {
+    margin: 0 0 16px 0;
+  }
+  .service-panel-body {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .service-panel-main {
+    padding-right: 0;
+  }
+  .service-panel-features {
+    padding-left: 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .service-panel-features::before {
+    display: none;
+  }
+  .service-features-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile Screens (<= 768px) */
+@media (max-width: 768px) {
+  .services-stacked-grid {
+    min-height: 2200px;
+  }
+
+  .services-hex-container {
+    top: 60px;
+    height: calc(100vh - 70px);
+    min-height: 600px;
+  }
+
+  .services-center-title .services-heading-text {
+    font-size: 26px;
+  }
+
+  .services-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .service-stack-card {
+    width: 100px;
+    height: 120px;
+  }
+
+  .service-description-panel-full {
+    width: calc(100% - 24px);
+    padding: 8px 16px 8px 28px;
+    transform: translate(-50%, calc(-50% + 195px));
+  }
+
+  .service-panel-body {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .service-panel-title {
+    font-size: 19px;
+    margin: 0 0 14px 0;
+  }
+
+  .service-panel-desc {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .service-features-list {
+    display: none; /* Keep mobile concise */
+  }
+
+  .service-panel-footer {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .services-stacked-grid {
+    min-height: auto;
+    margin: 40px auto;
+  }
+
+  .services-bg-overlay {
+    display: none;
+  }
+
+  .services-hex-container {
+    position: static;
+    height: auto;
+    min-height: auto;
+    display: block;
+    padding: 40px 0;
+  }
+
+  .services-center-title {
+    position: static;
+    transform: none;
+    opacity: 1;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .services-heading-text {
+    color: #163687;
+  }
+
+  .service-stack-card {
+    position: static;
+    transform: none !important;
+    opacity: 1 !important;
+    width: 100%;
+    height: 220px;
+    margin-bottom: 15px;
+  }
+
+  .service-description-panel-full {
+    position: static;
+    transform: none;
+    opacity: 1;
+    width: 100%;
+    pointer-events: auto;
+    margin-top: 30px;
+  }
+
+  .scroll-progress-hint {
+    display: none;
+  }
+}

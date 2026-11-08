@@ -1,0 +1,550 @@
+/**
+ * Sesco Tyres - Home Page Bidirectional Scroll Animations & Reversible Transitions
+ * Supports smooth zoom-in entrance transitions and reversible scroll animations
+ * when the user scrolls back.
+ */
+
+/* ==========================================================================
+   1. HERO SECTION SMOOTH ZOOM-IN & REVERSIBLE TRANSITIONS
+   ========================================================================== */
+
+/* Hero video gentle scale settling */
+.hero-bg-video {
+  transform: translate(-50%, -50%) scale(1.12);
+  transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), filter 1.6s ease;
+  will-change: transform;
+}
+
+body.hero-loaded .hero-bg-video {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Hero Title - smooth zoom-in entrance & reverse */
+.hero-title {
+  opacity: 0;
+  transform: scale(0.82) translateY(24px);
+  filter: blur(8px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+body.hero-loaded .hero-title {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+/* Hero Description - staggered smooth zoom-in & reverse */
+.hero-description {
+  opacity: 0;
+  transform: scale(0.86) translateY(22px);
+  filter: blur(6px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+body.hero-loaded .hero-description {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+  transition-delay: 0.16s;
+}
+
+/* Hero Actions - staggered smooth zoom-in & reverse */
+.hero-actions .hero-btn-main {
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease, background 0.3s ease;
+  will-change: transform, opacity;
+}
+
+body.hero-loaded .hero-actions .hero-btn-main {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 0.32s;
+}
+
+.hero-actions .btn-glass {
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease, border-color 0.3s ease;
+  will-change: transform, opacity;
+}
+
+body.hero-loaded .hero-actions .btn-glass {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 0.44s;
+}
+
+/* ==========================================================================
+   2. REVERSIBLE SCROLL REVEAL ANIMATION SYSTEM
+   ========================================================================== */
+
+/* Base zoom-in scroll transition */
+.scroll-zoom-in {
+  opacity: 0;
+  transform: scale(0.92) translateY(32px);
+  filter: blur(3px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, filter;
+}
+
+.scroll-zoom-in.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+/* Base fade-up scroll transition */
+.scroll-fade-up {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.scroll-fade-up.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger Delays - applied on entrance when .is-revealed is active */
+.is-revealed.stagger-delay-1 { transition-delay: 0.08s !important; }
+.is-revealed.stagger-delay-2 { transition-delay: 0.16s !important; }
+.is-revealed.stagger-delay-3 { transition-delay: 0.24s !important; }
+.is-revealed.stagger-delay-4 { transition-delay: 0.32s !important; }
+.is-revealed.stagger-delay-5 { transition-delay: 0.40s !important; }
+
+/* ==========================================================================
+   3. SECTION SPECIFIC REVERSIBLE TRANSITIONS
+   ========================================================================== */
+
+/* Trust Strip Items */
+.trust-item {
+  opacity: 0;
+  transform: scale(0.92) translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.25s ease;
+  will-change: transform, opacity;
+}
+
+.trust-item.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Finder Card */
+.finder {
+  opacity: 0;
+  transform: scale(0.96) translateY(36px);
+  box-shadow: 0 10px 30px rgba(11, 28, 50, 0.04);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, box-shadow;
+}
+
+.finder.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  box-shadow: 0 24px 60px rgba(11, 28, 50, 0.12);
+}
+
+/* Section Heads */
+.section-head,
+.shop-section-head,
+.services-head,
+.quote-section-head,
+.appointment-section-head,
+.car-service-hero,
+.testimonials-head,
+.blog-head {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.section-head.is-revealed,
+.shop-section-head.is-revealed,
+.services-head.is-revealed,
+.quote-section-head.is-revealed,
+.appointment-section-head.is-revealed,
+.car-service-hero.is-revealed,
+.testimonials-head.is-revealed,
+.blog-head.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Shop Showcase Stage */
+.shop-showcase-stage {
+  opacity: 0;
+  transform: scale(0.95) translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.shop-showcase-stage.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 0.12s;
+}
+
+.shop-showcase-footer {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shop-showcase-footer.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+/* Services Carousel Section */
+.services-carousel-wrapper {
+  opacity: 0;
+  transform: scale(0.96) translateY(36px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.services-carousel-wrapper.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 0.12s;
+}
+
+/* Quote Step Cards */
+.quote-step-card {
+  opacity: 0;
+  transform: scale(0.93) translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.quote-step-card.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.quote-interactive-builder {
+  opacity: 0;
+  transform: scale(0.96) translateY(34px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.quote-interactive-builder.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition-delay: 0.15s;
+}
+
+/* Appointment Section Animations:
+   1. Content: Combined Circular Arc & Portal Dive-in
+   2. Image: White Background first, then smooth slide-up reveal
+   Both reverse smoothly when user scrolls back */
+.appointment-form-wrap {
+  opacity: 0;
+  -webkit-clip-path: circle(0% at 50% 50%);
+  clip-path: circle(0% at 50% 50%);
+  transform: scale(0.82) translate(-36px, 34px) rotate(-4.5deg);
+  transform-origin: 35% 65%;
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity, clip-path;
+}
+
+.appointment-form-wrap.is-revealed {
+  opacity: 1;
+  -webkit-clip-path: circle(150% at 50% 50%);
+  clip-path: circle(150% at 50% 50%);
+  transform: scale(1) translate(0, 0) rotate(0deg);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-clip-path 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+              clip-path 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.appointment-image-wrap {
+  background: #ffffff !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.appointment-image-wrap img {
+  transform: translateY(102%);
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.appointment-image-wrap.is-revealed img {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1) 0.38s,
+              opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.38s;
+}
+
+.appointment-image-wrap.is-revealed:hover img {
+  transform: translateY(0) scale(1.03);
+  transition: transform 0.5s ease;
+}
+
+/* ==========================================================================
+   Get Your Car Serviced Section - Cinematic Symmetrical Side-In Animation
+   - Left Half (Title & Card 1): Slides in from the LEFT
+   - Right Half (Description & Card 3): Slides in from the RIGHT
+   - Center (Card 2 & CTA Button): Dives in with scale & depth
+   Reverses smoothly when user scrolls back
+   ========================================================================== */
+.car-service-section {
+  overflow: hidden;
+}
+
+/* Ensure parent header wrapper is stable for child side-ins */
+.section-head.car-service-head {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* 1. Left Header: Title slides in from LEFT */
+.car-service-head > div:first-child,
+.car-service-title {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.92);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-head > div:first-child,
+.car-service-section.is-revealed .car-service-title {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Right Header: Description slides in from RIGHT (preserving translateY(-20px)) */
+.car-service-lead {
+  opacity: 0;
+  transform: translate(120px, -20px) scale(0.92);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-lead {
+  opacity: 1;
+  transform: translate(0, -20px) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 3. Package Card 1 (Left Flank): Slides in from LEFT */
+.car-service-packages-grid .car-service-package-card:nth-child(1) {
+  opacity: 0;
+  transform: translateX(-140px) scale(0.92);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-packages-grid .car-service-package-card:nth-child(1) {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 4. Package Card 2 (Center Featured): Dives in with Scale & Depth */
+.car-service-packages-grid .car-service-package-card:nth-child(2) {
+  opacity: 0;
+  transform: translateY(40px) scale(0.85);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-packages-grid .car-service-package-card:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 5. Package Card 3 (Right Flank): Slides in from RIGHT */
+.car-service-packages-grid .car-service-package-card:nth-child(3) {
+  opacity: 0;
+  transform: translateX(140px) scale(0.92);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-packages-grid .car-service-package-card:nth-child(3) {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card Hover Integration */
+.car-service-section.is-revealed .car-service-package-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 6. Bottom Action CTA: Dives in smoothly */
+.car-service-bottom-action {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.car-service-section.is-revealed .car-service-bottom-action {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Testimonial Main Card & Arc */
+.testimonial-main-card {
+  opacity: 0;
+  transform: scale(0.94) translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.testimonial-main-card.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.testimonials-arc-track {
+  opacity: 0;
+  transform: scale(0.92) translateX(24px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.testimonials-arc-track.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+  transition-delay: 0.15s;
+}
+
+/* Latest Blog Cards */
+.latest-article-card {
+  opacity: 0;
+  transform: scale(0.93) translateY(38px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.latest-article-card.is-revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Footer elements */
+.footer-brand,
+.footer-col {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.footer-brand.is-revealed,
+.footer-col.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   4. ACCESSIBILITY: REDUCED MOTION SUPPORT
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-video,
+  .hero-title,
+  .hero-description,
+  .hero-actions .hero-btn-main,
+  .hero-actions .btn-glass,
+  .scroll-zoom-in,
+  .scroll-fade-up,
+  .trust-item,
+  .finder,
+  .section-head,
+  .shop-section-head,
+  .services-head,
+  .quote-section-head,
+  .appointment-section-head,
+  .car-service-hero,
+  .testimonials-head,
+  .blog-head,
+  .shop-showcase-stage,
+  .shop-showcase-footer,
+  .services-carousel-wrapper,
+  .quote-step-card,
+  .quote-interactive-builder,
+  .appointment-form-wrap,
+  .appointment-image-wrap,
+  .appointment-image-wrap img,
+  .appointment-form-panel,
+  .appointment-summary-card,
+  .car-service-section,
+  .car-service-head > div:first-child,
+  .car-service-title,
+  .car-service-lead,
+  .car-service-package-card,
+  .car-service-bottom-action,
+  .service-pillar,
+  .testimonial-main-card,
+  .testimonials-arc-track,
+  .latest-article-card,
+  .footer-brand,
+  .footer-col {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}

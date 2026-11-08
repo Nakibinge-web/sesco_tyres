@@ -1,0 +1,1623 @@
+/**
+ * Sesco Tyres — Advanced Shop Page UI/UX & Bidirectional Animate-on-Scroll (AOS) Suite
+ * Designed for Live `treads.item` Database Integration (PHP 8.5.12)
+ */
+
+/* ==========================================================================
+   1. TOP SCROLL PROGRESS BAR & PAGE AMBIENCE
+   ========================================================================== */
+.shop-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3.5px;
+  background: rgba(11, 28, 50, 0.12);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.shop-scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #38bdf8 0%, #2563eb 55%, #06b6d4 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.75);
+  transition: width 0.08s linear;
+}
+
+body[data-page="shop"] {
+  background: #f4f7fb;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. BIDIRECTIONAL ANIMATE-ON-SCROLL (AOS) ENGINE
+   ========================================================================== */
+[data-shop-aos] {
+  will-change: transform, opacity, filter;
+}
+
+[data-shop-aos="fade-up"] {
+  opacity: 0;
+  transform: translate3d(0, 38px, 0);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-shop-aos="fade-up"].aos-in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-shop-aos="zoom-blur"] {
+  opacity: 0;
+  transform: scale(0.93) translate3d(0, 30px, 0);
+  filter: blur(6px);
+  transition: opacity 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.82s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.82s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-shop-aos="zoom-blur"].aos-in-view {
+  opacity: 1;
+  transform: scale(1) translate3d(0, 0, 0);
+  filter: blur(0px);
+}
+
+[data-shop-aos="slide-right"] {
+  opacity: 0;
+  transform: translate3d(-44px, 0, 0);
+  transition: opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-shop-aos="slide-right"].aos-in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-shop-aos="slide-left"] {
+  opacity: 0;
+  transform: translate3d(44px, 0, 0);
+  transition: opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-shop-aos="slide-left"].aos-in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 3D Perspective Card Reveal on Scroll */
+[data-shop-aos="card-3d"] {
+  opacity: 0;
+  transform: perspective(1100px) translate3d(0, 52px, -40px) rotateX(10deg) scale(0.94);
+  filter: blur(4px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
+  transition-delay: calc(var(--aos-stagger, 0) * 75ms);
+}
+
+[data-shop-aos="card-3d"].aos-in-view {
+  opacity: 1;
+  transform: perspective(1100px) translate3d(0, 0, 0) rotateX(0deg) scale(1);
+  filter: blur(0px);
+}
+
+[data-shop-aos="scale-pop"] {
+  opacity: 0;
+  transform: scale(0.88) translate3d(0, 24px, 0);
+  transition: opacity 0.7s cubic-bezier(0.22, 1.25, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1.25, 0.36, 1);
+  transition-delay: calc(var(--aos-stagger, 0) * 90ms);
+}
+
+[data-shop-aos="scale-pop"].aos-in-view {
+  opacity: 1;
+  transform: scale(1) translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-shop-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   3. DATABASE TELEMETRY RIBBON (UNDER HERO)
+   ========================================================================== */
+.shop-db-ribbon {
+  background: linear-gradient(90deg, #071324 0%, #0d2240 50%, #071324 100%);
+  border-top: 1px solid rgba(56, 189, 248, 0.22);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+  padding: 16px 0 48px;
+  color: #e2e8f0;
+  position: relative;
+  z-index: 10;
+}
+
+.shop-db-ribbon-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.db-status-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.db-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.db-live-pill.is-fallback {
+  background: rgba(56, 189, 248, 0.14);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.db-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+  animation: dbPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes dbPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.55; }
+}
+
+.db-runtime-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.db-telemetry-metrics {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.db-metric-item {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.db-metric-val {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.db-metric-label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.db-shuffle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(37, 99, 235, 0.28));
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.db-shuffle-btn:hover {
+  background: linear-gradient(135deg, #0284c7, #1d4ed8);
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35);
+}
+
+.db-shuffle-btn i {
+  transition: transform 0.45s ease;
+}
+
+.db-shuffle-btn:hover i {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   4. FLOATING COMMAND DOCK (SEARCH + SAMPLE MODE + CATEGORY PILLS)
+   ========================================================================== */
+.shop-command-dock-wrap {
+  margin-top: -32px;
+  position: relative;
+  z-index: 25;
+  margin-bottom: 36px;
+}
+
+.shop-command-dock {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px 28px;
+  box-shadow: 0 22px 55px rgba(11, 28, 50, 0.11), 0 2px 6px rgba(11, 28, 50, 0.04);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+.dock-top-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.dock-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dock-search-icon {
+  position: absolute;
+  left: 16px;
+  color: #64748b;
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.dock-search-input {
+  width: 100%;
+  padding: 13px 42px 13px 44px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14.5px;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: all 0.25s ease;
+}
+
+.dock-search-input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.12);
+}
+
+.dock-search-clear {
+  position: absolute;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dock-search-clear.visible {
+  display: inline-flex;
+}
+
+.dock-sample-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.sample-mode-btn {
+  border: none;
+  background: transparent;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.sample-mode-btn:hover {
+  color: #0f172a;
+}
+
+.sample-mode-btn.active {
+  background: #163687;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(22, 54, 135, 0.25);
+}
+
+/* Category Pills Row */
+.dock-categories-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 16px;
+  flex-wrap: wrap;
+}
+
+.category-pills-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cat-pill-btn {
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.cat-pill-btn:hover {
+  border-color: #38bdf8;
+  color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.cat-pill-btn.active {
+  background: linear-gradient(135deg, #0b1c32 0%, #163687 100%);
+  border-color: #163687;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(22, 54, 135, 0.22);
+}
+
+.cat-pill-count {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.14);
+  color: inherit;
+  font-weight: 800;
+}
+
+.cat-pill-btn.active .cat-pill-count {
+  background: rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+}
+
+/* ==========================================================================
+   5. MAIN SHOP WORKSPACE LAYOUT (SIDEBAR + CATALOGUE)
+   ========================================================================== */
+.shop-workspace {
+  display: grid;
+  grid-template-columns: 295px 1fr;
+  gap: 30px;
+  align-items: start;
+  padding-bottom: 64px;
+}
+
+/* Sidebar */
+.shop-sidebar {
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 28px rgba(11, 28, 50, 0.05);
+}
+
+.sidebar-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sidebar-panel-head h3 {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0b1c32;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-panel-head h3 i {
+  color: #0284c7;
+}
+
+.reset-filters-link {
+  border: none;
+  background: none;
+  color: #0284c7;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reset-filters-link:hover {
+  text-decoration: underline;
+}
+
+/* DB Schema Info Box inside Sidebar */
+.db-schema-card {
+  background: linear-gradient(145deg, #0b1c32 0%, #163687 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 32px rgba(11, 28, 50, 0.18);
+}
+
+.db-schema-card::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.db-schema-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.db-schema-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+}
+
+.db-schema-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.db-schema-sub {
+  font-size: 11.5px;
+  color: #93c5fd;
+  display: block;
+}
+
+.db-schema-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  background: rgba(7, 19, 36, 0.48);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 14px;
+}
+
+.db-schema-row {
+  display: flex;
+  justify-content: space-between;
+  color: #cbd5e1;
+}
+
+.db-schema-row code {
+  color: #38bdf8;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+/* Brand Checkboxes */
+.brand-filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.brand-check-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.brand-check-label:hover {
+  background: #f8fafc;
+}
+
+.brand-check-left {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.brand-check-left input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #163687;
+  cursor: pointer;
+}
+
+.brand-count-badge {
+  font-size: 11px;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* Price Range Filter */
+.price-range-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-range-readout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0b1c32;
+}
+
+.price-range-readout span:last-child {
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.shop-range-slider {
+  width: 100%;
+  accent-color: #163687;
+  cursor: pointer;
+}
+
+/* Rim Size Quick Chips */
+.rim-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rim-chip-btn {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rim-chip-btn:hover {
+  border-color: #0284c7;
+  color: #0284c7;
+}
+
+.rim-chip-btn.active {
+  background: #163687;
+  border-color: #163687;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   6. CATALOGUE TOOLBAR & VIEW SWITCHER
+   ========================================================================== */
+.shop-advanced-toolbar {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 20px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  box-shadow: 0 6px 20px rgba(11, 28, 50, 0.04);
+}
+
+.toolbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-count-text {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.toolbar-count-text strong {
+  color: #163687;
+}
+
+.toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shop-sort-select {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.view-mode-toggle {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.view-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background: #ffffff;
+  color: #163687;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);
+}
+
+/* ==========================================================================
+   7. ADVANCED 3D PRODUCT CARDS (GRID & LIST MODES)
+   ========================================================================== */
+.shop-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(278px, 1fr));
+  gap: 24px;
+}
+
+.shop-products-grid.is-list-view {
+  grid-template-columns: 1fr;
+}
+
+.shop-item-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 32px rgba(11, 28, 50, 0.06);
+  transform-style: preserve-3d;
+}
+
+/* Dynamic Spotlight Glow Following Cursor */
+.shop-item-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    480px circle at var(--mouse-x, 50%) var(--mouse-y, 30%),
+    rgba(56, 189, 248, 0.10),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shop-item-card:hover::before {
+  opacity: 1;
+}
+
+.shop-item-card:hover {
+  border-color: rgba(2, 132, 199, 0.45);
+  box-shadow: 0 24px 48px rgba(11, 28, 50, 0.13);
+}
+
+/* Card Visual Stage */
+.item-visual-stage {
+  position: relative;
+  height: 235px;
+  background: radial-gradient(circle at 50% 55%, #1e3a6d 0%, #0b1c32 78%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+}
+
+/* Subtle Animated Engineering Ring inside Stage */
+.item-stage-ring {
+  position: absolute;
+  width: 185px;
+  height: 185px;
+  border-radius: 50%;
+  border: 1px dashed rgba(56, 189, 248, 0.25);
+  pointer-events: none;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+}
+
+.shop-item-card:hover .item-stage-ring {
+  transform: rotate(45deg) scale(1.08);
+  border-color: rgba(56, 189, 248, 0.55);
+}
+
+.item-top-badges {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 48px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  z-index: 3;
+}
+
+.item-cat-badge {
+  background: rgba(56, 189, 248, 0.18);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  color: #7dd3fc;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+.item-db-id-badge {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #cbd5e1;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.item-wish-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.6);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 4;
+  transition: all 0.22s ease;
+}
+
+.item-wish-btn:hover,
+.item-wish-btn.is-saved {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.item-tyre-img {
+  position: relative;
+  z-index: 2;
+  max-height: 172px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.55));
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shop-item-card:hover .item-tyre-img {
+  transform: scale(1.08) translateY(-4px) rotate(4deg);
+}
+
+/* Quick Inspect Floating Pill on Hover */
+.item-quick-inspect-btn {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translate(-50%, 14px);
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0b1c32;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 4;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.shop-item-card:hover .item-quick-inspect-btn {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.item-quick-inspect-btn:hover {
+  background: #38bdf8;
+  color: #0b1c32;
+}
+
+/* Card Body */
+.item-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.item-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.item-brand-name {
+  font-size: 11.5px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #0284c7;
+}
+
+.item-type-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.item-card-title {
+  margin: 0 0 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0b1c32;
+  line-height: 1.35;
+}
+
+.item-card-title a:hover {
+  color: #0284c7;
+}
+
+/* 4-Cell Spec Matrix inside Card */
+.item-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.item-spec-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-spec-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.item-spec-val {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Card Commerce Footer */
+.item-card-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.item-price-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-price-amount {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0b1c32;
+  line-height: 1.15;
+}
+
+.item-price-unit {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.item-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-add-cart-btn {
+  border: none;
+  background: #163687;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 10px 15px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.item-add-cart-btn:hover {
+  background: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(2, 132, 199, 0.28);
+}
+
+/* List View Layout Overrides */
+.shop-products-grid.is-list-view .shop-item-card {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.shop-products-grid.is-list-view .item-visual-stage {
+  width: 260px;
+  height: auto;
+  min-height: 210px;
+  flex-shrink: 0;
+}
+
+.shop-products-grid.is-list-view .item-specs-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ==========================================================================
+   8. QUICK INSPECT DATABASE MODAL
+   ========================================================================== */
+.shop-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 19, 36, 0.76);
+  backdrop-filter: blur(8px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.shop-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.shop-modal-dialog {
+  background: #ffffff;
+  width: min(780px, 100%);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.shop-modal-backdrop.is-open .shop-modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.shop-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+}
+
+.shop-modal-close:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.shop-modal-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}
+
+.shop-modal-visual {
+  background: radial-gradient(circle at 50% 50%, #1e3a6d 0%, #0b1c32 82%);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+}
+
+.shop-modal-visual img {
+  max-height: 210px;
+  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.6));
+  margin-bottom: 16px;
+}
+
+.shop-modal-content {
+  padding: 30px;
+}
+
+.modal-db-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 20px;
+  font-size: 13px;
+}
+
+.modal-db-table th,
+.modal-db-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  text-align: left;
+}
+
+.modal-db-table th {
+  color: #64748b;
+  font-weight: 700;
+  width: 42%;
+}
+
+.modal-db-table td {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   9. ENGINEERING & FITMENT ASSURANCE STRIP
+   ========================================================================== */
+.shop-assurance-section {
+  padding: 56px 0;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.shop-assurance-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.assurance-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.assurance-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(11, 28, 50, 0.08);
+  border-color: #bae6fd;
+}
+
+.assurance-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #163687, #0284c7);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.assurance-card h4 {
+  margin: 0 0 6px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15.5px;
+  color: #0b1c32;
+}
+
+.assurance-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+/* ==========================================================================
+   10. INTERACTIVE ITEM SELECTION & AUTO-CART STATES
+   ========================================================================== */
+.shop-item-card {
+  cursor: pointer;
+}
+
+.shop-item-card.is-selected-in-cart {
+  border: 2px solid #10b981;
+  box-shadow: 0 18px 42px rgba(16, 185, 129, 0.16), 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.item-selected-pill {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.item-select-btn {
+  border: 1.5px solid #163687;
+  background: #163687;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 9px 14px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.item-select-btn:hover {
+  background: #0284c7;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.item-select-btn.is-selected {
+  background: #059669;
+  border-color: #059669;
+  color: #ffffff;
+}
+
+.item-select-btn.is-selected:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.item-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.qty-step-btn {
+  width: 28px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.18s ease;
+}
+
+.qty-step-btn:hover {
+  background: #e2e8f0;
+}
+
+.qty-step-val {
+  min-width: 26px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0b1c32;
+}
+
+/* Floating Bottom Selection & Cart Bar on Shop Page */
+.shop-floating-cart-dock {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translate3d(-50%, 130%, 0);
+  width: min(860px, calc(100% - 32px));
+  background: rgba(11, 28, 50, 0.95);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  border-radius: 18px;
+  padding: 14px 22px;
+  color: #ffffff;
+  z-index: 8000;
+  box-shadow: 0 24px 55px rgba(7, 19, 36, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.shop-floating-cart-dock.is-visible {
+  transform: translate3d(-50%, 0, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-cart-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.floating-cart-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.floating-cart-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.floating-cart-sub {
+  font-size: 12px;
+  color: #93c5fd;
+  margin: 0;
+}
+
+.floating-cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.floating-cart-go-btn {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  color: #0b1c32;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 11px 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+}
+
+.floating-cart-go-btn:hover {
+  background: #ffffff;
+  color: #163687;
+  transform: translateY(-2px);
+}
+
+/* Cart Page Quantity Stepper (- / +) */
+.cart-qty-control {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.cart-qty-btn {
+  width: 32px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  color: #0b1c32;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.cart-qty-btn:hover {
+  background: #163687;
+  color: #ffffff;
+}
+
+.cart-qty-btn:active {
+  transform: scale(0.94);
+}
+
+.cart-qty-input {
+  width: 44px;
+  height: 34px;
+  border: none;
+  border-left: 1px solid #cbd5e1;
+  border-right: 1px solid #cbd5e1;
+  background: #ffffff;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #0b1c32;
+  padding: 0 4px;
+  -moz-appearance: textfield;
+}
+
+.cart-qty-input:focus {
+  outline: none;
+  background: #f0f9ff;
+}
+
+.cart-qty-input::-webkit-outer-spin-button,
+.cart-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Cart Order Request Form inside Cart Summary */
+.cart-order-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cart-order-fields label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.cart-order-fields input,
+.cart-order-fields textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.cart-order-fields input:focus,
+.cart-order-fields textarea:focus {
+  outline: none;
+  border-color: #0284c7;
+  background: #ffffff;
+}
+
+.cart-order-feedback {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Loading Skeletons */
+.shop-skeleton-card {
+  height: 410px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.4s infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .shop-workspace {
+    grid-template-columns: 1fr;
+  }
+  .shop-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .shop-assurance-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dock-top-row {
+    grid-template-columns: 1fr;
+  }
+  .dock-sample-selector {
+    overflow-x: auto;
+  }
+  .shop-products-grid.is-list-view .shop-item-card {
+    flex-direction: column;
+  }
+  .shop-products-grid.is-list-view .item-visual-stage {
+    width: 100%;
+  }
+  .shop-modal-grid {
+    grid-template-columns: 1fr;
+  }
+  .shop-assurance-grid {
+    grid-template-columns: 1fr;
+  }
+  .shop-floating-cart-dock {
+    bottom: 12px;
+    padding: 12px 16px;
+  }
+}
+

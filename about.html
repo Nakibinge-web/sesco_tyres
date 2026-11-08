@@ -15,15 +15,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <!-- Main & Dedicated 3D Stylesheets -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=4.2">
-  <link rel="stylesheet" href="assets/css/about-3d.css?v=5.5">
+  <link rel="stylesheet" href="assets/css/styles.css?v=4.3">
+  <link rel="stylesheet" href="assets/css/about-3d.css?v=6.2">
 </head>
 <body data-page="about">
 
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="container topbar-inner">
-      <span>
+      <span class="topbar-schedule">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         We're Open: Monday - Saturday, 9:00 am - 18:00 pm
       </span>
@@ -32,8 +32,10 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
           +256-709-828-766
         </a>
-        <span>✉ info@sescotyres.com</span>
-        <a href="faq.html">Help & FAQs</a>
+        <a href="mailto:info@sescotyres.com" title="Email Us">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          info@sescotyres.com
+        </a>
       </div>
     </div>
   </div>
@@ -57,10 +59,12 @@
             <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </a>
           <div class="dropdown-menu">
-            <a href="services.html">All Services</a>
             <a href="service-detail.html#alignment">Wheel Alignment</a>
-            <a href="service-detail.html#fitting">Tyre Fitting & Balancing</a>
-            <a href="service-detail.html#servicing">Vehicle Servicing</a>
+            <a href="service-detail.html#rotation">Tyre Rotation</a>
+            <a href="service-detail.html#fitting">Tyre Fitting</a>
+            <a href="service-detail.html#balancing">Tyre Balancing</a>
+            <a href="service-detail.html#tyres">Stock Tyres</a>
+            <a href="service-detail.html#servicing">Basic Car Servicing</a>
           </div>
         </div>
         <div class="nav-dropdown">
@@ -137,13 +141,6 @@
           <div class="who-image-column reveal-on-scroll">
             <div class="who-image-card">
               <img src="assets/images/appointment-mechanic.jpg" alt="Certified master technician precision-fitting performance tyres at Sesco Tyres" loading="lazy">
-              <div class="who-image-tag">
-                <i class="fa-solid fa-shield-halved"></i> 100% Certified
-              </div>
-              <div class="who-image-caption">
-                <strong>Master Fitment Bay</strong>
-                <span><i class="fa-solid fa-location-dot"></i> Kampala Workshop</span>
-              </div>
             </div>
           </div>
 
@@ -169,7 +166,6 @@
                 </div>
                 <div class="who-feature-content">
                   <strong>Direct Authorized Importer</strong>
-                  <p>100% factory-direct genuine tyres from Michelin, Bridgestone, Continental, Pirelli, Goodyear & Dunlop.</p>
                 </div>
               </div>
               <div class="who-feature-card">
@@ -178,7 +174,6 @@
                 </div>
                 <div class="who-feature-content">
                   <strong>Computerized 3D Alignment</strong>
-                  <p>Italian optical laser diagnostic rigs restoring factory suspension angles to 0.01° precision.</p>
                 </div>
               </div>
               <div class="who-feature-card">
@@ -187,7 +182,6 @@
                 </div>
                 <div class="who-feature-content">
                   <strong>Certified Master Technicians</strong>
-                  <p>Extensively trained technicians adhering to strict tyre load index, speed rating, and torque protocols.</p>
                 </div>
               </div>
               <div class="who-feature-card">
@@ -196,7 +190,6 @@
                 </div>
                 <div class="who-feature-content">
                   <strong>Commercial Fleet Care</strong>
-                  <p>Helping transport operators optimize tread wear and reduce cost-per-kilometer by up to 28%.</p>
                 </div>
               </div>
             </div>
@@ -211,8 +204,7 @@
     <section class="our-services-section" id="our-services">
       <div class="container our-services-container">
         <!-- Section Header -->
-        <div class="our-services-header reveal-on-scroll">
-          <span class="our-services-eyebrow">Precision Workshop Solutions</span>
+        <div class="our-services-header">
           <h2 class="our-services-title">Our Services</h2>
           <p class="our-services-subtitle">
             Click on any service below to explore certified workshop specifications, diagnostics, and fitment standards.
@@ -224,7 +216,7 @@
           <div class="services-horizontal-track" id="servicesHorizontalTrack" role="tablist" aria-label="Sesco Workshop Services">
             
             <!-- Service 1: Wheel Alignment (Active by default) -->
-            <button type="button" class="service-horizontal-card active reveal-on-scroll" data-service-key="alignment" role="tab" aria-selected="true" aria-controls="serviceDetailPanel" id="tab-alignment">
+            <button type="button" class="service-horizontal-card active" data-service-key="alignment" role="tab" aria-selected="true" aria-controls="serviceDetailPanel" id="tab-alignment">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/wheel-alignment.jpg" alt="Wheel Alignment" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -239,7 +231,7 @@
             </button>
 
             <!-- Service 2: Tyre Rotation -->
-            <button type="button" class="service-horizontal-card reveal-on-scroll delay-1" data-service-key="rotation" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-rotation">
+            <button type="button" class="service-horizontal-card" data-service-key="rotation" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-rotation">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/tyre-rotation.jpg" alt="Tyre Rotation" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -254,7 +246,7 @@
             </button>
 
             <!-- Service 3: Tyre Fitting -->
-            <button type="button" class="service-horizontal-card reveal-on-scroll delay-2" data-service-key="fitting" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-fitting">
+            <button type="button" class="service-horizontal-card" data-service-key="fitting" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-fitting">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/tyre-fitting.jpg" alt="Tyre Fitting" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -269,7 +261,7 @@
             </button>
 
             <!-- Service 4: Tyre Balancing -->
-            <button type="button" class="service-horizontal-card reveal-on-scroll delay-3" data-service-key="balancing" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-balancing">
+            <button type="button" class="service-horizontal-card" data-service-key="balancing" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-balancing">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/tyre-balancing.jpg" alt="Tyre Balancing" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -284,7 +276,7 @@
             </button>
 
             <!-- Service 5: Stok Tyres -->
-            <button type="button" class="service-horizontal-card reveal-on-scroll delay-4" data-service-key="tyres" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-tyres">
+            <button type="button" class="service-horizontal-card" data-service-key="tyres" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-tyres">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/stock-tyres.jpg" alt="Stok Tyres" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -299,7 +291,7 @@
             </button>
 
             <!-- Service 6: Basic Car Servicing -->
-            <button type="button" class="service-horizontal-card reveal-on-scroll delay-5" data-service-key="servicing" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-servicing">
+            <button type="button" class="service-horizontal-card" data-service-key="servicing" role="tab" aria-selected="false" aria-controls="serviceDetailPanel" id="tab-servicing">
               <div class="service-card-image-wrap">
                 <img src="assets/images/services/basic-car-servicing.jpg" alt="Basic Car Servicing" loading="lazy">
                 <div class="service-card-overlay"></div>
@@ -317,18 +309,10 @@
         </div>
 
         <!-- Information Display Panel Below Images -->
-        <div class="service-detail-display-panel reveal-on-scroll" id="serviceDetailPanel" role="tabpanel">
+        <div class="service-detail-display-panel" id="serviceDetailPanel" role="tabpanel">
           <div class="service-detail-inner" id="serviceDetailInner">
             <!-- Populated interactively by JS -->
           </div>
-        </div>
-
-        <!-- Section Footer Action Link -->
-        <div class="our-services-bottom-action reveal-on-scroll">
-          <a href="services.html" class="our-services-view-all-btn">
-            <span>Explore All Precision Services</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
         </div>
       </div>
     </section>
@@ -342,24 +326,22 @@
           
           <!-- Section Header -->
           <div class="values-header">
-            <span class="values-eyebrow">Guiding Principles</span>
-            <h2 class="values-title">Our values</h2>
-            <p class="values-subtitle">
-              The operational mission, regional vision, and foundational values defining Sesco Tyres.
-            </p>
+            <div class="values-title-block">
+              <h2 class="values-title">Our Values</h2>
+              <p class="values-subtitle">
+                The operational mission, regional vision, and foundational values defining Sesco Tyres.
+              </p>
+            </div>
             
             <!-- Step Navigation Pills -->
             <div class="values-nav-pills" role="tablist" aria-label="Our Values Stage Navigation">
               <button type="button" class="values-nav-pill active" data-step="0" role="tab" aria-selected="true" id="pill-mission">
-                <span class="pill-num">01</span>
                 <span class="pill-label">Mission</span>
               </button>
               <button type="button" class="values-nav-pill" data-step="1" role="tab" aria-selected="false" id="pill-vision">
-                <span class="pill-num">02</span>
                 <span class="pill-label">Vision</span>
               </button>
               <button type="button" class="values-nav-pill" data-step="2" role="tab" aria-selected="false" id="pill-corevalues">
-                <span class="pill-num">03</span>
                 <span class="pill-label">Values</span>
               </button>
             </div>
@@ -376,7 +358,9 @@
                     <i class="fa-solid fa-gem" aria-hidden="true"></i>
                     <span>Principles</span>
                   </div>
-                  <span class="stage-card-num">03</span>
+                  <div class="stage-card-icon" aria-hidden="true">
+                    <i class="fa-solid fa-gem"></i>
+                  </div>
                 </div>
                 <div class="stage-card-body">
                   <h3 class="stage-card-title">Values</h3>
@@ -395,7 +379,9 @@
                     <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
                     <span>Purpose</span>
                   </div>
-                  <span class="stage-card-num">01</span>
+                  <div class="stage-card-icon" aria-hidden="true">
+                    <i class="fa-solid fa-bullseye"></i>
+                  </div>
                 </div>
                 <div class="stage-card-body">
                   <h3 class="stage-card-title">Mission</h3>
@@ -414,7 +400,9 @@
                     <i class="fa-solid fa-compass-drafting" aria-hidden="true"></i>
                     <span>Future</span>
                   </div>
-                  <span class="stage-card-num">02</span>
+                  <div class="stage-card-icon" aria-hidden="true">
+                    <i class="fa-solid fa-eye"></i>
+                  </div>
                 </div>
                 <div class="stage-card-body">
                   <h3 class="stage-card-title">Vision</h3>
@@ -434,111 +422,62 @@
             
             <!-- Panel 1: Mission Info (Default Active) -->
             <div class="values-info-panel is-active" id="infoPanelMission" data-panel="mission">
-              <div class="info-panel-header">
-                <div class="info-badge">
-                  <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
-                  <span>Operational Purpose • Mission</span>
-                </div>
-                <span class="info-step-label">Focus 01 / 03</span>
-              </div>
               <h3 class="info-panel-title">Our Mission</h3>
-              <h4 class="info-panel-lead">
-                Delivering Uncompromised Tyre Safety & Certified Automotive Care Across Uganda
-              </h4>
               <p class="info-panel-desc">
-                To safeguard every driver, family, and fleet operator by exclusively supplying 100% authentic tier-1 tyres, utilizing calibrated European diagnostic technology, and offering honest, transparent technical counsel that never cuts corners.
+                On the premise of a highly skilled workforce, focused on quality, integrity, synergy, reliability. Sesco tyres and general parts Limited aims at achieving a greater level of market growth and long lasting relationships with clients
               </p>
-              <div class="info-chips-row">
-                <div class="info-chip">
-                  <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                  <span>100% Authentic Tier-1 Tyres</span>
-                </div>
-                <div class="info-chip">
-                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
-                  <span>Zero Grey-Market Compromise</span>
-                </div>
-                <div class="info-chip">
-                  <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
-                  <span>Certified Bay Technicians</span>
-                </div>
-              </div>
             </div>
 
             <!-- Panel 2: Vision Info -->
             <div class="values-info-panel" id="infoPanelVision" data-panel="vision">
-              <div class="info-panel-header">
-                <div class="info-badge">
-                  <i class="fa-solid fa-compass-drafting" aria-hidden="true"></i>
-                  <span>Strategic North Star • Vision</span>
-                </div>
-                <span class="info-step-label">Focus 02 / 03</span>
-              </div>
               <h3 class="info-panel-title">Our Vision</h3>
-              <h4 class="info-panel-lead">
-                East Africa's Benchmark Automotive Mobility & Safety Partner
-              </h4>
               <p class="info-panel-desc">
-                To be East Africa's benchmark automotive mobility partner, defining the regional standard for zero-compromise road safety, genuine tyre reliability, and intelligent computerized vehicle diagnostics on every highway and trail.
+                To be the number one distributor of eco friendly, cost effective, world class tyre brandsand after sales service in EastAfrica, focusing on customer satisfaction that enables the growth of both share holder value and work force
               </p>
-              <div class="info-chips-row">
-                <div class="info-chip">
-                  <i class="fa-solid fa-earth-africa" aria-hidden="true"></i>
-                  <span>Regional Safety Benchmark</span>
-                </div>
-                <div class="info-chip">
-                  <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-                  <span>Computerized 3D Diagnostics</span>
-                </div>
-                <div class="info-chip">
-                  <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
-                  <span>Regional Distribution Leadership</span>
-                </div>
-              </div>
             </div>
 
-            <!-- Panel 3: Values Info (The 5 Items) -->
+            <!-- Panel 3: Values Info (The 5 Items in 1-2 / 3 / 4-5 layout with Font Awesome icons) -->
             <div class="values-info-panel" id="infoPanelValues" data-panel="values">
-              <div class="info-panel-header">
-                <div class="info-badge">
-                  <i class="fa-solid fa-gem" aria-hidden="true"></i>
-                  <span>Foundational Principles • Values</span>
-                </div>
-                <span class="info-step-label">Focus 03 / 03</span>
-              </div>
               <h3 class="info-panel-title">Core Values</h3>
-              <h4 class="info-panel-lead">
-                The 5 Foundational Standards Guiding Every Fitment & Customer Relationship
-              </h4>
               <div class="info-values-grid">
-                <div class="val-grid-item">
+                <!-- Value 1 (Row 1 Left) -->
+                <div class="val-grid-item val-item-1">
                   <div class="val-item-icon"><i class="fa-solid fa-heart" aria-hidden="true"></i></div>
                   <div class="val-item-text">
                     <h5 class="val-item-name">Optimal Customer Satisfaction</h5>
                     <p class="val-item-desc">Putting drivers first with prompt, transparent, and dedicated care.</p>
                   </div>
                 </div>
-                <div class="val-grid-item">
+
+                <!-- Value 2 (Row 1 Right) -->
+                <div class="val-grid-item val-item-2">
                   <div class="val-item-icon"><i class="fa-solid fa-award" aria-hidden="true"></i></div>
                   <div class="val-item-text">
                     <h5 class="val-item-name">Quality of Service</h5>
                     <p class="val-item-desc">Uncompromising workshop precision with calibrated European rigs.</p>
                   </div>
                 </div>
-                <div class="val-grid-item">
+
+                <!-- Value 3 (Row 2 Center: Integrity) -->
+                <div class="val-grid-item val-item-3 val-grid-center">
                   <div class="val-item-icon"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i></div>
                   <div class="val-item-text">
                     <h5 class="val-item-name">Integrity</h5>
                     <p class="val-item-desc">Honest diagnostics, fair pricing, and 100% genuine tyres.</p>
                   </div>
                 </div>
-                <div class="val-grid-item">
+
+                <!-- Value 4 (Row 3 Left) -->
+                <div class="val-grid-item val-item-4">
                   <div class="val-item-icon"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i></div>
                   <div class="val-item-text">
                     <h5 class="val-item-name">Reliability</h5>
                     <p class="val-item-desc">Battle-tested tyres and fitments engineered for Ugandan roads.</p>
                   </div>
                 </div>
-                <div class="val-grid-item val-grid-span">
+
+                <!-- Value 5 (Row 3 Right) -->
+                <div class="val-grid-item val-item-5">
                   <div class="val-item-icon"><i class="fa-solid fa-users-gear" aria-hidden="true"></i></div>
                   <div class="val-item-text">
                     <h5 class="val-item-name">Team Work</h5>
@@ -561,137 +500,99 @@
     </section>
 
     <!-- ====================================================================
-         SECTION 5: WHY CHOOSE US
+         SECTION 5: WHY CHOOSE US (CINEMATIC NIGHT SHOWCASE)
          ==================================================================== -->
     <section class="why-choose-section" id="why-choose-us">
-      <div class="container">
-        <div class="why-header reveal-on-scroll">
-          <span class="section-eyebrow">The Sesco Advantage</span>
-          <h2 class="section-heading-lg">Why Discerning Drivers & Fleet Managers Choose Us</h2>
-          <p style="color:#64748b; font-size:1.05rem; margin-top:8px;">
-            Six foundational pillars that make Sesco Tyres Uganda's most trusted automotive service destination.
+      <div class="why-choose-overlay"></div>
+      <div class="why-choose-container">
+        
+        <!-- Header -->
+        <div class="why-choose-header reveal-on-scroll">
+          <h2 class="why-choose-main-title">
+            Why <span class="highlight-sky">Choose Us</span>
+          </h2>
+          <p class="why-choose-subtitle">
+            Six foundational pillars that make SESCO TYRES Uganda's most trusted automotive service destination.
           </p>
         </div>
 
-        <!-- 6 Pillars Grid -->
-        <div class="why-pillars-grid">
+        <!-- 6 Pillars Row -->
+        <div class="why-pillars-row">
           
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll">
-            <span class="pillar-number">01</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-award"></i></div>
-            <h3 class="why-pillar-title">100% Genuine Direct Imports</h3>
-            <p class="why-pillar-desc">
-              Authorized direct procurement channels for Michelin, Bridgestone, Continental, Pirelli, Goodyear, and Dunlop. Guaranteed fresh production dates, never baked in storage.
-            </p>
-          </div>
-
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll delay-1">
-            <span class="pillar-number">02</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-crosshairs"></i></div>
-            <h3 class="why-pillar-title">Italian 3D Laser Alignment</h3>
-            <p class="why-pillar-desc">
-              State-of-the-art multi-camera optical alignment rigs that read camber, caster, and toe to 0.01°, ensuring razor-sharp steering and preventing premature shoulder wear.
-            </p>
-          </div>
-
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll delay-2">
-            <span class="pillar-number">03</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-user-gear"></i></div>
-            <h3 class="why-pillar-title">Certified Master Technicians</h3>
-            <p class="why-pillar-desc">
-              Trained in advanced tyre physics, run-flat bead mounting, alloy rim protection, and digital torque setting—treating your vehicle with unmatched professional respect.
-            </p>
-          </div>
-
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll">
-            <span class="pillar-number">04</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-clipboard-check"></i></div>
-            <h3 class="why-pillar-title">Complimentary 7-Point Safety Audit</h3>
-            <p class="why-pillar-desc">
-              Every tyre fitment includes a free check of brake pad thickness, rotor runout, shock absorber health, tie-rod play, and nitrogen pressure calibration.
-            </p>
-          </div>
-
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll delay-1">
-            <span class="pillar-number">05</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
-            <h3 class="why-pillar-title">Enterprise Commercial Fleet Care</h3>
-            <p class="why-pillar-desc">
-              Dedicated corporate account managers, scheduled mobile fleet inspections, emergency on-site tyre delivery, and trade credit terms for verified commercial fleets.
-            </p>
-          </div>
-
-          <div class="why-pillar-card card-3d-tilt reveal-on-scroll delay-2">
-            <span class="pillar-number">06</span>
-            <div class="why-pillar-icon"><i class="fa-solid fa-shield-heart"></i></div>
-            <h3 class="why-pillar-title">Warranty & Free Lifetime Rotation</h3>
-            <p class="why-pillar-desc">
-              Every tyre purchase is backed by factory warranty, free tyre rotation at 5,000 km, free puncture repairs, and a responsive customer service team.
-            </p>
-          </div>
-
-        </div>
-
-        <!-- Comparative Quality Matrix Card -->
-        <div class="comparison-card-wrapper card-3d-tilt reveal-on-scroll">
-          <div class="comparison-header">
-            <h3>The Sesco Standard vs. Ordinary Workshops</h3>
-            <p>See why cutting corners on tyres and alignment costs more in the long run.</p>
-          </div>
-          
-          <div class="comparison-columns-grid">
-            <div class="comparison-box box-sesco">
-              <div class="comparison-box-title">
-                <i class="fa-solid fa-circle-check"></i> The Sesco Tyres Experience
-              </div>
-              <ul class="comparison-list">
-                <li><i class="fa-solid fa-check"></i> 100% Genuine, fresh-batch factory tyres with full warranty</li>
-                <li><i class="fa-solid fa-check"></i> Italian 3D laser multi-camera alignment with printed geometry report</li>
-                <li><i class="fa-solid fa-check"></i> Calibrated digital torque wrenches preventing stripped wheel studs</li>
-                <li><i class="fa-solid fa-check"></i> 99.5% Pure Nitrogen inflation for stable pressure and cool running</li>
-                <li><i class="fa-solid fa-check"></i> Comfortable air-conditioned lounge with high-speed Wi-Fi & coffee</li>
-              </ul>
+          <!-- Pillar 01 -->
+          <div class="why-pillar-col reveal-on-scroll">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-heart"></i>
             </div>
+            <!-- <span class="why-pillar-num">01</span> -->
+            <h3 class="why-pillar-name">100% Customer<br>Satisfaction</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- It's that confidence, combined with our expertise, that keeps both drivers and auto professionals coming back to Sesco time and time again. -->
+            <!-- </p> -->
+          </div>
 
-            <div class="comparison-box box-others">
-              <div class="comparison-box-title">
-                <i class="fa-solid fa-circle-xmark"></i> Ordinary Informal Workshops
-              </div>
-              <ul class="comparison-list">
-                <li><i class="fa-solid fa-xmark"></i> High risk of aged, counterfeit, or improperly stored rubber</li>
-                <li><i class="fa-solid fa-xmark"></i> Manual string or eyeball alignment that causes uneven tyre wear</li>
-                <li><i class="fa-solid fa-xmark"></i> Pneumatic impact guns overtightening and warping brake rotors</li>
-                <li><i class="fa-solid fa-xmark"></i> Regular moisture-heavy compressed air causing rim oxidation</li>
-                <li><i class="fa-solid fa-xmark"></i> Dust-filled waiting area with no clear diagnostic accountability</li>
-              </ul>
+          <!-- Pillar 02 -->
+          <div class="why-pillar-col reveal-on-scroll delay-1">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-gears"></i>
             </div>
+            <!-- <span class="why-pillar-num">02</span> -->
+            <h3 class="why-pillar-name">Genuine Spare<br>Parts</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- We use authorized genuine spare parts & accessories to ensure the safety and health of our clients vehicles. -->
+            <!-- </p> -->
           </div>
+
+          <!-- Pillar 03 -->
+          <div class="why-pillar-col reveal-on-scroll delay-2">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <!-- <span class="why-pillar-num">03</span> -->
+            <h3 class="why-pillar-name">Quality<br>Services</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- Our Rodeo tyres are on more new vehicles in Uganda than any other brand. -->
+            <!-- </p> -->
+          </div>
+
+          <!-- Pillar 04 -->
+          <div class="why-pillar-col reveal-on-scroll delay-3">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <!-- <span class="why-pillar-num">04</span> -->
+            <h3 class="why-pillar-name">Safety</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- Let Our certified technicians help you maintain the safety, reliability and longevity of your vehicle. Regular preventative maintenance can help you save time and money in the long run, and ensure the life of your vehicle for years. The Arrival is as important as the journey. -->
+            <!-- </p> -->
+          </div>
+
+          <!-- Pillar 05 -->
+          <div class="why-pillar-col reveal-on-scroll delay-4">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <!-- <span class="why-pillar-num">05</span> -->
+            <h3 class="why-pillar-name">Hi-Quality<br>Products</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- Car tyres may all look the same, But the popular Rodeo tyre has proven itself as a reliable all-round tyre, developed with comfort and safety in mind. Featuring exceptionally low road noise levels, exceptional handling in the wet and superior grip for reliable braking. -->
+            <!-- </p> -->
+          </div>
+
+          <!-- Pillar 06 -->
+          <div class="why-pillar-col reveal-on-scroll delay-5">
+            <div class="why-pillar-icon-box">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+            </div>
+            <!-- <span class="why-pillar-num">06</span> -->
+            <h3 class="why-pillar-name">Value for Your<br>Money</h3>
+            <!-- <p class="why-pillar-desc"> -->
+              <!-- For cheap, decent, reliable, quality, heavy and light loading truck tires? we're your solution. When you buy a premium tyre from our store, you receive the guaranteed lowest price for your tires, as well lifetime tire rotation and our limited warranty is honored. -->
+            <!-- </p> -->
+          </div>
+
         </div>
 
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         BOTTOM CTA & CONSULTATION STRIP
-         ==================================================================== -->
-    <section class="about-cta-strip">
-      <div class="container">
-        <div class="about-cta-inner">
-          <div class="about-cta-text">
-            <h2>Ready For A Smoother, Safer Drive?</h2>
-            <p>
-              Connect with our master wheel technicians today. Speak directly to an expert or drive into our Kampala service center for a free 7-point tyre and safety inspection.
-            </p>
-          </div>
-          <div class="about-cta-btns">
-            <a href="https://wa.me/256709828766" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-cta" id="cta-whatsapp-btn">
-              <i class="fa-brands fa-whatsapp" style="font-size:1.25rem;"></i> Chat On WhatsApp
-            </a>
-            <a href="contact.html" class="btn-hero-primary" id="cta-book-btn">
-              <i class="fa-solid fa-calendar-check"></i> Book An Appointment
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   </main>
@@ -717,10 +618,10 @@
         </div>
         <div class="footer-col">
           <h4>Explore</h4>
-          <a href="shop.html">Shop all tyres</a>
-          <a href="services.html">Tyre & vehicle services</a>
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="services.html">Services</a>
           <a href="about.html">About Sesco Tyres</a>
-          <a href="blog.html">Driving insights</a>
         </div>
         <div class="footer-col">
           <h4>Customer care</h4>
@@ -731,14 +632,14 @@
         </div>
         <div class="footer-col">
           <h4>Get in touch</h4>
-          <p>📍 Kampala Service Center, Uganda</p>
-          <p>☎ +256-709-828-766</p>
-          <p>✉ info@sescotyres.com</p>
-          <p>Mon - Sat: 9:00 am - 6:00 pm</p>
+          <p><i class="fa-solid fa-location-dot"></i>   Plot 27 Queens Way, Entebbe Road Kampala, Uganda</p>
+          <p><i class="fa-solid fa-phone"></i>   +256-709-828-766</p>
+          <p><i class="fa-solid fa-envelope"></i>   info@sescotyres.com</p>
+          <p><i class="fa-solid fa-clock"></i>   We're Open: Monday - Saturday, 9:30 am - 6:00 pm</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© <span id="year"></span> Sesco Tyres Uganda. All rights reserved.</span>
+        <span>© <span id="year"></span> Sesco Tyres. Frontend redesign concept. | Developed by <a href="https://sofdas.com" target="_blank" rel="noopener noreferrer">Sofdas Technologies</a></span>
         <span>
           <a href="faq.html">FAQs</a>
           <a href="contact.html">Contact</a>
@@ -751,8 +652,8 @@
 
   <!-- JavaScript Libraries & Modules -->
   <script src="assets/js/three.min.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/about-3d.js?v=5.5"></script>
+  <script src="assets/js/main.js?v=4.4"></script>
+  <script src="assets/js/about-3d.js?v=6.0"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>

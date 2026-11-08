@@ -1,0 +1,131 @@
+/* ==========================================================================
+   AOS (Animate On Scroll) Styles
+   ========================================================================== */
+[data-aos] {
+  pointer-events: none;
+}
+
+[data-aos].aos-animate {
+  pointer-events: auto;
+}
+
+/* Animations */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  transition-property: opacity, transform;
+}
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-aos="fade-down"] {
+  opacity: 0;
+  transform: translate3d(0, -40px, 0);
+  transition-property: opacity, transform;
+}
+[data-aos="fade-down"].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-aos="fade-right"] {
+  opacity: 0;
+  transform: translate3d(-40px, 0, 0);
+  transition-property: opacity, transform;
+}
+[data-aos="fade-right"].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-aos="fade-left"] {
+  opacity: 0;
+  transform: translate3d(40px, 0, 0);
+  transition-property: opacity, transform;
+}
+[data-aos="fade-left"].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[data-aos="zoom-in"] {
+  opacity: 0;
+  transform: scale(0.92);
+  transition-property: opacity, transform;
+}
+[data-aos="zoom-in"].aos-animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-aos="zoom-out"] {
+  opacity: 0;
+  transform: scale(1.08);
+  transition-property: opacity, transform;
+}
+[data-aos="zoom-out"].aos-animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-aos="flip-up"] {
+  opacity: 0;
+  transform: perspective(2500px) rotateX(-50deg);
+  transition-property: opacity, transform;
+}
+[data-aos="flip-up"].aos-animate {
+  opacity: 1;
+  transform: perspective(2500px) rotateX(0);
+}
+
+/* Durations */
+body[data-aos-duration="400"] [data-aos], [data-aos][data-aos-duration="400"] { transition-duration: 400ms; }
+body[data-aos-duration="500"] [data-aos], [data-aos][data-aos-duration="500"] { transition-duration: 500ms; }
+body[data-aos-duration="600"] [data-aos], [data-aos][data-aos-duration="600"] { transition-duration: 600ms; }
+body[data-aos-duration="700"] [data-aos], [data-aos][data-aos-duration="700"] { transition-duration: 700ms; }
+body[data-aos-duration="800"] [data-aos], [data-aos][data-aos-duration="800"] { transition-duration: 800ms; }
+body[data-aos-duration="900"] [data-aos], [data-aos][data-aos-duration="900"] { transition-duration: 900ms; }
+body[data-aos-duration="1000"] [data-aos], [data-aos][data-aos-duration="1000"] { transition-duration: 1000ms; }
+body[data-aos-duration="1200"] [data-aos], [data-aos][data-aos-duration="1200"] { transition-duration: 1200ms; }
+
+/* Delays */
+[data-aos][data-aos-delay="50"] { transition-delay: 50ms; }
+[data-aos][data-aos-delay="100"] { transition-delay: 100ms; }
+[data-aos][data-aos-delay="150"] { transition-delay: 150ms; }
+[data-aos][data-aos-delay="200"] { transition-delay: 200ms; }
+[data-aos][data-aos-delay="250"] { transition-delay: 250ms; }
+[data-aos][data-aos-delay="300"] { transition-delay: 300ms; }
+[data-aos][data-aos-delay="400"] { transition-delay: 400ms; }
+[data-aos][data-aos-delay="500"] { transition-delay: 500ms; }
+
+/* Easings */
+body[data-aos-easing="ease-out-cubic"] [data-aos], [data-aos][data-aos-easing="ease-out-cubic"],
+[data-aos] {
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition-duration: 750ms;
+}
+body[data-aos-easing="ease-in-out"] [data-aos], [data-aos][data-aos-easing="ease-in-out"] {
+  transition-timing-function: ease-in-out;
+}
+body[data-aos-easing="ease"] [data-aos], [data-aos][data-aos-easing="ease"] {
+  transition-timing-function: ease;
+}
+
+/* Ensure targeted article is always immediately fully visible */
+:target[data-aos],
+:target [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

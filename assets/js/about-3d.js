@@ -565,23 +565,15 @@
     const servicesData = {
       alignment: {
         num: "01",
-        tag: "01 / Computerized Handling",
+        tag: "",
         title: "Wheel Alignment",
-        lead: "Restore Factory Suspension Geometry with ±0.01° Laser Precision",
-        desc: "At Sesco Tyres, wheel alignment adjusts the angles of your vehicle's wheels so they are precisely perpendicular to the ground and parallel to each other. Using our Italian multi-camera 3D laser diagnostic rigs, certified technicians realign camber, caster, and toe angles to exact manufacturer tolerances. This eliminates dangerous steering wheel pulling, reduces rolling resistance, protects suspension linkages, and prevents costly irregular tyre wear.",
-        specs: [
-          { icon: "fa-solid fa-crosshairs", label: "Precision Laser Sensors", val: "±0.01° Optical Accuracy" },
-          { icon: "fa-solid fa-print", label: "Diagnostic Audit", val: "Live Camber/Toe Printout" },
-          { icon: "fa-solid fa-clock-rotate-left", label: "Recommended Interval", val: "Every 10,000 km / After Impact" },
-          { icon: "fa-solid fa-shield-halved", label: "Handling Benefit", val: "100% Highway Stability" }
-        ],
-        features: [
-          "Precision 3D Italian optical laser diagnostic cameras and wheel targets",
-          "Factory toe, camber, and caster calibration for front and rear axles",
-          "Eliminates highway drifting, steering wobble, and uneven shoulder tyre wear",
-          "Full digital before-and-after alignment inspection report provided"
-        ],
-        bookLink: "contact.html?subject=Wheel%20Alignment%20Booking",
+        lead: "",
+        desc: "At Sesco Tyres, wheel alignment adjusts the angles of your vehicle's wheels so they are perpendicular to the ground and parallel to each other. Using our multi-camera 3D laser diagnostic rigs, certified technicians realign camber, caster, and toe angles to exact manufacturer tolerances. This eliminates dangerous steering wheel pulling, reduces rolling resistance, protects suspension linkages, and prevents costly irregular tyre wear.",
+        why: {
+          title: "Why Wheel Alignment",
+          content: "Maintaining precise wheel alignment is vital for avoiding premature tread damage and severe steering instability across rugged roads. Proper alignment guarantees your vehicle tracks dead straight, prevents dangerous highway drift, and lowers rolling resistance to cut fuel consumption. It shields tie rods and suspension bushings from uneven road strain, ensuring dependable safety and extending overall tyre life."
+        },
+        bookLink: "index.html#appointment",
         bookText: "Book Wheel Alignment",
         articleLink: "service-detail.html#alignment"
       },
@@ -591,19 +583,11 @@
         title: "Tyre Rotation",
         lead: "Extend Tyre Tread Life by Up to 20% with Periodic Axle Rotation",
         desc: "Tyres at each corner of your vehicle perform different jobs and bear vastly different loads. Front tyres on Ugandan roads endure the majority of acceleration, heavy steering friction, and weight transfer during braking. Regular tyre rotation periodically alternates tyre positions using verified directional or asymmetric cross-patterns to ensure even wear across all four tyres, preserving braking grip and maximizing your investment.",
-        specs: [
-          { icon: "fa-solid fa-arrows-rotate", label: "Wear Pattern", val: "Front-to-Rear & Cross Rotation" },
-          { icon: "fa-solid fa-gauge-high", label: "Tread Depth Audit", val: "Multi-Point Micrometer Check" },
-          { icon: "fa-solid fa-calendar-check", label: "Recommended Interval", val: "Every 8,000 – 10,000 km" },
-          { icon: "fa-solid fa-chart-line", label: "Longevity Benefit", val: "Up to 20% Life Extension" }
-        ],
-        features: [
-          "Optimal rotational patterns tailored for FWD, RWD & AWD vehicle architectures",
-          "Multi-point tread depth and rubber compound inspection at every corner",
-          "Promotes balanced cornering traction and wet-weather stopping performance",
-          "Free tyre pressure calibration and valve stem condition check included"
-        ],
-        bookLink: "contact.html?subject=Tyre%20Rotation%20Booking",
+        why: {
+          title: "Why Tyre Rotation",
+          content: "Routine tyre rotation is essential because front and rear axles experience drastically different forces during everyday driving. Rotating your wheels equalizes tread friction across every corner, preventing uneven shoulder wear, tread scalloping, and noisy highway vibrations. It preserves balanced emergency braking distances in wet conditions and extends the road-ready lifespan of all four tyres by up to twenty percent."
+        },
+        bookLink: "index.html#appointment",
         bookText: "Book Tyre Rotation",
         articleLink: "service-detail.html#rotation"
       },
@@ -613,19 +597,11 @@
         title: "Tyre Fitting",
         lead: "Touchless High-Pressure Tyre Demounting & Alloy-Safe Installation",
         desc: "Incorrect tyre mounting can tear inner bead bundles, scratch expensive alloy rims, or cause dangerous slow leaks that lead to blowouts at high speeds. Sesco Tyres master fitters utilize European touchless pneumatic tyre mounting machines that securely seat tyres without metal-on-metal contact. Every fitting includes fresh high-pressure rubber valves, airtight bead seal testing, and calibrated inflation.",
-        specs: [
-          { icon: "fa-solid fa-screwdriver-wrench", label: "Fitment Technology", val: "Touchless Pneumatic Changers" },
-          { icon: "fa-solid fa-stopwatch", label: "Turnaround Time", val: "10–15 Minutes Per Axle" },
-          { icon: "fa-solid fa-circle-check", label: "Rim Protection", val: "Zero Scratch Guarantee on Rims" },
-          { icon: "fa-solid fa-shield-virus", label: "Valves & Seals", val: "New Valve Stems & Bead Seal" }
-        ],
-        features: [
-          "High-speed pneumatic rim mounting with anti-scratch nylon clamp jaws",
-          "Zero damage to tyre bead bundles, sidewall plies, or TPMS pressure sensors",
-          "Brand new high-grade replacement rubber or metal valves installed",
-          "Accurate multi-axle pressure inflation and airtight water-tank verification"
-        ],
-        bookLink: "contact.html?subject=Tyre%20Fitting%20Booking",
+        why: {
+          title: "Why Tyre Fitting",
+          content: "Professional tyre fitting is crucial to protect structural bead bundles and keep delicate alloy wheels completely free from rim damage. Precision pneumatic fitment eliminates catastrophic high-speed bead dislodgement, protects integrated tyre pressure monitoring sensors, and guarantees an airtight perimeter seal. It ensures your newly installed tyres seat uniformly on the rim, providing immediate ride comfort and complete peace of mind."
+        },
+        bookLink: "index.html#appointment",
         bookText: "Book Tyre Fitting",
         articleLink: "service-detail.html#fitting"
       },
@@ -635,40 +611,24 @@
         title: "Tyre Balancing",
         lead: "Eliminate Highway Steering Wobble with Dynamic Laser Balancing",
         desc: "Even a microscopic weight difference of a few grams across a wheel assembly generates violent centrifugal vibration when spinning at 80–120 km/h. This vibration fatigues drivers, damages wheel bearings, and ruins steering linkages. Our computerized Hofmann dynamic spin balancers measure static and dynamic forces, pinpointing exact counter-weight placement with laser accuracy for a silky smooth ride.",
-        specs: [
-          { icon: "fa-solid fa-arrows-spin", label: "Balancing Rig", val: "Computerized Hofmann Balancers" },
-          { icon: "fa-solid fa-bullseye", label: "Laser Precision", val: "Micro-gram Counter-Weight Guide" },
-          { icon: "fa-solid fa-car", label: "Ride Quality", val: "Zero Highway Steering Wobble" },
-          { icon: "fa-solid fa-gears", label: "Protection", val: "Extends Bearing & Bushing Life" }
-        ],
-        features: [
-          "State-of-the-art Hofmann computerized dynamic spin balancing",
-          "Laser weight placement guide for concealed, aesthetic alloy weights",
-          "Completely eradicates highway steering wheel vibrations and cabin resonance",
-          "Protects steering rack, shock absorbers, and suspension bushings from fatigue"
-        ],
-        bookLink: "contact.html?subject=Tyre%20Balancing%20Booking",
+        why: {
+          title: "Why Tyre Balancing",
+          content: "Accurate wheel balancing is indispensable for eliminating high-speed chassis shudder and exhausting steering wheel vibrations on long highway journeys. Proper balance neutralizes erratic centrifugal forces, preventing premature failure of costly wheel bearings, suspension struts, and steering racks. It guarantees smooth rotational tracking across all speeds, ensuring optimal tyre-to-road contact patch stability and vastly reducing driver fatigue on demanding journeys."
+        },
+        bookLink: "index.html#appointment",
         bookText: "Book Tyre Balancing",
         articleLink: "service-detail.html#balancing"
       },
       tyres: {
         num: "05",
         tag: "05 / Tyre Inventory & Supply",
-        title: "Stok Tyres",
+        title: "Stock Tyres",
         lead: "100% Factory-Direct Genuine Tyres from Premier Global Manufacturers",
         desc: "Sesco Tyres is Uganda's authorized distributor for world-renowned tyre brands including Rodeo, Roadstone, and Otani, alongside premier international tier-1 manufacturers Michelin, Bridgestone, Continental, Pirelli, Goodyear, and Dunlop. Whether you need ultra-high performance passenger tyres, heavy-duty 4x4 all-terrain tyres, or commercial fleet haulage tyres, our vast Queensway Kampala warehouse holds verified factory-fresh inventory backed by manufacturer warranties.",
-        specs: [
-          { icon: "fa-solid fa-certificate", label: "Authenticity", val: "100% Genuine Authorized Stocks" },
-          { icon: "fa-solid fa-layer-group", label: "Inventory Range", val: "Sedan, SUV, 4x4, Truck & Fleet" },
-          { icon: "fa-solid fa-award", label: "Warranty", val: "Official Manufacturer Warranties" },
-          { icon: "fa-solid fa-hand-holding-dollar", label: "Direct Pricing", val: "Importer Wholesale Rates" }
-        ],
-        features: [
-          "Sole authorized Ugandan distributor for Rodeo, Roadstone & Otani brands",
-          "Tier-1 inventory: Michelin, Bridgestone, Continental, Goodyear & Dunlop",
-          "Massive Queensway warehouse stock for passenger, SUV, light & heavy trucks",
-          "Full manufacturer warranties with complimentary fitment and inspection"
-        ],
+        why: {
+          title: "Why Stock Tyres",
+          content: "Selecting genuine factory-direct tyres is fundamental to protecting passenger safety and avoiding hazardous tread separations in intense equatorial road heat. Authentic tier-1 rubber compounds provide superior wet-weather braking grip, robust puncture resistance on unpaved roads, and verified load ratings that cheap counterfeit alternatives cannot match. You receive verified manufacturer warranties, uncompromised road durability, and outstanding value per kilometer driven."
+        },
         bookLink: "shop.html",
         bookText: "Browse Tyre Catalogue",
         articleLink: "service-detail.html#tyres"
@@ -679,19 +639,11 @@
         title: "Basic Car Servicing",
         lead: "Preventative Automotive Care, Fluid Replacements & Diagnostic Audits",
         desc: "Regular preventative servicing is the lifeblood of your vehicle. Over time, engine oil degrades, accumulates sludge, and loses thermal viscosity, which accelerates internal friction and threatens catastrophic engine failure. Our certified technicians perform comprehensive basic car servicing, replacing engine oil and OEM filters, inspecting brake pads and rotors, checking transmission and coolant fluids, and conducting an extensive multi-point safety diagnostic.",
-        specs: [
-          { icon: "fa-solid fa-oil-can", label: "Lubrication", val: "Synthetic Engine Oil & OEM Filter" },
-          { icon: "fa-solid fa-clipboard-check", label: "Diagnostic Audit", val: "Comprehensive Multi-Point Check" },
-          { icon: "fa-solid fa-droplet", label: "Fluids Serviced", val: "Coolant, Brake, Steering & Washer" },
-          { icon: "fa-solid fa-hourglass-half", label: "Interval", val: "Every 5,000 km or 6 Months" }
-        ],
-        features: [
-          "High-grade synthetic engine oil and OEM certified filter replacement",
-          "Brake pad, disc rotor, shock absorber, and suspension health check",
-          "Coolant, brake fluid, battery electrolyte, and washer fluid top-up",
-          "Computerized multi-point vehicle safety and roadworthiness audit"
-        ],
-        bookLink: "contact.html?subject=Basic%20Car%20Servicing%20Booking",
+        why: {
+          title: "Why Basic Car Servicing",
+          content: "Consistent preventative car servicing is critical to catching developing mechanical issues before they turn into costly breakdowns or safety hazards. Fresh OEM-grade motor oil and filters keep engine friction low, preserve compression, and prevent toxic sludge build-up in high temperatures. Routine brake, fluid, and battery diagnostics protect your family on the road, extend your vehicle's service life, and maximize future resale value."
+        },
+        bookLink: "index.html#appointment",
         bookText: "Book Car Servicing",
         articleLink: "service-detail.html#servicing"
       }
@@ -701,60 +653,26 @@
       const data = servicesData[key];
       if (!data) return;
 
-      const specsHtml = data.specs.map(s => `
-        <div class="service-spec-item">
-          <div class="service-spec-icon-wrap">
-            <i class="${s.icon} service-spec-icon" aria-hidden="true"></i>
-          </div>
-          <div class="service-spec-meta">
-            <span class="service-spec-label">${s.label}</span>
-            <strong class="service-spec-val">${s.val}</strong>
-          </div>
-        </div>
-      `).join('');
-
-      const featuresHtml = data.features.map(f => `
-        <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>${f}</span></li>
-      `).join('');
-
       detailInner.innerHTML = `
         <div class="service-detail-grid ${shouldAnimate ? 'service-detail-anim' : ''}">
-          <div class="service-detail-main">
-            <div class="service-detail-header-badge">
-              <span class="service-detail-tag">${data.tag}</span>
-              <span class="service-detail-divider">/</span>
-              <span class="service-detail-badge"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Certified Sesco Standard</span>
-            </div>
+          <div class="service-detail-col service-detail-col-left">
             <h3 class="service-detail-title">${data.title}</h3>
-            <h4 class="service-detail-lead">${data.lead}</h4>
             <p class="service-detail-desc">${data.desc}</p>
             <div class="service-detail-actions">
               <a href="${data.bookLink}" class="btn btn-primary service-action-btn">
                 <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
                 <span>${data.bookText}</span>
               </a>
-              <a href="${data.articleLink}" class="btn btn-outline-white service-action-btn">
+            </div>
+          </div>
+          <div class="service-detail-col service-detail-col-right">
+            <h3 class="service-detail-title service-why-title">${data.why.title}</h3>
+            <p class="service-detail-desc service-why-content">${data.why.content}</p>
+            <div class="service-detail-actions">
+              <a href="${data.articleLink}" class="btn btn-primary service-action-btn service-why-btn">
                 <span>Read Full Technical Guide</span>
                 <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
               </a>
-            </div>
-          </div>
-          <div class="service-detail-sidebar">
-            <div class="service-specs-header">
-              <i class="fa-solid fa-sliders" aria-hidden="true"></i>
-              <span>Engineering Specifications</span>
-            </div>
-            <div class="service-specs-grid">
-              ${specsHtml}
-            </div>
-            <div class="service-checklist-box">
-              <h5 class="service-checklist-title">
-                <i class="fa-solid fa-circle-nodes" aria-hidden="true"></i>
-                <span>Workshop Quality Standards</span>
-              </h5>
-              <ul class="service-checklist-items">
-                ${featuresHtml}
-              </ul>
             </div>
           </div>
         </div>
@@ -829,7 +747,37 @@
       card.style.opacity = opacity.toFixed(3);
     }
 
+    let currentActiveStage = -1;
+    let isSectionRevealed = false;
+
+    function updateSectionVisibility() {
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Section is reached when top enters viewport and bottom has not scrolled past
+      const inView = (rect.top <= vh * 0.72) && (rect.bottom >= 80);
+
+      if (inView) {
+        if (!isSectionRevealed) {
+          isSectionRevealed = true;
+          section.classList.add('is-revealed');
+        }
+      } else {
+        if (isSectionRevealed) {
+          isSectionRevealed = false;
+          section.classList.remove('is-revealed');
+          // When scrolling completely out of section, reset stage tracking so bounce and fade-in replay when user returns
+          currentActiveStage = -1;
+          const panels = [panelMission, panelVision, panelValues];
+          panels.forEach(p => {
+            if (p) p.classList.remove('is-active', 'fade-in-active');
+          });
+        }
+      }
+    }
+
     function updateDeck() {
+      updateSectionVisibility();
+
       const rect = section.getBoundingClientRect();
       const totalScroll = section.offsetHeight - window.innerHeight;
       if (totalScroll <= 0) return;
@@ -850,20 +798,15 @@
       }
 
       // Transitions with wide, comfortable resting plateaus:
-      // Stage 0 (Mission Front): 0.00 to 0.28 (t1=0, t2=0)
-      // Transition 0 -> 1: 0.28 to 0.48 (t1: 0 -> 1)
-      // Stage 1 (Vision Front): 0.48 to 0.72 (t1=1, t2=0)
-      // Transition 1 -> 2: 0.72 to 0.88 (t2: 0 -> 1)
-      // Stage 2 (Values Front): 0.88 to 1.00 (t1=1, t2=1)
-      const t1 = smoothStep(0.28, 0.48, progress);
-      const t2 = smoothStep(0.72, 0.88, progress);
+      // Stage 0 (Mission Front): 0.00 to 0.22 (t1=0, t2=0)
+      // Transition 0 -> 1: 0.22 to 0.38 (t1: 0 -> 1)
+      // Stage 1 (Vision Front): 0.38 to 0.54 (t1=1, t2=0)
+      // Transition 1 -> 2: 0.54 to 0.68 (t2: 0 -> 1)
+      // Stage 2 (Values Front): 0.68 to 1.00 (t1=1, t2=1) - Extended resting plateau so all 5 values stay visible
+      const t1 = smoothStep(0.22, 0.38, progress);
+      const t2 = smoothStep(0.54, 0.68, progress);
 
       // 1. Mission Card
-      // Stage 0: Center (front)
-      // Transition 0 -> 1: Center -> Left
-      // Stage 1: Left
-      // Transition 1 -> 2: Left -> Right (via behind arc)
-      // Stage 2: Right
       let mX, mY, mScale, mRotY, mZ, mOp;
       if (t1 < 1) {
         mX = lerp(0, -cardSpacing, t1);
@@ -883,11 +826,6 @@
       applyCardTransform(stageCardMission, mX, mY, mScale, mRotY, mZ, mOp);
 
       // 2. Vision Card
-      // Stage 0: Right
-      // Transition 0 -> 1: Right -> Center (front)
-      // Stage 1: Center (front)
-      // Transition 1 -> 2: Center -> Left
-      // Stage 2: Left
       let vX, vY, vScale, vRotY, vZ, vOp;
       if (t1 < 1) {
         vX = lerp(cardSpacing, 0, t1);
@@ -907,11 +845,6 @@
       applyCardTransform(stageCardVision, vX, vY, vScale, vRotY, vZ, vOp);
 
       // 3. Values Card
-      // Stage 0: Left
-      // Transition 0 -> 1: Left -> Right (via behind arc)
-      // Stage 1: Right
-      // Transition 1 -> 2: Right -> Center (front)
-      // Stage 2: Center (front)
       let valX, valY, valScale, valRotY, valZ, valOp;
       if (t1 < 1) {
         valX = lerp(-cardSpacing, cardSpacing, t1);
@@ -932,34 +865,49 @@
 
       // Active Stage Determination
       let activeStage = 0;
-      if (progress >= 0.78) {
+      if (progress >= 0.61) {
         activeStage = 2; // Values
-      } else if (progress >= 0.38) {
+      } else if (progress >= 0.30) {
         activeStage = 1; // Vision
       } else {
         activeStage = 0; // Mission
       }
 
-      // Update Card Active Classes
-      stageCardMission.classList.toggle('is-active', activeStage === 0);
-      stageCardVision.classList.toggle('is-active', activeStage === 1);
-      stageCardValues.classList.toggle('is-active', activeStage === 2);
+      // Check if activeStage changed (either scrolling forward or scrolling back)
+      if (activeStage !== currentActiveStage) {
+        currentActiveStage = activeStage;
 
-      // Update Info Panels
-      if (panelMission) panelMission.classList.toggle('is-active', activeStage === 0);
-      if (panelVision) panelVision.classList.toggle('is-active', activeStage === 1);
-      if (panelValues) panelValues.classList.toggle('is-active', activeStage === 2);
+        // Update Card Active Classes
+        stageCardMission.classList.toggle('is-active', currentActiveStage === 0);
+        stageCardVision.classList.toggle('is-active', currentActiveStage === 1);
+        stageCardValues.classList.toggle('is-active', currentActiveStage === 2);
 
-      // Update Nav Pills
-      pills.forEach((p, idx) => {
-        if (idx === activeStage) {
-          p.classList.add('active');
-          p.setAttribute('aria-selected', 'true');
-        } else {
-          p.classList.remove('active');
-          p.setAttribute('aria-selected', 'false');
-        }
-      });
+        // Update Info Panels with 2s fade-in effect on words below
+        const panels = [panelMission, panelVision, panelValues];
+        panels.forEach((p, idx) => {
+          if (!p) return;
+          if (idx === currentActiveStage) {
+            p.classList.add('is-active');
+            p.classList.remove('fade-in-active');
+            // Force DOM reflow to re-trigger the 2s fade-in animation and cinematic zoom-in every time the card changes
+            void p.offsetWidth;
+            p.classList.add('fade-in-active');
+          } else {
+            p.classList.remove('is-active', 'fade-in-active');
+          }
+        });
+
+        // Update Nav Pills
+        pills.forEach((p, idx) => {
+          if (idx === currentActiveStage) {
+            p.classList.add('active');
+            p.setAttribute('aria-selected', 'true');
+          } else {
+            p.classList.remove('active');
+            p.setAttribute('aria-selected', 'false');
+          }
+        });
+      }
     }
 
     // Scroll To Stage Helper
@@ -971,9 +919,9 @@
       if (step === 0) {
         targetY = sectionTop + totalScroll * 0.05;
       } else if (step === 1) {
-        targetY = sectionTop + totalScroll * 0.58;
+        targetY = sectionTop + totalScroll * 0.46;
       } else if (step === 2) {
-        targetY = sectionTop + totalScroll * 0.90;
+        targetY = sectionTop + totalScroll * 0.76;
       }
 
       window.scrollTo({
@@ -1017,17 +965,138 @@
   }
 
   // --------------------------------------------------------------------------
-  // 5. 3D SCROLL REVEAL OBSERVER
+  // 5. 3D SCROLL REVEAL OBSERVER (WITH BIDIRECTIONAL REVERSAL)
   // --------------------------------------------------------------------------
+  const whoWeAreSection = document.getElementById('who-we-are');
   const revealElements = document.querySelectorAll('.reveal-on-scroll');
+
+  function updateWhoWeAreSectionScroll() {
+    if (!whoWeAreSection) return;
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    // By default when the user reaches the about us page (near top, scrollY < 80),
+    // The Who We Are section is NOT revealed. User must scroll a little bit first.
+    if (scrollY < 80) {
+      whoWeAreSection.classList.remove('is-revealed');
+      revealElements.forEach(el => {
+        if (whoWeAreSection.contains(el)) el.classList.remove('revealed');
+      });
+      return;
+    }
+
+    const rect = whoWeAreSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const inView = rect.top < vh - 60 && rect.bottom > 60;
+
+    if (inView) {
+      if (!whoWeAreSection.classList.contains('is-revealed')) {
+        whoWeAreSection.classList.add('is-revealed');
+      }
+      revealElements.forEach(el => {
+        if (whoWeAreSection.contains(el)) el.classList.add('revealed');
+      });
+    } else {
+      if (whoWeAreSection.classList.contains('is-revealed')) {
+        whoWeAreSection.classList.remove('is-revealed');
+      }
+      revealElements.forEach(el => {
+        if (whoWeAreSection.contains(el)) el.classList.remove('revealed');
+      });
+    }
+  }
+
+  const ourServicesSection = document.getElementById('our-services');
+
+  function updateOurServicesSectionScroll() {
+    if (!ourServicesSection) return;
+    const rect = ourServicesSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const inView = rect.top < vh - 60 && rect.bottom > 60;
+
+    if (inView) {
+      if (!ourServicesSection.classList.contains('is-revealed')) {
+        ourServicesSection.classList.add('is-revealed');
+      }
+    } else {
+      if (ourServicesSection.classList.contains('is-revealed')) {
+        ourServicesSection.classList.remove('is-revealed');
+        const grid = ourServicesSection.querySelector('.service-detail-grid');
+        if (grid) grid.classList.remove('service-detail-anim');
+      }
+    }
+  }
+
+  const whyChooseSection = document.getElementById('why-choose-us');
+
+  function updateWhyChooseSectionScroll() {
+    if (!whyChooseSection) return;
+    const rect = whyChooseSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+
+    // Trigger comfortably as soon as section top enters viewport (and while in view)
+    const inView = (rect.top <= vh * 0.88) && (rect.bottom >= 50);
+
+    if (inView) {
+      if (!whyChooseSection.classList.contains('is-revealed')) {
+        whyChooseSection.classList.add('is-revealed');
+      }
+      const header = whyChooseSection.querySelector('.why-choose-header');
+      if (header && !header.classList.contains('revealed')) header.classList.add('revealed');
+      const pillars = whyChooseSection.querySelectorAll('.why-pillar-col');
+      pillars.forEach(col => {
+        if (!col.classList.contains('revealed')) col.classList.add('revealed');
+      });
+    } else {
+      // Reversible: reset when user scrolls back up above or far past
+      if (rect.top > vh * 0.94 || rect.bottom < 40) {
+        if (whyChooseSection.classList.contains('is-revealed')) {
+          whyChooseSection.classList.remove('is-revealed');
+        }
+        const header = whyChooseSection.querySelector('.why-choose-header');
+        if (header && header.classList.contains('revealed')) header.classList.remove('revealed');
+        const pillars = whyChooseSection.querySelectorAll('.why-pillar-col');
+        pillars.forEach(col => {
+          if (col.classList.contains('revealed')) col.classList.remove('revealed');
+        });
+      }
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    requestAnimationFrame(updateWhoWeAreSectionScroll);
+    requestAnimationFrame(updateOurServicesSectionScroll);
+    requestAnimationFrame(updateWhyChooseSectionScroll);
+  }, { passive: true });
+  window.addEventListener('resize', () => {
+    requestAnimationFrame(updateWhoWeAreSectionScroll);
+    requestAnimationFrame(updateOurServicesSectionScroll);
+    requestAnimationFrame(updateWhyChooseSectionScroll);
+  }, { passive: true });
+  updateWhoWeAreSectionScroll();
+  updateOurServicesSectionScroll();
+  updateWhyChooseSectionScroll();
+
   if (revealElements.length > 0) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        const el = entry.target;
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
+          // If inside whoWeAreSection and user hasn't scrolled yet, don't reveal prematurely
+          if (whoWeAreSection && whoWeAreSection.contains(el) && (window.scrollY || window.pageYOffset) < 80) {
+            return;
+          }
+          el.classList.add('revealed');
+        } else {
+          // When leaving viewport, reverse!
+          if (rect.top >= vh - 45 || rect.bottom <= 45) {
+            el.classList.remove('revealed');
+          }
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: [0, 0.12] });
 
     revealElements.forEach(el => revealObserver.observe(el));
   }
