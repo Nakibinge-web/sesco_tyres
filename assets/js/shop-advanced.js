@@ -45,7 +45,6 @@
   // DOM Elements
   const els = {
     grid: document.getElementById('shop-products'),
-    countText: document.getElementById('product-count'),
     sortSelect: document.getElementById('sort-products'),
     typeList: document.getElementById('typeFilterList'),
     typeFilterTotalBadge: document.getElementById('typeFilterTotalBadge'),
@@ -77,10 +76,7 @@
     scrollProgressBar: document.getElementById('shopScrollProgressBar'),
     modalBackdrop: document.getElementById('shopInspectModal'),
     modalCloseBtn: document.getElementById('shopModalCloseBtn'),
-    modalBody: document.getElementById('shopModalBody'),
-    floatingCartDock: document.getElementById('shopFloatingCartDock'),
-    floatingCartTitle: document.getElementById('floatingCartTitle'),
-    floatingCartSub: document.getElementById('floatingCartSub')
+    modalBody: document.getElementById('shopModalBody')
   };
 
   function syncStickyOffsets() {
@@ -147,29 +143,6 @@
       }
     });
     return map;
-  }
-
-  function updateFloatingCartDock() {
-    if (!els.floatingCartDock) return;
-    const cart = getCartItems();
-    const totalUnits = cart.reduce((sum, x) => sum + (Number(x.qty) || 1), 0);
-    const totalPrice = cart.reduce((sum, x) => {
-      const p = state.allSampledItems.find(i => i.id === x.id);
-      const unitPrice = Number(x.price || (p ? p.price : 0));
-      return sum + unitPrice * (Number(x.qty) || 1);
-    }, 0);
-
-    if (totalUnits > 0) {
-      els.floatingCartDock.classList.add('is-visible');
-      if (els.floatingCartTitle) {
-        els.floatingCartTitle.textContent = `${cart.length} item(s) selected (${totalUnits} unit${totalUnits > 1 ? 's' : ''}) · ${formatUGX(totalPrice)}`;
-      }
-      if (els.floatingCartSub) {
-        els.floatingCartSub.textContent = 'Automatically added to your cart — ready to send order request';
-      }
-    } else {
-      els.floatingCartDock.classList.remove('is-visible');
-    }
   }
 
   // --------------------------------------------------------------------------
@@ -796,9 +769,6 @@
   function applyFiltersAndRender() {
     if (!state.dbConnected) {
       state.filteredItems = [];
-      if (els.countText) {
-        els.countText.innerHTML = `Database not connected &mdash; <strong>0</strong> tyres loaded from <code>treads.item</code>.`;
-      }
       renderCardsGrid([]);
       renderPaginationFooter();
       return;
@@ -843,14 +813,6 @@
 
     state.filteredItems = list;
 
-    if (els.countText) {
-      if (hasActiveServerFilters()) {
-        els.countText.innerHTML = `Showing <strong>${list.length}</strong> loaded (<strong>${state.totalMatchingDb}</strong> matching in <code>treads.item</code>)`;
-      } else {
-        els.countText.innerHTML = `Showing <strong>${list.length}</strong> of <strong>${state.allSampledItems.length}</strong> loaded items from <code>treads.item</code>`;
-      }
-    }
-
     renderCardsGrid(list);
     renderPaginationFooter();
   }
@@ -879,7 +841,7 @@
 
     if (!state.dbConnected) {
       els.grid.innerHTML = `
-        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 18px; padding: 52px 24px; text-align: center; border: 1px solid #fecaca;">
+        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 0; padding: 52px 24px; text-align: center; border: 1px solid #fecaca;">
           <div style="font-size: 42px; margin-bottom: 12px; color: #dc2626;"><i class="fa-solid fa-database" aria-hidden="true"></i></div>
           <h3 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; color: #0b1c32;">Database Not Connected</h3>
           <p style="margin: 0 0 18px; color: #64748b; font-size: 14px; max-width: 520px; margin-inline: auto;">No tyres are displayed because all products in the shop are fetched directly from the live <code>treads</code> database. Please ensure MySQL and PHP are running, then retry.</p>
@@ -894,14 +856,14 @@
     if (items.length === 0) {
       const noDbItems = state.allSampledItems.length === 0 && !hasActiveServerFilters();
       els.grid.innerHTML = noDbItems ? `
-        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 18px; padding: 48px 24px; text-align: center; border: 1px solid #e2e8f0;">
+        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 0; padding: 48px 24px; text-align: center; border: 1px solid #e2e8f0;">
           <div style="font-size: 40px; margin-bottom: 12px; color: #0284c7;"><i class="fa-solid fa-box-open" aria-hidden="true"></i></div>
           <h3 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; color: #0b1c32;">No products available in database</h3>
           <p style="margin: 0 0 18px; color: #64748b; font-size: 14px;">The <code>treads.item</code> table returned 0 products.</p>
           <button type="button" class="btn btn-primary" id="emptyRetryDbBtn">Refresh from Database</button>
         </div>
       ` : `
-        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 18px; padding: 48px 24px; text-align: center; border: 1px solid #e2e8f0;">
+        <div class="empty-state" style="grid-column: 1 / -1; background: #fff; border-radius: 0; padding: 48px 24px; text-align: center; border: 1px solid #e2e8f0;">
           <div style="font-size: 40px; margin-bottom: 12px; color: #0284c7;"><i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i></div>
           <h3 style="margin: 0 0 8px; font-family: 'Poppins', sans-serif; color: #0b1c32;">No matching products found</h3>
           <p style="margin: 0 0 18px; color: #64748b; font-size: 14px;">No items in <code>treads.item</code> match your current brand, product type, price, or search filters.</p>
@@ -995,7 +957,6 @@
     // Initialize 3D hover spotlight & observe new cards for Animate-on-Scroll
     bindCardHoverEffects();
     refreshAosElements();
-    updateFloatingCartDock();
   }
 
   function renderCardActionControls(productId, inCartQty) {
@@ -1048,7 +1009,6 @@
         actionsEl.innerHTML = renderCardActionControls(productId, qty);
       }
     });
-    updateFloatingCartDock();
   }
 
   // --------------------------------------------------------------------------

@@ -28,7 +28,7 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="assets/css/styles.css?v=7.9">
   <link rel="stylesheet" href="assets/css/about-3d.css?v=6.2">
-  <link rel="stylesheet" href="assets/css/shop-advanced.css?v=1.8">
+  <link rel="stylesheet" href="assets/css/shop-advanced.css?v=2.5">
 </head>
 
 <body data-page="shop">
@@ -319,7 +319,11 @@
         <!-- Toolbar -->
         <div class="shop-advanced-toolbar" data-shop-aos="fade-up">
           <div class="toolbar-meta">
-            <p class="toolbar-count-text" id="product-count">Connecting to <code>treads.item</code>…</p>
+            <select id="sort-products" class="shop-sort-select" aria-label="Sort sampled items">
+              <option value="price-low">Price: Low to High (UGX)</option>
+              <option value="price-high">Price: High to Low (UGX)</option>
+              <option value="name">Description / Brand: A–Z</option>
+            </select>
           </div>
 
           <div class="toolbar-controls">
@@ -327,13 +331,6 @@
               <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
               <span>Reset filters</span>
             </button>
-
-            <select id="sort-products" class="shop-sort-select" aria-label="Sort sampled items">
-              <option value="id-asc">Sort: DB item_id (Ascending)</option>
-              <option value="price-low">Price: Low to High (UGX)</option>
-              <option value="price-high">Price: High to Low (UGX)</option>
-              <option value="name">Description / Brand: A–Z</option>
-            </select>
 
             <div class="view-mode-toggle" role="group" aria-label="View layout">
               <button type="button" class="view-btn active" data-view-mode="grid" aria-label="Grid View" title="3D Grid View">
@@ -366,28 +363,6 @@
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
       <div id="shopModalBody"></div>
-    </div>
-  </div>
-
-  <!-- ====================================================================
-       FLOATING BOTTOM CART SELECTION DOCK (AUTO-SHOWS WHEN ITEMS SELECTED)
-       ==================================================================== -->
-  <div class="shop-floating-cart-dock" id="shopFloatingCartDock" role="region" aria-label="Selected Cart Items Summary">
-    <div class="floating-cart-info">
-      <div class="floating-cart-badge">
-        <i class="fa-solid fa-cart-check" aria-hidden="true"></i>
-      </div>
-      <div>
-        <p class="floating-cart-title" id="floatingCartTitle">0 items selected in cart</p>
-        <p class="floating-cart-sub" id="floatingCartSub">Click any item card above to select and auto-add it to your cart</p>
-      </div>
-    </div>
-    <div class="floating-cart-actions">
-      <a href="cart.html" class="floating-cart-go-btn">
-        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
-        <span>Review Cart &amp; Send Order Request</span>
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
     </div>
   </div>
 
@@ -443,7 +418,7 @@
   <script src="assets/js/three.min.js"></script>
   <script src="assets/js/about-3d.js"></script>
   <script src="assets/js/main.js?v=8.9"></script>
-  <script src="assets/js/shop-advanced.js?v=1.8"></script>
+  <script src="assets/js/shop-advanced.js?v=2.1"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 
