@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Learn how to read and understand tyre sizes at Sesco Tyres.">
+    <title>About Tyre Sizes | Sesco Tyres</title>
+    <!-- Favicon / Browser Tab Icons -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48x48.png?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=2">
+    <link rel="shortcut icon" href="favicon.ico?v=2">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0b1c32">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Outfit:wght@400;500;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="assets/css/aos.css">
+    <link rel="stylesheet" href="assets/css/styles.css?v=3.3">
+    <style>
+        /* Section Containers & Headers */
+        .tyre-size-example {
+            background: #ffffff;
+            padding: 44px 0;
+        }
+
+        .tyre-size-example.first-tyre-section {
+            padding: 28px 0 36px;
+        }
+
+        .tyre-section-bordered {
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .size-display {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .size-display .section-step {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0b3a6e;
+            margin-bottom: 4px;
+        }
+
+        .size-display h2,
+        .converting-metric-title,
+        .charts-section-title {
+            font-family: 'Outlook', 'Outfit', sans-serif;
+        }
+
+        .size-display h2 {
+            font-size: 24px;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .size-display .section-subtitle {
+            font-size: 15px;
+            color: var(--muted);
+            margin: 0 auto 14px;
+            max-width: 680px;
+        }
+
+        .size-display .size-text {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+
+        /* Code Anatomy Map */
+        .code-anatomy {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        .code-token {
+            border: 1px solid #d1d5db;
+            border-top: 2px solid #0b3a6e;
+            border-radius: 0;
+            padding: 8px 14px;
+            min-width: 96px;
+            text-align: center;
+        }
+
+        .code-token-val {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.25;
+        }
+
+        .code-token-label {
+            display: block;
+            font-size: 11.5px;
+            color: var(--muted);
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .code-token-sep {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #94a3b8;
+            padding: 0 2px;
+        }
+
+        /* Section 1 Grid */
+        .size-breakdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .size-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 22px 24px;
+            border-radius: 0;
+        }
+
+        .size-item h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 6px 0;
+        }
+
+        .size-item .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0b3a6e;
+            margin-bottom: 10px;
+        }
+
+        .size-item p {
+            color: var(--ink);
+            line-height: 1.65;
+            margin: 0;
+            font-size: 14.5px;
+        }
+
+        /* Section 2 Structured Paragraph Outline */
+        .metric-size-outline {
+            max-width: 100%;
+            margin: 0 auto;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .metric-outline-group {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+            align-items: start;
+        }
+
+        .metric-outline-group:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .metric-term h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 4px 0;
+        }
+
+        .metric-term-sub {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0b3a6e;
+        }
+
+        .metric-copy p {
+            color: var(--ink);
+            line-height: 1.75;
+            margin: 0 0 10px 0;
+            font-size: 15px;
+        }
+
+        .metric-copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            font-weight: 700;
+            color: #0b3a6e;
+        }
+
+        .inline-guide-link {
+            color: #0b3a6e;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .inline-guide-link:hover {
+            color: var(--navy);
+        }
+
+        /* Converting Metric to Inches Section */
+        .converting-metric-section {
+            background: #ffffff;
+            padding: 16px 0 44px;
+        }
+
+        .converting-metric-wrap {
+            max-width: 100%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+
+        .converting-metric-wrap::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .converting-diagram-img {
+            float: left;
+            width: 360px;
+            max-width: 42%;
+            height: auto;
+            margin: 46px 36px 10px 0;
+            border-radius: 0;
+        }
+
+        .converting-metric-step {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0b3a6e;
+            margin-bottom: 4px;
+        }
+
+        .converting-metric-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 12px 0;
+            line-height: 1.3;
+        }
+
+        .converting-metric-text {
+            color: var(--ink);
+            line-height: 1.75;
+            margin: 0 0 12px 0;
+            font-size: 15px;
+        }
+
+        .converting-metric-sub {
+            font-size: 17.5px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 14px 0 8px 0;
+        }
+
+        /* Reference Charts Section */
+        .charts-section-head {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .charts-section-step {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0b3a6e;
+            margin-bottom: 4px;
+        }
+
+        .charts-section-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 0 6px 0;
+            line-height: 1.3;
+        }
+
+        .charts-section-desc {
+            color: var(--muted);
+            font-size: 15px;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.65;
+        }
+
+        .chart-block {
+            margin-bottom: 40px;
+        }
+
+        .chart-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .chart-helper {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 0 0 10px 0;
+            line-height: 1.55;
+        }
+
+        /* LT Load Ranges Table */
+        .lt-load-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #222222;
+            margin: 0 0 4px 0;
+            line-height: 1.3;
+        }
+
+        .lt-load-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0;
+        }
+
+        .lt-load-table thead th {
+            padding: 10px 12px;
+            text-align: left;
+            background: #ffffff;
+            color: #0b3a6e;
+            font-size: 13.5px;
+            font-weight: 700;
+            border: 1px solid #e5e7eb;
+            border-bottom: 3px double #e5e7eb;
+        }
+
+        .lt-load-table thead th:nth-child(1) {
+            width: 29%;
+        }
+
+        .lt-load-table thead th:nth-child(2) {
+            width: 27%;
+        }
+
+        .lt-load-table thead th:nth-child(3) {
+            width: 44%;
+        }
+
+        .lt-load-table tbody tr {
+            background: #ffffff;
+        }
+
+        .lt-load-table tbody td {
+            padding: 10px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #4a6785;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        .lt-load-table tbody td:nth-child(2) {
+            color: #8c8c8c;
+        }
+
+        .lt-load-table tfoot th {
+            padding: 10px 12px;
+            text-align: left;
+            background: #ffffff;
+            color: #0b3a6e;
+            font-size: 13.5px;
+            font-weight: 700;
+            border: 1px solid #e5e7eb;
+            border-top: 3px double #e5e7eb;
+        }
+
+        section[id],
+        .chart-block[id] {
+            scroll-margin-top: 86px;
+        }
+
+        .lt-load-table.passenger-load-table thead th:nth-child(1) {
+            width: 33.5%;
+        }
+
+        .lt-load-table.passenger-load-table thead th:nth-child(2) {
+            width: 19.5%;
+        }
+
+        .lt-load-table.passenger-load-table thead th:nth-child(3) {
+            width: 47%;
+        }
+
+        .lt-load-table.passenger-load-table tbody tr:nth-child(odd) td {
+            background: #f9f9f9;
+        }
+
+        .lt-load-table.speed-ratings-table thead th:nth-child(1) {
+            width: 26.5%;
+        }
+
+        .lt-load-table.speed-ratings-table thead th:nth-child(2) {
+            width: 50.5%;
+        }
+
+        .lt-load-table.speed-ratings-table thead th:nth-child(3) {
+            width: 23%;
+        }
+
+        .lt-load-table.speed-ratings-table tbody tr:nth-child(odd) td {
+            background: #f9f9f9;
+        }
+
+        /* Load Ratings Table */
+        .load-ratings-unit {
+            color: #cc0000;
+            font-weight: 700;
+        }
+
+        .lt-load-table.load-ratings-table thead th,
+        .lt-load-table.load-ratings-table thead th:nth-child(1),
+        .lt-load-table.load-ratings-table thead th:nth-child(2),
+        .lt-load-table.load-ratings-table thead th:nth-child(3) {
+            width: auto;
+            padding: 10px 8px;
+            font-size: 13px;
+            line-height: 1.35;
+            vertical-align: middle;
+        }
+
+        .lt-load-table.load-ratings-table tbody td {
+            padding: 9px 8px;
+            text-align: left;
+            font-size: 13.5px;
+        }
+
+        .lt-load-table.load-ratings-table tbody tr:nth-child(odd) td {
+            background: #f9f9f9;
+        }
+
+        .lt-load-table.load-ratings-table tbody td:nth-child(odd) {
+            color: #4a6785;
+        }
+
+        .lt-load-table.load-ratings-table tbody td:nth-child(even) {
+            color: #8c8c8c;
+        }
+
+        /* Bottom Guide Action Strip */
+        .guide-footer-note {
+            border-top: 1px solid #e5e7eb;
+            padding: 28px 0 56px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .guide-footer-note p {
+            margin: 0;
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .guide-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .guide-action-link {
+            --cta-bg: #163687;
+            --cta-fg: #ffffff;
+            --cta-hover-bg: #ffffff;
+            --cta-hover-fg: #163687;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            background: var(--cta-bg);
+            color: var(--cta-fg);
+            border: 1px solid #163687;
+            border-radius: 0;
+            font-family: 'Nunito Sans', ui-sans-serif, sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            position: relative;
+            transform-style: preserve-3d;
+            overflow: visible;
+            z-index: 1;
+            transition: color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .guide-action-secondary {
+            --cta-bg: #ffffff;
+            --cta-fg: #163687;
+            --cta-hover-bg: #163687;
+            --cta-hover-fg: #ffffff;
+        }
+
+        .guide-action-link::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 0;
+            background: var(--cta-hover-bg);
+            z-index: 1;
+            transform-origin: left center;
+            transform: perspective(600px) rotateY(-90deg);
+            transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .guide-action-link span {
+            color: var(--cta-fg);
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            transition: color 0.25s ease, transform 0.25s ease;
+        }
+
+        .guide-action-link:hover,
+        .guide-action-link:focus-visible {
+            background: var(--cta-hover-bg);
+            color: var(--cta-hover-fg);
+            border-color: #163687;
+            animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards;
+        }
+
+        .guide-action-link:hover::before,
+        .guide-action-link:focus-visible::before {
+            transform: perspective(600px) rotateY(0deg);
+            opacity: 1;
+        }
+
+        .guide-action-link:hover span,
+        .guide-action-link:focus-visible span {
+            color: var(--cta-hover-fg);
+        }
+
+        .guide-action-link:hover span:last-child,
+        .guide-action-link:focus-visible span:last-child {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 960px) {
+            .size-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .size-display .size-text {
+                font-size: 28px;
+            }
+
+            .size-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-outline-group {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+
+            .converting-diagram-img {
+                float: none;
+                display: block;
+                margin: 0 auto 24px;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="tyre-sizes">
+    <div class="topbar">
+        <div class="container topbar-inner">
+            <span class="topbar-schedule">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                We're Open: Monday - Saturday, 9:00 am - 18:00 pm
+            </span>
+            <div class="topbar-links">
+                <a href="https://wa.me/256709828766" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    +256-709-828-766
+                </a>
+                <a href="mailto:info@sescotyres.com" title="Email Us">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    info@sescotyres.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html" aria-label="Sesco Tyres Home">
+                <img class="logo-img" src="assets/logo.webp" alt="Sesco Tyres" width="100" height="55">
+            </a>
+            <button class="menu-toggle" aria-label="Open navigation">☰</button>
+            <nav class="nav">
+                <a href="index.html" data-nav="index" class="">Home</a>
+                <a href="shop.html" data-nav="shop" class="">Shop</a>
+                <a href="about.html" data-nav="about" class="">About Us</a>
+                <div class="nav-dropdown">
+                    <a href="services.html" class="dropdown-toggle" data-nav="services">
+                        Services
+                        <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="service-detail.html#alignment">Wheel Alignment</a>
+                        <a href="service-detail.html#rotation">Tyre Rotation</a>
+                        <a href="service-detail.html#fitting">Tyre Fitting</a>
+                        <a href="service-detail.html#balancing">Tyre Balancing</a>
+                        <a href="service-detail.html#tyres">Stock Tyres</a>
+                        <a href="service-detail.html#servicing">Basic Car Servicing</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#" class="dropdown-toggle active" data-nav="more">
+                        More
+                        <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="tyre-size-calculator.html">Tyre Size Calculator</a>
+                        <a href="feedback.html">Feedback</a>
+                        <a href="#">Promotional Offers</a>
+                        <a href="tyre-sizes.html" class="active">About Tyre Sizes</a>
+                    </div>
+                </div>
+                <a href="contact.html" data-nav="contact" class="">Contact Us</a>
+            </nav>
+            <div class="header-actions">
+                <a class="header-action-btn filled" href="wishlist.html" aria-label="Wishlist" title="View Wishlist">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                    <span class="action-badge" data-wish-count style="display:none"></span>
+                </a>
+                <a class="header-action-btn filled" href="cart.html" aria-label="Cart" title="View Cart">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                    <span class="action-badge" data-cart-count style="display:none"></span>
+                </a>
+                <a class="header-action-btn header-action-login outlined" href="login.html" aria-label="Account / Login" title="Account / Sign In">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <span>Login</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section 1: Inch (High-Flotation) Tyre Size Example -->
+        <section id="inch-sizes" class="tyre-size-example first-tyre-section">
+            <div class="container">
+                <div class="size-display" data-aos="fade-up">
+                    <span class="section-step">Part 01</span>
+                    <h2>How to Read Inch Sizes</h2>
+                    <div class="size-text">35X12.50R15LT E</div>
+                    <div class="code-anatomy" data-aos="fade-up" data-aos-delay="100" aria-label="Breakdown of 35X12.50R15LT E markings">
+                        <div class="code-token">
+                            <span class="code-token-val">35</span>
+                            <span class="code-token-label">Diameter (in)</span>
+                        </div>
+                        <span class="code-token-sep" aria-hidden="true">×</span>
+                        <div class="code-token">
+                            <span class="code-token-val">12.50</span>
+                            <span class="code-token-label">Width (in)</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">R</span>
+                            <span class="code-token-label">Construction</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">15</span>
+                            <span class="code-token-label">Rim Size (in)</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">LT</span>
+                            <span class="code-token-label">Tyre Class</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">E</span>
+                            <span class="code-token-label">Load Range</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="size-breakdown">
+                    <!-- Diameter -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="50">
+                        <h3>1. Diameter : 35</h3>
+                        <div class="value">35 inches</div>
+                        <p>The overall outer height of this tyre is <span class="highlight">35 inches</span> from tread to tread when inflated. In a high-flotation size, the first number is always the tyre's total standing diameter.</p>
+                    </div>
+
+                    <!-- Section Width -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="100">
+                        <h3>2. Section Width : 12.50</h3>
+                        <div class="value">12.5 inches</div>
+                        <p>The cross-section width of this tyre is <span class="highlight">12.5 inches</span> from the widest point of the inner sidewall to the outer sidewall.</p>
+                    </div>
+
+                    <!-- Tire Construction -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="150">
+                        <h3>3. Tire Construction : R</h3>
+                        <div class="value">R (Radial)</div>
+                        <p>The letter <span class="highlight">R</span> stands for radial ply construction, where internal casing cords run straight across the tyre. Radial is the standard construction method used on almost all modern tyres.</p>
+                    </div>
+
+                    <!-- Rim / Wheel Diameter -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="50">
+                        <h3>4. Rim / Wheel Diameter : 15</h3>
+                        <div class="value">15 inches</div>
+                        <p>The wheel diameter is <span class="highlight">15 inches</span>. This tyre is built specifically to fit a <span class="highlight">15-inch</span> wheel rim and must not be mounted on any other rim size.</p>
+                    </div>
+
+                    <!-- Tire Class -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="100">
+                        <h3>5. Tire Class : LT</h3>
+                        <div class="value">LT (Light Truck)</div>
+                        <p>The designation <span class="highlight">LT</span> identifies this as a Light Truck tyre, engineered with stronger sidewalls and higher load capacity than standard passenger tyres.</p>
+                    </div>
+
+                    <!-- Load Range -->
+                    <div class="size-item" data-aos="fade-up" data-aos-delay="150">
+                        <h3>6. Load Range : E</h3>
+                        <div class="value">E (10-ply rating)</div>
+                        <p>Load range <span class="highlight">E</span> corresponds to a <span class="highlight">10-ply</span> strength rating (up to 80 psi). Common LT load ranges include <span class="highlight">B (4-ply)</span>, <span class="highlight">C (6-ply)</span>, <span class="highlight">D (8-ply)</span>, <span class="highlight">E (10-ply)</span>, and <span class="highlight">F (12-ply)</span>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Metric Tire Size Section (Paragraph Form) -->
+        <section id="metric-sizes" class="tyre-size-example tyre-section-bordered">
+            <div class="container">
+                <div class="size-display" data-aos="fade-up">
+                    <span class="section-step">Part 02</span>
+                    <h2>How to Read Metric Sizes</h2>
+                    <div class="size-text">P255/60R17 102V</div>
+                    <div class="code-anatomy" data-aos="fade-up" data-aos-delay="100" aria-label="Breakdown of P255/60R17 102V markings">
+                        <div class="code-token">
+                            <span class="code-token-val">P</span>
+                            <span class="code-token-label">Class</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">255</span>
+                            <span class="code-token-label">Width (mm)</span>
+                        </div>
+                        <span class="code-token-sep" aria-hidden="true">/</span>
+                        <div class="code-token">
+                            <span class="code-token-val">60</span>
+                            <span class="code-token-label">Aspect Ratio (%)</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">R</span>
+                            <span class="code-token-label">Construction</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">17</span>
+                            <span class="code-token-label">Rim Size (in)</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">102</span>
+                            <span class="code-token-label">Load Index</span>
+                        </div>
+                        <div class="code-token">
+                            <span class="code-token-val">V</span>
+                            <span class="code-token-label">Speed Rating</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-size-outline">
+                    <!-- Tire Class -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>1. Tire Class : P</h3>
+                            <span class="metric-term-sub">Intended Vehicle Type</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The optional letter at the very start of a metric tyre size identifies the service class of vehicle the tyre is built for:</p>
+                            <p><span class="highlight">P (Passenger):</span> Stands for passenger vehicle tyres used on everyday cars, SUVs, crossovers, minivans, and light-duty pickups.</p>
+                            <p><span class="highlight">LT (Light Truck):</span> Designed for vehicles carrying heavy payloads, towing trailers, or operating off-road, such as 3/4-ton and 1-ton pickups and heavy SUVs.</p>
+                            <p><span class="highlight">ST (Special Trailer):</span> Built specifically for trailer axles (travel, boat, fifth-wheel, and utility trailers) with stiffer sidewalls that reduce trailer sway.</p>
+                            <p><span class="highlight">No Prefix (Euro-Metric):</span> When there is no letter before the first number (for example, <span class="highlight">205/55R16</span>), it is a European/ISO metric size. It measures width in millimetres the same way, though its rated load capacity at a given pressure may differ slightly from a P-metric equivalent.</p>
+                        </div>
+                    </div>
+
+                    <!-- Section Width -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>2. Section Width : 255</h3>
+                            <span class="metric-term-sub">Measured in Millimetres</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The width of this tyre is <span class="highlight">255 mm</span> across its widest points from inner sidewall to outer sidewall when mounted on a standard wheel. Always convert millimetres to inches by dividing by <span class="highlight">25.4</span> (255 ÷ 25.4 = 10.04 inches).</p>
+                        </div>
+                    </div>
+
+                    <!-- Aspect Ratio -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>3. Aspect Ratio : 60</h3>
+                            <span class="metric-term-sub">Sidewall Height Percentage</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The number after the slash is not a direct measurement — it is a <span class="highlight">percentage of the section width</span> indicating how tall the sidewall is from rim flange to tread. On a <span class="highlight">255/60</span> tyre, the sidewall height is <span class="highlight">60% of 255 mm = 153 mm</span> (about 6.02 inches). Lower numbers (such as 40 or 45) give shorter, sportier sidewalls; higher numbers (such as 70 or 75) give taller sidewalls for extra cushioning.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tire Construction -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>4. Tire Construction : R</h3>
+                            <span class="metric-term-sub">Internal Carcass Layer</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The letter <span class="highlight">R</span> stands for <span class="highlight">Radial</span> construction, in which internal ply cords run at 90 degrees across the tread direction. Almost all modern road tyres use radial construction (older bias-ply tyres may use <span class="highlight">D</span> or <span class="highlight">-</span>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Rim / Wheel Diameter -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>5. Rim Diameter : 17</h3>
+                            <span class="metric-term-sub">Wheel Fitment in Inches</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>Even on a metric tyre, the wheel rim diameter is still measured in inches. A tyre marked <span class="highlight">17</span> must be fitted only onto a <span class="highlight">17-inch</span> rim.</p>
+                        </div>
+                    </div>
+
+                    <!-- Load Index -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>6. Load Index : 102</h3>
+                            <span class="metric-term-sub">Weight Capacity Code</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The 2- or 3-digit number at the start of the service description corresponds to the maximum weight one tyre can safely carry at maximum inflation pressure. Here, <span class="highlight">102 equals 1,874 lbs (850 kg)</span> per tyre (<a class="inline-guide-link" href="#load-ratings">view full Load Ratings chart</a>). Replacement tyres should match or exceed your vehicle manufacturer's required load index.</p>
+                        </div>
+                    </div>
+
+                    <!-- Speed Rating -->
+                    <div class="metric-outline-group" data-aos="fade-up">
+                        <div class="metric-term">
+                            <h3>7. Speed Rating : V</h3>
+                            <span class="metric-term-sub">Sustained Speed Limit</span>
+                        </div>
+                        <div class="metric-copy">
+                            <p>The final letter indicates the highest sustained highway speed the tyre is certified to maintain under its rated load. A <span class="highlight">V</span> rating certifies the tyre up to <span class="highlight">149 mph (240 km/h)</span> (<a class="inline-guide-link" href="#speed-ratings">view full Speed Ratings chart</a>).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Converting Metric to Inches Section -->
+        <section id="converting-metric" class="converting-metric-section">
+            <div class="container">
+                <div class="converting-metric-wrap">
+                    <img class="converting-diagram-img" data-aos="fade-right" src="assets/images/tyre-measurement-diagram.png" alt="Tire measurement diagram showing Wheel, Circumference, Diameter, Sidewall, and Width">
+
+                    <span class="converting-metric-step" data-aos="fade-up">Part 03</span>
+                    <h2 class="converting-metric-title" data-aos="fade-up" data-aos-delay="50">Converting Metric to Inches</h2>
+                    <p class="converting-metric-text" data-aos="fade-up" data-aos-delay="100">There are two ways that tyre manufacturers display tyre size: inches and metric. Reading a tyre size expressed directly in inches is very straightforward.</p>
+
+                    <h3 class="converting-metric-sub" data-aos="fade-up" data-aos-delay="100">Example A : 33X12.50R15</h3>
+                    <p class="converting-metric-text" data-aos="fade-up" data-aos-delay="150">The first number is your overall diameter of the tyre. In this example the tyre diameter or "height" is <span class="highlight">33 inches</span> tall. The second number represents the width of the tyre. In most cases with inch measurement tyres the width will have a <span class="highlight">.50</span> decimal after the initial number. In Example "A" this reads <span class="highlight">12.50</span>, meaning the tyre width is <span class="highlight">12 and 1/2 inches</span>. The final number simply is the wheel size or diameter of the wheel that the tyre will fit on (<span class="highlight">15 inches</span>).</p>
+
+                    <p class="converting-metric-text" data-aos="fade-up" style="margin-top: 12px; margin-bottom: 14px;">Reading a tyre size with a metric measurement takes one extra calculation step because width is given in millimetres and sidewall height is given as a percentage.</p>
+
+                    <h3 class="converting-metric-sub" data-aos="fade-up" data-aos-delay="50">Example B : 285/75R16</h3>
+                    <p class="converting-metric-text" data-aos="fade-up" data-aos-delay="100">On metric tyres the first number is your width of the tyre in millimetres. In Example "B" this reads <span class="highlight">285 mm</span>. Since there are <span class="highlight">25.4 mm</span> in one inch, you divide 285 by 25.4 to get <span class="highlight">11.22"</span> — so the width of a 285 mm tyre is 11.22 inches. The next number (<span class="highlight">75</span>) represents the percentage of the width that forms the sidewall height: 75% of 11.22" equals <span class="highlight">8.41"</span> (or 214 mm). Because a tyre has two sidewalls (top and bottom around the wheel), you multiply one sidewall by 2 and add the 16" wheel diameter: <span class="highlight">(8.41 × 2) = 16.82"</span> plus <span class="highlight">16"</span> gives an overall height of <span class="highlight">32.82"</span>. Therefore, a <span class="highlight">285/75R16</span> metric tyre converts to an inch size of <span class="highlight">32.82X11.22R16</span>.</p>
+
+                    <p class="converting-metric-text" data-aos="fade-up" data-aos-delay="100" style="margin-bottom: 0;"><strong>Quick Formula:</strong> Overall Diameter (in) = <span class="highlight">[(Width mm × Aspect Ratio ÷ 2,540) × 2] + Rim Diameter (in)</span>. Remember, not all tyre sizes are manufactured in both metric and inch formats — you can also verify any conversion instantly with our <a class="inline-guide-link" href="tyre-size-calculator.html">Tyre Size Calculator →</a>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Reference Charts -->
+        <section class="tyre-size-example tyre-section-bordered">
+            <div class="container">
+                <div class="charts-section-head" data-aos="fade-up">
+                    <span class="charts-section-step">Part 04</span>
+                    <h2 class="charts-section-title">Official Load &amp; Speed Reference Charts</h2>
+                    <p class="charts-section-desc">Use the Load Range, Speed Rating letter, and Load Index numbers printed on your tyre sidewall with the tables below to verify inflation pressure limits, load capacity per tyre, and top rated speed.</p>
+                </div>
+
+                <!-- LT Load Ranges Table -->
+                <div id="load-ranges" class="chart-block" data-aos="fade-up" data-aos-delay="50">
+                    <h3 class="lt-load-title">LT Load Ranges</h3>
+                    <p class="chart-helper">Applies to Light Truck (<span class="highlight">LT</span>) tyres, showing each load range letter alongside its traditional ply rating equivalent and maximum load pressure.</p>
+                    <div style="overflow-x: auto;">
+                        <table class="lt-load-table">
+                            <thead>
+                                <tr>
+                                    <th>Load Range</th>
+                                    <th>Ply Rating</th>
+                                    <th>Max Load Pressure</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>B</td>
+                                    <td>4</td>
+                                    <td>35 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>C</td>
+                                    <td>6</td>
+                                    <td>50 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>D</td>
+                                    <td>8</td>
+                                    <td>65 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>E</td>
+                                    <td>10</td>
+                                    <td>80 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>F</td>
+                                    <td>12</td>
+                                    <td>95 psi</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Passenger Load Ranges Table -->
+                <div class="chart-block" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="lt-load-title">Passenger Load Ranges</h3>
+                    <p class="chart-helper">Applies to Passenger (<span class="highlight">P</span>) and Euro-Metric tyres, indicating whether a casing is Light Load, Standard Load, or reinforced Extra Load (<span class="highlight">XL</span>).</p>
+                    <div style="overflow-x: auto;">
+                        <table class="lt-load-table passenger-load-table">
+                            <thead>
+                                <tr>
+                                    <th>Load Range</th>
+                                    <th>Symbol</th>
+                                    <th>Max Load Pressure</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Light Load</td>
+                                    <td>LL</td>
+                                    <td>35 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard Load</td>
+                                    <td>SL</td>
+                                    <td>35/44 psi</td>
+                                </tr>
+                                <tr>
+                                    <td>Extra Load</td>
+                                    <td>XL</td>
+                                    <td>41/50 psi</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Load Range</th>
+                                    <th>Symbol</th>
+                                    <th>Max Load Pressure</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Speed Ratings Table -->
+                <div id="speed-ratings" class="chart-block" data-aos="fade-up">
+                    <h3 class="lt-load-title">Speed Ratings</h3>
+                    <p class="chart-helper">Look up the final letter of a metric tyre size (such as <span class="highlight">V</span> in <span class="highlight">P255/60R17 102V</span>) to see its maximum sustained speed rating and typical vehicle category.</p>
+                    <div style="overflow-x: auto;">
+                        <table class="lt-load-table speed-ratings-table">
+                            <thead>
+                                <tr>
+                                    <th>Speed Rating Letter</th>
+                                    <th>Maximum Allowable Speed m/h - km/h</th>
+                                    <th>Vehicle Types</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>L</td>
+                                    <td>75 mph / 120 km/h</td>
+                                    <td>Off-Road Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>M</td>
+                                    <td>81 mph / 130 km/h</td>
+                                    <td>Temporary Spares</td>
+                                </tr>
+                                <tr>
+                                    <td>N</td>
+                                    <td>87 mph / 140km/h</td>
+                                    <td>Winter Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>P</td>
+                                    <td>93 mph / 150 km/h</td>
+                                    <td>Winter Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>Q</td>
+                                    <td>99 mph / 160 km/h</td>
+                                    <td>Light Truck Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>R</td>
+                                    <td>106 mph / 170 km/h</td>
+                                    <td>Light Truck Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td>112 mph / 180 km/h</td>
+                                    <td>Light Truck Tires</td>
+                                </tr>
+                                <tr>
+                                    <td>T</td>
+                                    <td>118 mph / 190 km/h</td>
+                                    <td>Sedans</td>
+                                </tr>
+                                <tr>
+                                    <td>U</td>
+                                    <td>124 mph / 200 km/h</td>
+                                    <td>Sedans</td>
+                                </tr>
+                                <tr>
+                                    <td>H</td>
+                                    <td>130 mph / 210 km/h</td>
+                                    <td>Sports Cars</td>
+                                </tr>
+                                <tr>
+                                    <td>V</td>
+                                    <td>149 mph / 240 km/h</td>
+                                    <td>Sports Cars</td>
+                                </tr>
+                                <tr>
+                                    <td>W</td>
+                                    <td>168 mph / 270 km/h</td>
+                                    <td>Super Sports Cars</td>
+                                </tr>
+                                <tr>
+                                    <td>Y</td>
+                                    <td>186 mph / 300 km/h</td>
+                                    <td>Super Sports Cars</td>
+                                </tr>
+                                <tr>
+                                    <td>Z</td>
+                                    <td>&gt; 300 km/h</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Load Ratings Table -->
+                <div id="load-ratings" class="chart-block" data-aos="fade-up">
+                    <h3 class="lt-load-title">Load Ratings <span class="load-ratings-unit">1 lb = 0.454 kg</span></h3>
+                    <p class="chart-helper">Match the 2- or 3-digit Load Index number before the speed rating (such as <span class="highlight">102</span> in <span class="highlight">102V</span>) to find the maximum load a single tyre can support. Multiply lbs by <span class="highlight">0.454</span> to convert to kilograms.</p>
+                    <div style="overflow-x: auto;">
+                        <table class="lt-load-table load-ratings-table">
+                            <thead>
+                                <tr>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                    <th>Load Index</th>
+                                    <th>Max lbs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>71</td>
+                                    <td>761</td>
+                                    <td>81</td>
+                                    <td>1019</td>
+                                    <td>91</td>
+                                    <td>1356</td>
+                                    <td>101</td>
+                                    <td>1819</td>
+                                    <td>111</td>
+                                    <td>2403</td>
+                                    <td>121</td>
+                                    <td>3197</td>
+                                </tr>
+                                <tr>
+                                    <td>72</td>
+                                    <td>783</td>
+                                    <td>82</td>
+                                    <td>1047</td>
+                                    <td>92</td>
+                                    <td>1389</td>
+                                    <td>102</td>
+                                    <td>1874</td>
+                                    <td>112</td>
+                                    <td>2469</td>
+                                    <td>122</td>
+                                    <td>3307</td>
+                                </tr>
+                                <tr>
+                                    <td>73</td>
+                                    <td>805</td>
+                                    <td>83</td>
+                                    <td>1074</td>
+                                    <td>93</td>
+                                    <td>1433</td>
+                                    <td>103</td>
+                                    <td>1929</td>
+                                    <td>113</td>
+                                    <td>2535</td>
+                                    <td>123</td>
+                                    <td>3417</td>
+                                </tr>
+                                <tr>
+                                    <td>74</td>
+                                    <td>827</td>
+                                    <td>84</td>
+                                    <td>1102</td>
+                                    <td>94</td>
+                                    <td>1477</td>
+                                    <td>104</td>
+                                    <td>1984</td>
+                                    <td>114</td>
+                                    <td>2601</td>
+                                    <td>124</td>
+                                    <td>3527</td>
+                                </tr>
+                                <tr>
+                                    <td>75</td>
+                                    <td>853</td>
+                                    <td>85</td>
+                                    <td>1135</td>
+                                    <td>95</td>
+                                    <td>1521</td>
+                                    <td>105</td>
+                                    <td>2039</td>
+                                    <td>115</td>
+                                    <td>2679</td>
+                                    <td>125</td>
+                                    <td>3638</td>
+                                </tr>
+                                <tr>
+                                    <td>76</td>
+                                    <td>882</td>
+                                    <td>86</td>
+                                    <td>1168</td>
+                                    <td>96</td>
+                                    <td>1565</td>
+                                    <td>106</td>
+                                    <td>2094</td>
+                                    <td>116</td>
+                                    <td>2756</td>
+                                    <td>126</td>
+                                    <td>3748</td>
+                                </tr>
+                                <tr>
+                                    <td>77</td>
+                                    <td>908</td>
+                                    <td>87</td>
+                                    <td>1201</td>
+                                    <td>97</td>
+                                    <td>1609</td>
+                                    <td>107</td>
+                                    <td>2149</td>
+                                    <td>117</td>
+                                    <td>2833</td>
+                                    <td>127</td>
+                                    <td>3858</td>
+                                </tr>
+                                <tr>
+                                    <td>78</td>
+                                    <td>937</td>
+                                    <td>88</td>
+                                    <td>1235</td>
+                                    <td>98</td>
+                                    <td>1653</td>
+                                    <td>108</td>
+                                    <td>2205</td>
+                                    <td>118</td>
+                                    <td>2910</td>
+                                    <td>128</td>
+                                    <td>3968</td>
+                                </tr>
+                                <tr>
+                                    <td>79</td>
+                                    <td>963</td>
+                                    <td>89</td>
+                                    <td>1279</td>
+                                    <td>99</td>
+                                    <td>1709</td>
+                                    <td>109</td>
+                                    <td>2271</td>
+                                    <td>119</td>
+                                    <td>2998</td>
+                                    <td>129</td>
+                                    <td>4079</td>
+                                </tr>
+                                <tr>
+                                    <td>80</td>
+                                    <td>992</td>
+                                    <td>90</td>
+                                    <td>1323</td>
+                                    <td>100</td>
+                                    <td>1764</td>
+                                    <td>110</td>
+                                    <td>2337</td>
+                                    <td>120</td>
+                                    <td>3086</td>
+                                    <td>130</td>
+                                    <td>4189</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Action Row -->
+        <section>
+            <div class="container">
+                <div class="guide-footer-note" data-aos="fade-up">
+                    <p>Ready to calculate exact dimensions or compare alternative tyre sizes for your vehicle?</p>
+                    <div class="guide-footer-links">
+                        <a class="guide-action-link guide-action-primary" href="tyre-size-calculator.html"><span>Tyre Size Calculator</span> <span>→</span></a>
+                        <a class="guide-action-link guide-action-secondary" href="shop.html"><span>Browse Tyres in Shop</span> <span>→</span></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand" data-aos="fade-up" data-aos-delay="50">
+                    <div class="footer-brand-header">
+                        <a class="footer-logo-link" href="index.html" aria-label="Sesco Tyres Home">
+                            <img class="footer-logo-img" src="assets/logo.webp" alt="Sesco Tyres Logo" width="88" height="48">
+                        </a>
+                        <div class="footer-brand-meta">
+                            <span class="footer-brand-name">SESCO TYRES</span>
+                            <span class="footer-brand-tagline">Drive With Confidence</span>
+                        </div>
+                    </div>
+                    <p class="footer-brand-desc">Uganda's trusted specialists in genuine premium tyres, computerized 3D laser alignment, precision wheel balancing, and professional automotive servicing—ensuring peak performance and safety on every journey.</p>
+                    <a class="text-link footer-about-link" href="about.html">More about us →</a>
+                </div>
+
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+                    <h4>Explore</h4>
+                    <a href="index.html">Home</a>
+                    <a href="shop.html">Shop</a>
+                    <a href="services.html">Services</a>
+                    <a href="about.html">About Sesco Tyres</a>
+                </div>
+
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="150">
+                    <h4>Customer care</h4>
+                    <a href="contact.html">Contact us</a>
+                    <a href="faq.html">FAQs</a>
+                    <a href="wishlist.html">Your wishlist</a>
+                    <a href="cart.html">Your cart</a>
+                </div>
+
+                <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+                    <h4>Get in touch</h4>
+                    <p><i class="fa-solid fa-location-dot"></i> &nbsp; Plot 27 Queens Way, Entebbe Road Kampala, Uganda</p>
+                    <p><i class="fa-solid fa-phone"></i> &nbsp; +256-709-828-766</p>
+                    <p><i class="fa-solid fa-envelope"></i> &nbsp; info@sescotyres.com</p>
+                    <p><i class="fa-solid fa-clock"></i> &nbsp; We're Open: Monday - Saturday, 9:30 am - 6:00 pm</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> Sesco Tyres. Frontend redesign concept. | Developed by <a href="https://sofdas.com" target="_blank" rel="noopener noreferrer">Sofdas Technologies</a></span>
+                <span>
+                    <a href="faq.html">FAQs</a>
+                    <a href="contact.html">Contact</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" aria-live="polite"></div>
+
+    <script src="assets/js/main.js?v=8.7"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="assets/js/aos.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        if (window.AOS) {
+            AOS.init({
+                duration: 750,
+                easing: 'ease-out-cubic',
+                once: false,
+                offset: 70
+            });
+        }
+    </script>
+</body>
+
+</html>

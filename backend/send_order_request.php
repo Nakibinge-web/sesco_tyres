@@ -116,6 +116,7 @@ try {
         'location'              => $location,
         'items'                 => $result['items'],
         'total_qty'             => $result['total_qty'],
+        'quantity'              => $result['quantity'],
         'total_amount'          => $result['total_amount'],
         'currency'              => 'UGX',
         'inserted_rows'         => $result['inserted_rows'],
@@ -132,17 +133,30 @@ try {
     $totalAmount = 0.0;
     $totalQty    = 0;
     $lineItems   = [];
+    $itemQtyMap  = [];
 
     foreach ($items as $entry) {
         $qty   = max(1, (int) ($entry['qty'] ?? 1));
         $price = max(0.0, (float) ($entry['price'] ?? 0));
         $sub   = $qty * $price;
+        $itemId = (int) ($entry['item_id'] ?? 0);
+        if ($itemId <= 0 && isset($entry['id']) && is_string($entry['id'])) {
+            if (preg_match('/^item_(\d+)$/', $entry['id'], $m)) {
+                $itemId = (int) $m[1];
+            } elseif (preg_match('/^p(\d+)$/', $entry['id'], $m)) {
+                $itemId = (int) $m[1];
+            }
+        }
 
         $totalQty    += $qty;
         $totalAmount += $sub;
 
+        if ($itemId > 0) {
+            $itemQtyMap[$itemId] = ($itemQtyMap[$itemId] ?? 0) + $qty;
+        }
+
         $lineItems[] = [
-            'item_id'     => (int) ($entry['item_id'] ?? 0),
+            'item_id'     => $itemId,
             'name'        => (string) ($entry['name'] ?? 'Tyre Item'),
             'quantity'    => $qty,
             'unit_price'  => $price,
@@ -150,6 +164,10 @@ try {
             'client_id'   => $clientId,
         ];
     }
+
+    $fallbackQtyCol = (count($itemQtyMap) > 1)
+        ? '[' . implode(', ', array_map(fn($k, $v) => "$k => $v", array_keys($itemQtyMap), $itemQtyMap)) . ']'
+        : (string) $totalQty;
 
     echo json_encode([
         'success'               => true,
@@ -165,6 +183,7 @@ try {
         'email'                 => $email,
         'location'              => $location,
         'total_qty'             => $totalQty,
+        'quantity'              => $fallbackQtyCol,
         'total_amount'          => $totalAmount,
         'currency'              => 'UGX',
         'inserted_rows'         => $lineItems,

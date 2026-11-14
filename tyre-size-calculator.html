@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Calculate and compare tyre sizes side-by-side with Sesco Tyres Uganda. Check overall diameter, sidewall height, speedometer error, and discover safe alternative tyre sizes.">
+  <title>Calculate/Compare — Tyre Size Calculator | Sesco Tyres Uganda</title>
+
+  <!-- Favicon / Browser Tab Icons -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48x48.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=2">
+  <link rel="shortcut icon" href="favicon.ico?v=2">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0b1c32">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&family=Outfit:wght@400;500;600;700;800;900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <link rel="stylesheet" href="assets/css/aos.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=8.6">
+  <link rel="stylesheet" href="assets/css/calculator.css?v=1.4">
+</head>
+
+<body data-page="more">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span class="topbar-schedule">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        We're Open: Monday - Saturday, 9:00 am - 18:00 pm
+      </span>
+      <div class="topbar-links">
+        <a href="https://wa.me/256709828766" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          +256-709-828-766
+        </a>
+        <a href="mailto:info@sescotyres.com" title="Email Us">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          info@sescotyres.com
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="Sesco Tyres Home">
+        <img class="logo-img" src="assets/logo.webp" alt="Sesco Tyres" width="100" height="55">
+      </a>
+      <button class="menu-toggle" aria-label="Open navigation">☰</button>
+
+      <nav class="nav">
+        <a href="index.html" data-nav="index" class="">Home</a>
+        <a href="shop.html" data-nav="shop" class="">Shop</a>
+        <a href="about.html" data-nav="about" class="">About Us</a>
+        <div class="nav-dropdown">
+          <a href="services.html" class="dropdown-toggle" data-nav="services">
+            Services
+            <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </a>
+          <div class="dropdown-menu">
+            <a href="service-detail.html#alignment">Wheel Alignment</a>
+            <a href="service-detail.html#rotation">Tyre Rotation</a>
+            <a href="service-detail.html#fitting">Tyre Fitting</a>
+            <a href="service-detail.html#balancing">Tyre Balancing</a>
+            <a href="service-detail.html#tyres">Stock Tyres</a>
+            <a href="service-detail.html#servicing">Basic Car Servicing</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <a href="#" class="dropdown-toggle active" data-nav="more">
+            More
+            <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </a>
+          <div class="dropdown-menu">
+            <a href="tyre-size-calculator.html" class="active">Tyre Size Calculator</a>
+            <a href="feedback.html">Feedback</a>
+            <a href="#">Promotional Offers</a>
+            <a href="tyre-sizes.html">About Tyre Sizes</a>
+          </div>
+        </div>
+        <a href="contact.html" data-nav="contact" class="">Contact Us</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="header-action-btn filled" href="wishlist.html" aria-label="Wishlist" title="View Wishlist">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span class="action-badge" data-wish-count style="display:none"></span>
+        </a>
+        <a class="header-action-btn filled" href="cart.html" aria-label="Cart" title="View Cart">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <span class="action-badge" data-cart-count style="display:none"></span>
+        </a>
+        <a class="header-action-btn header-action-login outlined" href="login.html" aria-label="Account / Login" title="Account / Sign In">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Login</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         MAIN CALCULATOR WORKSPACE
+         ==================================================================== -->
+    <section class="calc-workspace" id="calc-workspace-section">
+      <div class="container">
+
+        <!-- PAGE INTRO -->
+        <div class="calc-page-intro" data-aos="fade-down" data-aos-duration="750">
+          <h1 class="calc-page-title" data-aos="fade-up" data-aos-delay="50">Calculate/Compare</h1>
+          <p class="calc-page-desc" data-aos="fade-up" data-aos-delay="100">
+            Calculate metric or inch tyre dimensions and compare to similar tyre sizes. Use the comparison tab to see side by side comparison and speedometer error.
+          </p>
+        </div>
+
+        <!-- TOP GRID: DUAL SELECTORS & 2D VISUALIZER -->
+        <div class="calc-grid-top">
+
+          <!-- CARD 1: TYRE CALCULATOR & COMPARISON WIDGET -->
+          <div class="calc-box-widget" id="calc-box-widget" data-aos="fade-right" data-aos-duration="750" data-aos-delay="100">
+            <!-- FOLDER TABS -->
+            <div class="calc-tabs-bar" role="tablist">
+              <button type="button" class="calc-tab-item active" id="tab-calculator" role="tab" aria-selected="true" aria-controls="pane-calc">
+                Tyre Calculator
+              </button>
+              <button type="button" class="calc-tab-item" id="tab-comparison" role="tab" aria-selected="false" aria-controls="pane-cmp">
+                Tyre Comparison
+              </button>
+            </div>
+
+            <div class="calc-widget-container">
+              <!-- COMMON DATALISTS FOR AUTOCOMPLETE -->
+              <datalist id="calc-dl-widths">
+                <option value="135"><option value="145"><option value="155"><option value="165">
+                <option value="175"><option value="185"><option value="195"><option value="205">
+                <option value="215"><option value="225"><option value="235"><option value="245">
+                <option value="255"><option value="265"><option value="275"><option value="285">
+                <option value="295"><option value="305"><option value="315">
+              </datalist>
+              <datalist id="calc-dl-aspects">
+                <option value="30"><option value="35"><option value="40"><option value="45">
+                <option value="50"><option value="55"><option value="60"><option value="65">
+                <option value="70"><option value="75"><option value="80"><option value="85">
+              </datalist>
+              <datalist id="calc-dl-rims">
+                <option value="12"><option value="13"><option value="14"><option value="15">
+                <option value="16"><option value="17"><option value="18"><option value="19">
+                <option value="20"><option value="21"><option value="22">
+              </datalist>
+
+              <!-- TAB 1: TYRE CALCULATOR (SINGLE) -->
+              <div class="calc-pane active" id="pane-calc" role="tabpanel" aria-labelledby="tab-calculator">
+                <!-- INPUT ROW -->
+                <div class="calc-input-row-centered">
+                  <span class="calc-row-label">Size</span>
+                  <input type="number" id="single-w" class="calc-box-input" value="195" min="100" max="400" step="5" list="calc-dl-widths" aria-label="Tyre Width">
+                  <span class="calc-sep">/</span>
+                  <input type="number" id="single-a" class="calc-box-input" value="55" min="20" max="95" step="5" list="calc-dl-aspects" aria-label="Aspect Ratio">
+                  <span class="calc-sep">R</span>
+                  <input type="number" id="single-r" class="calc-box-input" value="13" min="10" max="32" step="1" list="calc-dl-rims" aria-label="Rim Diameter">
+                </div>
+
+                <!-- CONVERT SUB-BUTTON -->
+                <div class="calc-convert-wrap">
+                  <button type="button" class="calc-convert-btn" id="btn-convert-wheel">
+                    Convert to Different Wheel Size?
+                  </button>
+                </div>
+
+                <!-- CALCULATE BUTTON -->
+                <div class="calc-action-wrap">
+                  <button type="button" class="calc-orange-btn" id="btn-calc-single">
+                    Calculate
+                  </button>
+                </div>
+
+                <!-- SINGLE METRICS TABLE -->
+                <div class="calc-results-single-table">
+                  <div class="calc-res-row">
+                    <span class="calc-res-label">Diameter</span>
+                    <span class="calc-gray-box" id="single-val-diameter">21.4"</span>
+                  </div>
+                  <div class="calc-res-row">
+                    <span class="calc-res-label">Width</span>
+                    <span class="calc-gray-box" id="single-val-width">7.7"</span>
+                  </div>
+                  <div class="calc-res-row">
+                    <span class="calc-res-label">Sidewall</span>
+                    <span class="calc-gray-box" id="single-val-sidewall">4.2"</span>
+                  </div>
+                  <div class="calc-res-row">
+                    <span class="calc-res-label">Circum.</span>
+                    <span class="calc-gray-box" id="single-val-circum">67.3"</span>
+                  </div>
+                  <div class="calc-res-row">
+                    <span class="calc-res-label" id="single-label-revs">Revs/Mile</span>
+                    <span class="calc-gray-box" id="single-val-revs">941</span>
+                  </div>
+                </div>
+
+                <!-- UNIT SWITCHER PILL -->
+                <div class="calc-unit-switcher-row">
+                  <div class="calc-unit-pill">
+                    <button type="button" class="calc-unit-choice active" data-unit="inches">inches</button>
+                    <button type="button" class="calc-unit-choice" data-unit="mm">mm</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TAB 2: TYRE COMPARISON -->
+              <div class="calc-pane" id="pane-cmp" role="tabpanel" aria-labelledby="tab-comparison">
+                <!-- INPUT ROWS -->
+                <div class="calc-input-rows-stack">
+                  <!-- LINE 1: SIZE 1 -->
+                  <div class="calc-input-row-cmp">
+                    <span class="calc-row-label">Size 1</span>
+                    <input type="number" id="cmp-w1" class="calc-box-input" value="195" min="100" max="400" step="5" list="calc-dl-widths" aria-label="Tyre 1 Width">
+                    <span class="calc-sep">/</span>
+                    <input type="number" id="cmp-a1" class="calc-box-input" value="55" min="20" max="95" step="5" list="calc-dl-aspects" aria-label="Tyre 1 Aspect Ratio">
+                    <span class="calc-sep">R</span>
+                    <input type="number" id="cmp-r1" class="calc-box-input" value="13" min="10" max="32" step="1" list="calc-dl-rims" aria-label="Tyre 1 Rim Diameter">
+                  </div>
+
+                  <!-- LINE 2: SIZE 2 -->
+                  <div class="calc-input-row-cmp">
+                    <span class="calc-row-label">Size 2</span>
+                    <input type="number" id="cmp-w2" class="calc-box-input" value="135" min="100" max="400" step="5" list="calc-dl-widths" aria-label="Tyre 2 Width">
+                    <span class="calc-sep">/</span>
+                    <input type="number" id="cmp-a2" class="calc-box-input" value="75" min="20" max="95" step="5" list="calc-dl-aspects" aria-label="Tyre 2 Aspect Ratio">
+                    <span class="calc-sep">R</span>
+                    <input type="number" id="cmp-r2" class="calc-box-input" value="16" min="10" max="32" step="1" list="calc-dl-rims" aria-label="Tyre 2 Rim Diameter">
+                  </div>
+                </div>
+
+                <!-- CALCULATE BUTTON -->
+                <div class="calc-action-wrap" style="margin-top: 18px;">
+                  <button type="button" class="calc-orange-btn" id="btn-calc-compare">
+                    Calculate
+                  </button>
+                </div>
+
+                <!-- COMPARISON TABLE -->
+                <div class="calc-results-compare-table">
+                  <!-- HEAD -->
+                  <div class="calc-cmp-thead">
+                    <span class="calc-cmp-label-col"></span>
+                    <span class="calc-cmp-s1-col">Size 1</span>
+                    <span class="calc-cmp-s2-col">Size 2</span>
+                  </div>
+
+                  <!-- ROW: DIAMETER -->
+                  <div class="calc-cmp-trow">
+                    <span class="calc-cmp-metric-name">Diameter</span>
+                    <span class="calc-gray-box" id="cmp-val-d1">21.4"</span>
+                    <div class="calc-amber-box" id="cmp-box-d2">
+                      <span class="calc-amber-val" id="cmp-val-d2">24"</span>
+                      <span class="calc-amber-diff" id="cmp-diff-d2">+12.1%</span>
+                    </div>
+                  </div>
+
+                  <!-- ROW: WIDTH -->
+                  <div class="calc-cmp-trow">
+                    <span class="calc-cmp-metric-name">Width</span>
+                    <span class="calc-gray-box" id="cmp-val-w1">7.7"</span>
+                    <div class="calc-amber-box" id="cmp-box-w2">
+                      <span class="calc-amber-val" id="cmp-val-w2">5.3"</span>
+                      <span class="calc-amber-diff" id="cmp-diff-w2">-31.2%</span>
+                    </div>
+                  </div>
+
+                  <!-- ROW: SIDEWALL -->
+                  <div class="calc-cmp-trow">
+                    <span class="calc-cmp-metric-name">Sidewall</span>
+                    <span class="calc-gray-box" id="cmp-val-s1">4.2"</span>
+                    <div class="calc-amber-box" id="cmp-box-s2">
+                      <span class="calc-amber-val" id="cmp-val-s2">4"</span>
+                      <span class="calc-amber-diff" id="cmp-diff-s2">-4.8%</span>
+                    </div>
+                  </div>
+
+                  <!-- ROW: CIRCUM. -->
+                  <div class="calc-cmp-trow">
+                    <span class="calc-cmp-metric-name">Circum.</span>
+                    <span class="calc-gray-box" id="cmp-val-c1">67.3"</span>
+                    <div class="calc-amber-box" id="cmp-box-c2">
+                      <span class="calc-amber-val" id="cmp-val-c2">75.3"</span>
+                      <span class="calc-amber-diff" id="cmp-diff-c2">+12.1%</span>
+                    </div>
+                  </div>
+
+                  <!-- ROW: REVS/MILE -->
+                  <div class="calc-cmp-trow">
+                    <span class="calc-cmp-metric-name" id="cmp-label-revs">Revs/Mile</span>
+                    <span class="calc-gray-box" id="cmp-val-r1">941</span>
+                    <div class="calc-amber-box" id="cmp-box-r2">
+                      <span class="calc-amber-val" id="cmp-val-r2">842</span>
+                      <span class="calc-amber-diff" id="cmp-diff-r2">-99</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- UNIT SWITCHER PILL -->
+                <div class="calc-unit-switcher-row">
+                  <div class="calc-unit-pill">
+                    <button type="button" class="calc-unit-choice active" data-unit="inches">inches</button>
+                    <button type="button" class="calc-unit-choice" data-unit="mm">mm</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CARD 2: 2D TYRE SIZE VISUALIZER -->
+          <div class="calc-visualizer-widget" id="calc-visualizer-widget" data-aos="fade-left" data-aos-duration="750" data-aos-delay="150">
+            <!-- HEADER BAR -->
+            <div class="calc-vis-header-bar">
+              <h2 class="calc-vis-header-title" id="vis-header-title">
+                Tyre Size Visualizer
+              </h2>
+            </div>
+
+            <!-- VISUALIZER CANVAS -->
+            <div class="calc-vis-canvas-container">
+              <svg id="calc-vis-svg" class="calc-vis-main-svg" viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                <!-- Dynamically injected SVG elements rendered by JS -->
+              </svg>
+            </div>
+
+            <!-- COMPARISON MODE: SPEEDOMETER ERROR TABLE -->
+            <div class="calc-vis-speedo-section" id="vis-speedo-section" style="display:none;">
+              <div class="calc-vis-speedo-head">
+                <h3 class="calc-vis-speedo-title">Speedometer Error</h3>
+                <span class="calc-vis-speedo-sub">(Set Size1 to OEM Size)</span>
+              </div>
+
+              <div class="calc-vis-speedo-table-wrap">
+                <table class="calc-vis-speedo-table">
+                  <thead>
+                    <tr id="vis-speedo-head-row">
+                      <th class="vis-speedo-col-label">Speed</th>
+                      <th>10 km/h</th>
+                      <th>30 km/h</th>
+                      <th>50 km/h</th>
+                      <th>70 km/h</th>
+                      <th>90 km/h</th>
+                      <th>110 km/h</th>
+                      <th>130 km/h</th>
+                      <th>150 km/h</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr id="vis-speedo-val-row">
+                      <td class="vis-speedo-col-label">Actual</td>
+                      <td><span class="vis-amber-badge">11.2</span></td>
+                      <td><span class="vis-amber-badge">33.6</span></td>
+                      <td><span class="vis-amber-badge">56.1</span></td>
+                      <td><span class="vis-amber-badge">78.5</span></td>
+                      <td><span class="vis-amber-badge">100.9</span></td>
+                      <td><span class="vis-amber-badge">123.3</span></td>
+                      <td><span class="vis-amber-badge">145.8</span></td>
+                      <td><span class="vis-amber-badge">168.2</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- SINGLE CALCULATOR MODE: PROMO LINKS -->
+            <div class="calc-vis-single-links" id="vis-single-links">
+              <a href="shop.html?search=195%2F55+R13" class="calc-vis-link" id="vis-browse-tyres-link">
+                Browse 195/55R13 Tires
+              </a>
+              <a href="faq.html#tyre-pressure" class="calc-vis-link">
+                What Tire Pressure to Run?
+              </a>
+              <a href="shop.html" class="calc-vis-link">
+                Need a Spare?
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FITMENT VERDICT & SAFETY BANNER -->
+        <div class="calc-verdict-banner calc-verdict-safe" id="calc-verdict-banner" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="100">
+          <div class="calc-verdict-badge-wrap">
+            <div class="calc-verdict-icon" id="calc-verdict-icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+              <div class="calc-verdict-status" id="calc-verdict-status">Safe Fitment — Ideal Match</div>
+              <div class="calc-verdict-diff" id="calc-verdict-diff">+0.4% <small>(+2.6 mm)</small></div>
+            </div>
+          </div>
+
+          <div>
+            <p class="calc-verdict-text" id="calc-verdict-text">
+              The overall diameter difference is well within the international automotive safety threshold of &plusmn;3%.
+              Speedometer error is negligible and wheel arch clearance remains optimal.
+            </p>
+          </div>
+
+          <div class="calc-verdict-cta-group">
+            <a href="https://wa.me/256709828766" target="_blank" rel="noopener noreferrer" class="calc-btn-whatsapp" id="calc-whatsapp-btn">
+              <i class="fa-brands fa-whatsapp"></i> Confirm With Tech
+            </a>
+          </div>
+        </div>
+
+        <!-- TYRE CALCULATOR GUIDE & EXPLANATION -->
+        <article class="calc-info-card" data-aos="fade-up" data-aos-duration="750">
+          <p data-aos="fade-up" data-aos-delay="50">
+            Use our tyre size calculator to calculate the diameter, width, sidewall, circumference, and revolutions per mile of any tyre. Just type in a metric or standard size tyre and click calculate. Inch measurement tyres are fairly easy to understand however metric tyres use a more difficult system to read. The first number on a metric tyre is the width. Divide this by 25.4 to get inch equivalent. The third number generally preceded by an "R" is the wheel diameter. The sidewall and aspect ratio are used in metric sized tyres to determine the overall height of a tyre. The second number on a metric tyre is to calculate the side wall measurement. The sidewall height is a percentage of the width of the tyre. This second number is that percent. The sidewall height or "aspect ratio" of a 285/75/R16 tyre is 75% of 285mm.
+          </p>
+
+          <div class="calc-info-formula-box" data-aos="zoom-in" data-aos-duration="700" data-aos-delay="100">
+            <p><strong>To calculate a metric tyre to height in inches:</strong> (#1 x #2 / 2540 x 2) + (#3)</p>
+            <p><strong>Example:</strong> 285/75R16 (285 X 75 / 2540 x 2) + 16 = 32.8 inches tall.</p>
+          </div>
+
+          <p data-aos="fade-up" data-aos-delay="100">
+            Our tyre calculator makes this happen for you. Just type in the metric fields and click convert to inches. It also solves the problem of deciding what tyre you would like to run if you have inch measurements in mind but can't find a company that manufactures that inch size tyre. Just fill in the inch measurements you are looking for and it will calculate and exact metric version of that tyre. There are many more possibilities and choices in metric tyres so the use of a tyre size calculator can come in handy.
+          </p>
+
+          <p data-aos="fade-up" data-aos-delay="150">
+            The tire size comparison calculator takes the measurements of two tyres and compares the diameter, width, sidewall, circumference, and revolutions per mile. Then as a bonus it shows examples of your speedometer reading with the first tyre, and the actual speed you're traveling if you were to install the second tyre. A very useful tyre calculator when searching for tyres that are a different size then stock.
+          </p>
+
+          <p data-aos="fade-up" data-aos-delay="200">
+            A tyre size conversion calculator or tyre diameter calculator are the best ways to get the answers you are looking for. What sets us apart is our tyre suggestion guide. For each tyre size you input our tyre calculator suggests multiple tyre sizes that are with in one inch bigger and smaller of the entered tyre size. Making it as simple as possible to find the tyre that is just right for you.
+          </p>
+
+          <p data-aos="fade-up" data-aos-delay="250">
+            Also browse our tyre categories and deals pages for Jeep tyres, 4X4 tyres, cheap new tyres, all weather tyres, cheap truck tyres, all season tyres, and tyres with free shipping.
+          </p>
+        </article>
+
+        <!-- ====================================================================
+             TYRE SIZE CALCULATOR CHARTS BY WHEEL SIZE
+             ==================================================================== -->
+        <section class="calc-wheel-charts-section" id="wheel-charts-section" data-aos="fade-up" data-aos-duration="750">
+          <div class="calc-charts-head" data-aos="fade-up" data-aos-delay="50">
+            <h2 class="calc-charts-title">Tyre Size Calculator Charts by Wheel Size</h2>
+          </div>
+
+          <div class="calc-charts-card" data-aos="fade-up" data-aos-delay="100">
+            <!-- TABS BAR (13" to 30") -->
+            <div class="calc-wheel-tabs-bar" id="wheel-tabs-bar" role="tablist" aria-label="Wheel Sizes">
+              <button type="button" class="calc-wheel-tab" data-wheel="13">13"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="14">14"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="15">15"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="16">16"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="16.5">16.5"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="17">17"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="18">18"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="19">19"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="20">20"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="21">21"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="22">22"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="23">23"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="24">24"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="26">26"</button>
+              <button type="button" class="calc-wheel-tab active" data-wheel="28">28"</button>
+              <button type="button" class="calc-wheel-tab" data-wheel="30">30"</button>
+            </div>
+
+            <!-- SUBHEADER GREY BAND -->
+            <div class="calc-charts-subhead" id="calc-charts-subhead">
+              Tyre Size Calculator Chart for 28" Wheels
+            </div>
+
+            <!-- CHARTS BODY (Populated dynamically) -->
+            <div class="calc-charts-body" id="calc-charts-body">
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">33" Tire Diameter</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="295" data-a="25" data-r="28">295/25R28</button><span class="calc-chart-equiv"> = 33.8x11.6R28</span></li>
+                </ul>
+              </div>
+
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">37" Tire Diameter</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="325" data-a="35" data-r="28">325/35R28</button><span class="calc-chart-equiv"> = 37x12.8R28</span></li>
+                </ul>
+              </div>
+
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">40" Tire Diameter</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="394" data-a="39" data-r="28">40X15.5R28</button></li>
+                </ul>
+              </div>
+
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">42" Tire Diameter</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="394" data-a="45" data-r="28">42X15.5R28</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================================
+             TYRE SIZE CALCULATOR CHARTS BY TIRE DIAMETER
+             ==================================================================== -->
+        <section class="calc-diam-charts-section" id="diam-charts-section" data-aos="fade-up" data-aos-duration="750">
+          <div class="calc-charts-head" data-aos="fade-up" data-aos-delay="50">
+            <h2 class="calc-charts-title">Tyre Size Calculator Charts by Tire Diameter</h2>
+          </div>
+
+          <div class="calc-charts-card" data-aos="fade-up" data-aos-delay="100">
+            <!-- TABS BAR (21" to 41-54") -->
+            <div class="calc-wheel-tabs-bar" id="diam-tabs-bar" role="tablist" aria-label="Tire Diameters">
+              <button type="button" class="calc-wheel-tab active" data-diam="21">21"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="22">22"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="23">23"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="24">24"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="25">25"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="26">26"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="27">27"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="28">28"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="29">29"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="30">30"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="31">31"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="32">32"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="33">33"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="34">34"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="35">35"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="36">36"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="37">37"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="38">38"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="39">39"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="40">40"</button>
+              <button type="button" class="calc-wheel-tab" data-diam="41-54">41-54"</button>
+            </div>
+
+            <!-- SUBHEADER GREY BAND -->
+            <div class="calc-charts-subhead" id="calc-diam-charts-subhead">
+              21" Diameter Tyre Size Calculation Chart
+            </div>
+
+            <!-- CHARTS BODY (Populated dynamically) -->
+            <div class="calc-charts-body" id="calc-diam-charts-body">
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">13" Wheel Size</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="185" data-a="60" data-r="13">185/60R13</button><span class="calc-chart-equiv"> = 21.7x7.3R13</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="215" data-a="50" data-r="13">215/50R13</button><span class="calc-chart-equiv"> = 21.5X8.5R13</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="225" data-a="45" data-r="13">225/45R13</button><span class="calc-chart-equiv"> = 21x8.9R13</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="225" data-a="50" data-r="13">225/50R13</button><span class="calc-chart-equiv"> = 21.9x8.9R13</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="255" data-a="40" data-r="13">255/40R13</button><span class="calc-chart-equiv"> = 21x10R13</span></li>
+                </ul>
+              </div>
+
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">14" Wheel Size</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="165" data-a="55" data-r="14">165/55R14</button><span class="calc-chart-equiv"> = 21.1X6.5R14</span></li>
+                </ul>
+              </div>
+
+              <div class="calc-chart-col">
+                <div class="calc-chart-col-title">15" Wheel Size</div>
+                <ul class="calc-chart-list">
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="115" data-a="70" data-r="15">115/70R15</button><span class="calc-chart-equiv"> = 21.3X4.5R15</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="125" data-a="70" data-r="15">125/70R15</button><span class="calc-chart-equiv"> = 21.9X4.9R15</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="165" data-a="50" data-r="15">165/50R15</button><span class="calc-chart-equiv"> = 21.5X6.5R15</span></li>
+                  <li class="calc-chart-item"><button type="button" class="calc-chart-size-link" data-w="195" data-a="45" data-r="15">195/45R15</button><span class="calc-chart-equiv"> = 21.9x7.7R15</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand" data-aos="fade-up" data-aos-delay="50">
+          <div class="footer-brand-header">
+            <a class="footer-logo-link" href="index.html" aria-label="Sesco Tyres Home">
+              <img class="footer-logo-img" src="assets/logo.webp" alt="Sesco Tyres Logo" width="88" height="48">
+            </a>
+            <div class="footer-brand-meta">
+              <span class="footer-brand-name">SESCO TYRES</span>
+              <span class="footer-brand-tagline">Drive With Confidence</span>
+            </div>
+          </div>
+          <p class="footer-brand-desc">
+            Uganda's trusted specialists in genuine premium tyres, computerized 3D laser alignment, precision wheel balancing, and professional automotive servicing—ensuring peak performance and safety on every journey.
+          </p>
+          <a class="text-link footer-about-link" href="about.html">More about us &rarr;</a>
+        </div>
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="100">
+          <h4>Explore</h4>
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="services.html">Services</a>
+          <a href="about.html">About Sesco Tyres</a>
+        </div>
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="150">
+          <h4>Customer care</h4>
+          <a href="contact.html">Contact us</a>
+          <a href="faq.html">FAQs</a>
+          <a href="wishlist.html">Your wishlist</a>
+          <a href="cart.html">Your cart</a>
+        </div>
+        <div class="footer-col" data-aos="fade-up" data-aos-delay="200">
+          <h4>Get in touch</h4>
+          <p><i class="fa-solid fa-location-dot"></i> Plot 27 Queens Way, Entebbe Road Kampala, Uganda</p>
+          <p><i class="fa-solid fa-phone"></i> +256-709-828-766</p>
+          <p><i class="fa-solid fa-envelope"></i> info@sescotyres.com</p>
+          <p><i class="fa-solid fa-clock"></i> We're Open: Monday - Saturday, 9:30 am - 6:00 pm</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year"></span> Sesco Tyres. Frontend redesign concept. | Developed by <a href="https://sofdas.com" target="_blank" rel="noopener noreferrer">Sofdas Technologies</a></span>
+        <span>
+          <a href="faq.html">FAQs</a>
+          <a href="contact.html">Contact</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" aria-live="polite"></div>
+
+  <!-- JavaScript Libraries & Modules -->
+  <script src="assets/js/main.js?v=8.7"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="assets/js/aos.js"></script>
+  <script src="assets/js/tyre-calculator.js?v=1.3"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 750,
+        easing: 'ease-out-cubic',
+        once: false,
+        offset: 70
+      });
+    }
+  </script>
+</body>
+
+</html>
+

@@ -41,32 +41,322 @@ final readonly class ItemRepository
         ?string $search = null,
         ?string $category = null
     ): array {
-        $limit = max(1, min(50, $limit));
+        $result = $this->fetchCatalogueItems(
+            limit: $limit,
+            afterId: 0,
+            sampleMode: $sampleMode,
+            search: $search,
+            category: $category
+        );
+
+        return $result['items'];
+    }
+
+    /**
+     * Fetch items from `treads.item` using key-set (cursor-based) pagination
+     * where `i.item_id > $afterId`, with optional brand IDs, product type IDs,
+     * search query, and rim diameter filter.
+     *
+     * @param array<int, int> $brandIds
+     * @param array<int, int> $typeIds
+     * @return array{
+     *     items: array<int, array<string, mixed>>,
+     *     total_matching: int,
+     *     after_id: int,
+     *     next_cursor: int|null,
+     *     last_id: int|null,
+     *     has_more: bool
+     * }
+     */
+    public function fetchCatalogueItems(
+        int $limit = 10,
+        int $afterId = 0,
+        string $sampleMode = 'first10',
+        ?string $search = null,
+        ?string $category = null,
+        array $brandIds = [],
+        array $typeIds = [],
+        ?string $rim = null,
+        ?string $dimension = null
+    ): array {
+        $limit   = max(1, min(100, $limit));
+        $afterId = max(0, $afterId);
+
+        $cleanBrandIds       = array_values(array_unique(array_filter(array_map('intval', $brandIds), static fn (int $v): bool => $v > 0)));
+        $cleanTypeIds        = array_values(array_unique(array_filter(array_map('intval', $typeIds), static fn (int $v): bool => $v > 0)));
+        $searchTrimmed       = $search !== null ? trim($search) : '';
+        $hasSearch           = $searchTrimmed !== '';
+        $cleanRim            = self::normalizeRimFilter($rim);
+        $hasRim              = $cleanRim !== null;
+        $normalizedDimension = self::normalizeDimensionQuery($dimension);
+        $hasDimension        = $normalizedDimension !== null;
+        $hasFilters          = count($cleanBrandIds) > 0 || count($cleanTypeIds) > 0 || $hasSearch || $hasRim || $hasDimension;
 
         $whereClauses = ['1=1'];
         $params       = [];
 
-        if ($search !== null && trim($search) !== '') {
-            $whereClauses[]    = '(i.description LIKE :search OR b.name LIKE :searchBrand OR CAST(i.item_id AS CHAR) = :exactId)';
-            $params[':search']      = '%' . trim($search) . '%';
-            $params[':searchBrand'] = '%' . trim($search) . '%';
-            $params[':exactId']     = trim($search);
+        if (count($cleanBrandIds) > 0) {
+            $placeholders = [];
+            foreach ($cleanBrandIds as $idx => $brandId) {
+                $key            = ':brand_id_' . $idx;
+                $placeholders[] = $key;
+                $params[$key]   = [$brandId, PDO::PARAM_INT];
+            }
+            $whereClauses[] = 'i.item_brand_id IN (' . implode(', ', $placeholders) . ')';
         }
 
-        if ($sampleMode === 'featured' && ($search === null || trim($search) === '')) {
+        if (count($cleanTypeIds) > 0) {
+            $placeholders = [];
+            foreach ($cleanTypeIds as $idx => $typeId) {
+                $key            = ':type_id_' . $idx;
+                $placeholders[] = $key;
+                $params[$key]   = [$typeId, PDO::PARAM_INT];
+            }
+            $whereClauses[] = 'i.item_type_id IN (' . implode(', ', $placeholders) . ')';
+        }
+
+        if ($hasSearch) {
+            $whereClauses[]         = '(i.description LIKE :search OR b.name LIKE :searchBrand OR t.name LIKE :searchType OR CAST(i.item_id AS CHAR) = :exactId)';
+            $params[':search']      = ['%' . $searchTrimmed . '%', PDO::PARAM_STR];
+            $params[':searchBrand'] = ['%' . $searchTrimmed . '%', PDO::PARAM_STR];
+            $params[':searchType']  = ['%' . $searchTrimmed . '%', PDO::PARAM_STR];
+            $params[':exactId']     = [$searchTrimmed, PDO::PARAM_STR];
+        }
+
+        if ($hasDimension && $normalizedDimension !== null) {
+            $whereClauses[]       = "REPLACE(REPLACE(REPLACE(UPPER(i.description), ' ', ''), 'ZR', 'R'), 'R.', 'R') LIKE :dimension";
+            $params[':dimension'] = ['%' . $normalizedDimension . '%', PDO::PARAM_STR];
+        }
+
+        if (!$hasFilters && $sampleMode === 'featured' && $afterId === 0) {
             // Pick a rich, representative 10-item sample across distinct tyre brands with active prices
             $whereClauses[] = 'i.item_id IN (1, 2, 4, 5, 10, 13, 14, 15, 35, 6875)';
         }
 
-        $orderBy = match ($sampleMode) {
-            'random'   => 'RAND()',
-            'featured' => 'FIELD(i.item_id, 4, 5, 10, 35, 6875, 13, 14, 15, 1, 2), i.item_id ASC',
-            default    => 'i.item_id ASC',
-        };
+        $baseWhereSql = implode(' AND ', $whereClauses);
+        $baseSql      = self::getBaseSelectSql();
 
-        $whereSql = implode(' AND ', $whereClauses);
+        // When rim diameter filtering is active, match extracted rim diameter using key-set ID cursor (> $afterId)
+        if ($hasRim) {
+            $scanSql = <<<SQL
+                SELECT i.item_id, i.description
+                FROM `item` i
+                LEFT JOIN `item_brand` b ON b.item_brand_id = i.item_brand_id
+                LEFT JOIN `item_type` t ON t.item_type_id = i.item_type_id
+                WHERE {$baseWhereSql}
+                ORDER BY i.item_id ASC
+            SQL;
+            $scanStmt = $this->pdo->prepare($scanSql);
+            foreach ($params as $key => [$val, $type]) {
+                $scanStmt->bindValue($key, $val, $type);
+            }
+            $scanStmt->execute();
 
-        $sql = <<<SQL
+            $allMatchingIds = [];
+            while ($candidate = $scanStmt->fetch(PDO::FETCH_ASSOC)) {
+                if (self::extractRimDiameter((string) ($candidate['description'] ?? '')) === $cleanRim) {
+                    $allMatchingIds[] = (int) $candidate['item_id'];
+                }
+            }
+
+            $totalMatching = count($allMatchingIds);
+            $remainingIds  = array_values(array_filter(
+                $allMatchingIds,
+                static fn (int $id): bool => $id > $afterId
+            ));
+
+            $hasMore = count($remainingIds) > $limit;
+            $pageIds = array_slice($remainingIds, 0, $limit);
+            $rows    = [];
+
+            if (count($pageIds) > 0) {
+                $idPlaceholders = [];
+                $idParams       = [];
+                foreach ($pageIds as $idx => $id) {
+                    $key              = ':page_id_' . $idx;
+                    $idPlaceholders[] = $key;
+                    $idParams[$key]   = $id;
+                }
+                $inSql   = implode(', ', $idPlaceholders);
+                $pageSql = <<<SQL
+                    {$baseSql}
+                    WHERE i.item_id IN ({$inSql}) AND i.item_id > :after_id
+                    ORDER BY i.item_id ASC
+                SQL;
+                $pageStmt = $this->pdo->prepare($pageSql);
+                foreach ($idParams as $key => $val) {
+                    $pageStmt->bindValue($key, $val, PDO::PARAM_INT);
+                }
+                $pageStmt->bindValue(':after_id', $afterId, PDO::PARAM_INT);
+                $pageStmt->execute();
+                $rows = $pageStmt->fetchAll();
+            }
+        } else {
+            $isRandomMode = !$hasFilters && $sampleMode === 'random' && $afterId === 0;
+            $orderBy      = match (true) {
+                $isRandomMode                            => 'RAND()',
+                !$hasFilters && $sampleMode === 'featured' => 'FIELD(i.item_id, 4, 5, 10, 35, 6875, 13, 14, 15, 1, 2), i.item_id ASC',
+                default                                  => 'i.item_id ASC',
+            };
+
+            $countSql = <<<SQL
+                SELECT COUNT(*)
+                FROM `item` i
+                LEFT JOIN `item_brand` b ON b.item_brand_id = i.item_brand_id
+                LEFT JOIN `item_type` t ON t.item_type_id = i.item_type_id
+                WHERE {$baseWhereSql}
+            SQL;
+            $countStmt = $this->pdo->prepare($countSql);
+            foreach ($params as $key => [$val, $type]) {
+                $countStmt->bindValue($key, $val, $type);
+            }
+            $countStmt->execute();
+            $totalMatching = (int) $countStmt->fetchColumn();
+
+            $keysetWhereClauses = $whereClauses;
+            $keysetParams       = $params;
+            if (!$isRandomMode && $afterId > 0) {
+                $keysetWhereClauses[]      = 'i.item_id > :after_id';
+                $keysetParams[':after_id'] = [$afterId, PDO::PARAM_INT];
+            }
+            $keysetWhereSql = implode(' AND ', $keysetWhereClauses);
+            $fetchLimit     = $isRandomMode ? $limit : ($limit + 1);
+
+            $sql = <<<SQL
+                {$baseSql}
+                WHERE {$keysetWhereSql}
+                ORDER BY {$orderBy}
+                LIMIT :limit
+            SQL;
+
+            $stmt = $this->pdo->prepare($sql);
+            foreach ($keysetParams as $key => [$val, $type]) {
+                $stmt->bindValue($key, $val, $type);
+            }
+            $stmt->bindValue(':limit', $fetchLimit, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $rows = $stmt->fetchAll();
+
+            if (!$hasFilters && $sampleMode === 'featured' && $afterId === 0 && count($rows) === 0) {
+                $totalMatching = (int) $this->pdo->query('SELECT COUNT(*) FROM `item`')->fetchColumn();
+                $fallbackSql   = <<<SQL
+                    {$baseSql}
+                    WHERE i.item_id > 0
+                    ORDER BY i.item_id ASC
+                    LIMIT :limit
+                SQL;
+                $fallbackStmt = $this->pdo->prepare($fallbackSql);
+                $fallbackStmt->bindValue(':limit', $limit + 1, PDO::PARAM_INT);
+                $fallbackStmt->execute();
+                $rows = $fallbackStmt->fetchAll();
+            }
+
+            if ($isRandomMode) {
+                $hasMore = false;
+            } else {
+                $hasMore = count($rows) > $limit;
+                if ($hasMore) {
+                    $rows = array_slice($rows, 0, $limit);
+                }
+            }
+        }
+
+        $enriched = [];
+        foreach ($rows as $index => $row) {
+            $item = self::enrichItemRow($row, $index);
+            if ($category !== null && $category !== '' && $category !== 'all' && $item['category'] !== $category) {
+                continue;
+            }
+            $enriched[] = $item;
+        }
+
+        $lastItem   = count($enriched) > 0 ? $enriched[count($enriched) - 1] : null;
+        $lastId     = $lastItem !== null ? (int) $lastItem['item_id'] : null;
+        $nextCursor = ($hasMore && $lastId !== null) ? $lastId : null;
+
+        return [
+            'items'          => array_values($enriched),
+            'total_matching' => $totalMatching,
+            'after_id'       => $afterId,
+            'next_cursor'    => $nextCursor,
+            'last_id'        => $lastId,
+            'has_more'       => $hasMore,
+        ];
+    }
+
+    /**
+     * Fetch specific items by numeric IDs (or `item_<id>` strings) in the requested order.
+     *
+     * @param array<int, int|string> $itemIds
+     * @return array<int, array<string, mixed>>
+     */
+    public function fetchItemsByIds(array $itemIds): array
+    {
+        $cleanIds = [];
+        foreach ($itemIds as $raw) {
+            if (is_int($raw)) {
+                $id = $raw;
+            } elseif (preg_match('/^(?:item_)?(\d+)$/i', trim((string) $raw), $m)) {
+                $id = (int) $m[1];
+            } else {
+                $id = 0;
+            }
+            if ($id > 0 && !in_array($id, $cleanIds, true)) {
+                $cleanIds[] = $id;
+            }
+            if (count($cleanIds) >= 50) {
+                break;
+            }
+        }
+
+        if (count($cleanIds) === 0) {
+            return [];
+        }
+
+        $placeholders = implode(', ', array_fill(0, count($cleanIds), '?'));
+        $baseSql      = self::getBaseSelectSql();
+        $sql          = "{$baseSql} WHERE i.item_id IN ({$placeholders})";
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($cleanIds as $idx => $id) {
+            $stmt->bindValue($idx + 1, $id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        $byId = [];
+        foreach ($stmt->fetchAll() as $index => $row) {
+            $item = self::enrichItemRow($row, $index);
+            $byId[(int) $item['item_id']] = $item;
+        }
+
+        $ordered = [];
+        foreach ($cleanIds as $id) {
+            if (isset($byId[$id])) {
+                $ordered[] = $byId[$id];
+            }
+        }
+
+        return $ordered;
+    }
+
+    /**
+     * Fetch a single item by its numeric `item_id`.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function fetchItemById(int $itemId): ?array
+    {
+        if ($itemId <= 0) {
+            return null;
+        }
+        $items = $this->fetchItemsByIds([$itemId]);
+        return $items[0] ?? null;
+    }
+
+    private static function getBaseSelectSql(): string
+    {
+        return <<<SQL
             SELECT
                 i.item_id,
                 i.date,
@@ -99,30 +389,7 @@ final readonly class ItemRepository
                 FROM `item_image`
                 GROUP BY `item_id`
             ) img ON img.item_id = i.item_id
-            WHERE {$whereSql}
-            ORDER BY {$orderBy}
-            LIMIT :limit
         SQL;
-
-        $stmt = $this->pdo->prepare($sql);
-        foreach ($params as $key => $val) {
-            $stmt->bindValue($key, $val, PDO::PARAM_STR);
-        }
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $rows = $stmt->fetchAll();
-
-        $enriched = [];
-        foreach ($rows as $index => $row) {
-            $item = self::enrichItemRow($row, $index);
-            if ($category !== null && $category !== '' && $category !== 'all' && $item['category'] !== $category) {
-                continue;
-            }
-            $enriched[] = $item;
-        }
-
-        return array_values($enriched);
     }
 
     /**
@@ -143,6 +410,175 @@ final readonly class ItemRepository
             'total_types'  => $totalTypes,
             'priced_items' => $pricedItems,
         ];
+    }
+
+    /**
+     * Fetch every brand from `item_brand`, every product type from `item_type`,
+     * and every distinct rim diameter from `item`, with live product counts.
+     *
+     * @return array{
+     *     brands: array<int, array<string, mixed>>,
+     *     types: array<int, array<string, mixed>>,
+     *     rims: array<int, array<string, mixed>>
+     * }
+     */
+    public function getCatalogueFilters(): array
+    {
+        $brandRows = $this->pdo->query(<<<'SQL'
+            SELECT
+                b.item_brand_id,
+                TRIM(b.name) AS name,
+                b.item_type_id,
+                COUNT(i.item_id) AS item_count
+            FROM `item_brand` b
+            LEFT JOIN `item` i ON i.item_brand_id = b.item_brand_id
+            GROUP BY b.item_brand_id, b.name, b.item_type_id
+            ORDER BY item_count DESC, TRIM(b.name) ASC, b.item_brand_id ASC
+        SQL)->fetchAll();
+
+        $nameCounts = [];
+        foreach ($brandRows as $r) {
+            $norm = strtoupper((string) ($r['name'] ?? ''));
+            $nameCounts[$norm] = ($nameCounts[$norm] ?? 0) + 1;
+        }
+
+        $brands = [];
+        foreach ($brandRows as $r) {
+            $name = (string) ($r['name'] ?? '');
+            $norm = strtoupper($name);
+            $id   = (int) ($r['item_brand_id'] ?? 0);
+            $brands[] = [
+                'id'           => $id,
+                'name'         => $name,
+                'label'        => ($nameCounts[$norm] ?? 0) > 1 ? "{$name} (#{$id})" : $name,
+                'item_type_id' => (int) ($r['item_type_id'] ?? 1),
+                'item_count'   => (int) ($r['item_count'] ?? 0),
+            ];
+        }
+
+        $typeRows = $this->pdo->query(<<<'SQL'
+            SELECT
+                t.item_type_id,
+                TRIM(t.name) AS name,
+                t.item_category_id,
+                COUNT(i.item_id) AS item_count
+            FROM `item_type` t
+            LEFT JOIN `item` i ON i.item_type_id = t.item_type_id
+            GROUP BY t.item_type_id, t.name, t.item_category_id
+            ORDER BY item_count DESC, TRIM(t.name) ASC, t.item_type_id ASC
+        SQL)->fetchAll();
+
+        $types = [];
+        foreach ($typeRows as $r) {
+            $types[] = [
+                'id'               => (int) ($r['item_type_id'] ?? 0),
+                'name'             => (string) ($r['name'] ?? ''),
+                'item_category_id' => (int) ($r['item_category_id'] ?? 1),
+                'item_count'       => (int) ($r['item_count'] ?? 0),
+            ];
+        }
+
+        $descRows = $this->pdo->query('SELECT `description` FROM `item`')->fetchAll(PDO::FETCH_COLUMN);
+        $rimCounts = [];
+        foreach ($descRows as $desc) {
+            $rim = self::extractRimDiameter((string) $desc);
+            if ($rim !== null) {
+                $rimCounts[$rim] = ($rimCounts[$rim] ?? 0) + 1;
+            }
+        }
+        uksort(
+            $rimCounts,
+            static fn (string $a, string $b): int => (float) substr($a, 1) <=> (float) substr($b, 1)
+        );
+
+        $rims = [];
+        foreach ($rimCounts as $rimLabel => $count) {
+            $rims[] = [
+                'rim'        => $rimLabel,
+                'label'      => $rimLabel,
+                'diameter'   => (float) substr($rimLabel, 1),
+                'item_count' => $count,
+            ];
+        }
+
+        return [
+            'brands' => $brands,
+            'types'  => $types,
+            'rims'   => $rims,
+        ];
+    }
+
+    /**
+     * Extract normalized radial rim diameter token (e.g. 'R15', 'R17.5', 'R22.5') from item description.
+     */
+    public static function extractRimDiameter(string $description): ?string
+    {
+        $norm = static function (string $s): string {
+            if (str_contains($s, '.')) {
+                return rtrim(rtrim($s, '0'), '.');
+            }
+            $trimmed = ltrim($s, '0');
+            return $trimmed !== '' ? $trimmed : '0';
+        };
+
+        if (preg_match('/\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?\s*Z?R\.?\s*(\d{1,2}(?:\.\d)?)(?=[A-Z\s\/\-]|$)/i', $description, $m)) {
+            return 'R' . $norm($m[1]);
+        }
+        if (preg_match('/\b\d+(?:\.\d+)?(?:\s*[X\/]\s*\d+(?:\.\d+)?)?\s*Z?R\.?\s*(\d{1,2}(?:\.\d)?)(?=[A-Z\s\/\-]|$)/i', $description, $m)) {
+            return 'R' . $norm($m[1]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Normalize a rim filter string (e.g. '16', 'r16', 'R17.5') into canonical 'R16' / 'R17.5'.
+     */
+    public static function normalizeRimFilter(?string $rim): ?string
+    {
+        if ($rim === null) {
+            return null;
+        }
+        $trimmed = strtoupper(trim($rim));
+        if ($trimmed === '') {
+            return null;
+        }
+        if (preg_match('/^R?\s*(\d{1,2}(?:\.\d)?)$/', $trimmed, $m)) {
+            $val = $m[1];
+            if (str_contains($val, '.')) {
+                $val = rtrim(rtrim($val, '0'), '.');
+            } else {
+                $val = ltrim($val, '0');
+                if ($val === '') {
+                    $val = '0';
+                }
+            }
+            return 'R' . $val;
+        }
+
+        return null;
+    }
+
+    /**
+     * Normalize a tyre dimension query string (e.g. "185/70 R13", "185/70R13", "245/45 ZR18")
+     * into a canonical uppercase token without spaces for matching against item descriptions.
+     */
+    private static function normalizeDimensionQuery(?string $dimension): ?string
+    {
+        if ($dimension === null) {
+            return null;
+        }
+
+        $clean = strtoupper(trim($dimension));
+        if ($clean === '') {
+            return null;
+        }
+
+        $clean = preg_replace('/\b(\d{2,3})\s+(\d{2})(?=\s*(?:Z?R|\/|\s|$))/i', '$1/$2', $clean) ?? $clean;
+        $clean = str_replace([' ', "\t", "\r", "\n", '%', '_'], '', $clean);
+        $clean = str_replace(['ZR', 'R.'], 'R', $clean);
+
+        return $clean !== '' ? $clean : null;
     }
 
     /**
@@ -170,23 +606,24 @@ final readonly class ItemRepository
             $brandName = $parts[0] ?? 'SESCO';
         }
 
-        // Parse tyre size (e.g. 185/70R13, 205/65R16, 255/70R15C, 225/55ZR17, 9.5R17.5, 315/80R22.5)
+        // Parse tyre size (e.g. 185/70R13, 205/65R16, 255/70R15C, 225/55ZR17, 9.5R17.5, 315/80R22.5, 12.5/80R18)
         $parsedSize      = 'Standard Fit';
         $parsedLoadSpeed = 'Certified';
         $parsedPattern   = '';
-        $rimDiameter     = 15.0;
+        $extractedRim    = self::extractRimDiameter($description);
+        $rimDiameter     = $extractedRim !== null ? (float) substr($extractedRim, 1) : 15.0;
         $widthMm         = 205;
 
-        if (preg_match('/(\d{3})\s*\/\s*(\d{2})\s*(Z?R)\s*(\d{2}(?:\.\d)?[A-Z]*)/i', $description, $m)) {
+        if (preg_match('/(\d{3})\s*\/\s*(\d{2})\s*(Z?R)\s*\.?\s*(\d{1,2}(?:\.\d)?[A-Z]*)/i', $description, $m)) {
             $widthMm     = (int) $m[1];
             $profile     = (int) $m[2];
             $radial      = strtoupper($m[3]);
             $rimStr      = strtoupper($m[4]);
             $rimDiameter = (float) preg_replace('/[^0-9.]/', '', $rimStr);
             $parsedSize  = sprintf('%d/%d %s%s', $widthMm, $profile, $radial, $rimStr);
-        } elseif (preg_match('/(\d{2,4}(?:\.\d{1,2})?)\s*R\s*(\d{2}(?:\.\d)?[A-Z]*)/i', $description, $m)) {
-            $rimDiameter = (float) preg_replace('/[^0-9.]/', '', $m[2]);
-            $parsedSize  = strtoupper($m[1] . ' R' . $m[2]);
+        } elseif (preg_match('/(\d{1,4}(?:\.\d{1,2})?(?:\s*[\/X]\s*\d+(?:\.\d+)?)?)\s*(Z?R)\s*\.?\s*(\d{1,2}(?:\.\d)?[A-Z]*)/i', $description, $m)) {
+            $rimDiameter = (float) preg_replace('/[^0-9.]/', '', $m[3]);
+            $parsedSize  = strtoupper(preg_replace('/\s+/', '', $m[1]) . ' ' . $m[2] . $m[3]);
         }
 
         // Extract Load/Speed Index or Ply Rating (e.g. 86H, 95H, 112/110S, 18PR, 20PR, 94W)
@@ -279,6 +716,7 @@ final readonly class ItemRepository
             'unit_name'        => $unitName,
             'item_unit_id'     => (int) ($row['item_unit_id'] ?? 1),
             'size'             => $parsedSize,
+            'rim'              => $extractedRim,
             'load_speed'       => $parsedLoadSpeed,
             'pattern'          => $parsedPattern !== '' ? $parsedPattern : 'Standard Tread',
             'price'            => $sellingPrice,
@@ -298,60 +736,6 @@ final readonly class ItemRepository
             'stock'            => $restockPt > 0 ? "Active Stock (Reorder Pt: {$restockPt})" : 'In Stock · Ready to Fit',
             'warranty'         => 'Manufacturer Warranty',
         ];
-    }
-
-    /**
-     * Exact 10-item sample directly from `treads.sql` (`item` + `item_brand` + `price_list`)
-     * used as a seamless fallback if the local MySQL service is not yet started.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    public static function getSqlDumpSampleItems(string $sampleMode = 'first10'): array
-    {
-        $first10Rows = [
-            ['item_id' => 1,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 41, 'item_brand_id' => 3,  'description' => 'RODEO 185/70R13/86H/RP113',    'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',     'type_name' => 'SERVICE', 'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 150000],
-            ['item_id' => 2,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 41, 'item_brand_id' => 3,  'description' => 'RODEO 185/70R14/86H RP101',    'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',     'type_name' => 'SERVICE', 'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 160000],
-            ['item_id' => 3,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 41, 'item_brand_id' => 34, 'description' => 'COMFORSER 195/65R15/91H',      'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'COMFORSER', 'type_name' => 'SERVICE', 'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 210000],
-            ['item_id' => 4,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 3,  'description' => 'RODEO 205/65R16/95H',          'restock_point' => '1', 'item_unit_id' => 3, 'item_category_id' => 1, 'brand_name' => 'RODEO',     'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 240000],
-            ['item_id' => 5,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 7,  'description' => 'COUGAR 205/60R16/92H',         'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'COUGAR',    'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 240000],
-            ['item_id' => 6,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 3,  'description' => 'RODEO 205/70R15/95T/RP101',    'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',     'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 250000],
-            ['item_id' => 7,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 3,  'description' => 'RODEO 215/60R16/95H/RP101',    'restock_point' => '4', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',     'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 260000],
-            ['item_id' => 9,  'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 5,  'description' => 'HABILEAD 255/70R15C/112/110S', 'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'HABILEAD',  'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 490000],
-            ['item_id' => 10, 'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 5,  'description' => 'HABILEAD 255/70R16/111H/RS21', 'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'HABILEAD',  'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 480000],
-            ['item_id' => 11, 'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 5,  'description' => 'HABILEAD 245/70R16/111H/XL',   'restock_point' => '2', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'HABILEAD',  'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 460000],
-        ];
-
-        $featured10Rows = [
-            ['item_id' => 4,    'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 3,  'description' => 'RODEO 205/65R16/95H',             'restock_point' => '1', 'item_unit_id' => 3, 'item_category_id' => 1, 'brand_name' => 'RODEO',    'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 240000],
-            ['item_id' => 5,    'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 7,  'description' => 'COUGAR 205/60R16/92H',            'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'COUGAR',   'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 240000],
-            ['item_id' => 10,   'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 5,  'description' => 'HABILEAD 255/70R16/111H/RS21',    'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'HABILEAD', 'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 480000],
-            ['item_id' => 35,   'date' => '2020-09-25 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 12, 'description' => 'DUNLOP 205/55ZR16/94W',           'restock_point' => '2', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'DUNLOP',   'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 280000],
-            ['item_id' => 6875, 'date' => '2020-11-16 19:15:37', 'item_type_id' => 1,  'item_brand_id' => 2,  'description' => 'BEARWAY 265/65R17',               'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'BEARWAY',  'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 650000],
-            ['item_id' => 13,   'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 51, 'description' => 'HIFLY 215/75R15/111T/AT',         'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'HIFLY',    'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 190000],
-            ['item_id' => 14,   'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 83, 'description' => 'FARROAD 225/55ZR17/101W/XL',      'restock_point' => '2', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'FARROAD',  'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 320000],
-            ['item_id' => 15,   'date' => '2020-09-22 00:00:00', 'item_type_id' => 1,  'item_brand_id' => 4,  'description' => 'TITONG 9.5R17.5/18PR/HS928/MD',   'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'TITONG',   'type_name' => 'TYRE',    'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 640000],
-            ['item_id' => 1,    'date' => '2020-09-22 00:00:00', 'item_type_id' => 41, 'item_brand_id' => 3,  'description' => 'RODEO 185/70R13/86H/RP113',       'restock_point' => '1', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',    'type_name' => 'SERVICE', 'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 150000],
-            ['item_id' => 2,    'date' => '2020-09-22 00:00:00', 'item_type_id' => 41, 'item_brand_id' => 3,  'description' => 'RODEO 185/70R14/86H RP101',       'restock_point' => '8', 'item_unit_id' => 1, 'item_category_id' => 1, 'brand_name' => 'RODEO',    'type_name' => 'SERVICE', 'unit_name' => 'Pieces', 'unit_symbol' => 'Pc(s)', 'category_name' => 'Sales', 'selling_price' => 160000],
-        ];
-
-        $sourceRows = $sampleMode === 'featured' ? $featured10Rows : $first10Rows;
-        if ($sampleMode === 'random') {
-            $merged = array_merge($first10Rows, $featured10Rows);
-            $unique = [];
-            foreach ($merged as $r) {
-                $unique[$r['item_id']] = $r;
-            }
-            $sourceRows = array_values($unique);
-            shuffle($sourceRows);
-            $sourceRows = array_slice($sourceRows, 0, 10);
-        }
-
-        $result = [];
-        foreach ($sourceRows as $idx => $row) {
-            $result[] = self::enrichItemRow($row, $idx);
-        }
-
-        return $result;
     }
 }
 

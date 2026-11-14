@@ -68,47 +68,352 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // === FORM SUBMISSION WITH LOADING & SUCCESS ANIMATION ===
-  const form = document.querySelector('[data-demo-form]');
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const submitBtn = form.querySelector('.btn-primary');
-      const btnText = submitBtn.querySelector('.btn-text');
-      const btnLoader = submitBtn.querySelector('.btn-loader');
-      const formMessage = form.querySelector('.form-message');
-      const successAnimation = form.querySelector('.form-success-animation');
-      
-      // Show loading state
-      submitBtn.disabled = true;
-      btnText.style.display = 'none';
-      btnLoader.style.display = 'inline-flex';
-      
-      // Simulate form submission
-      setTimeout(() => {
-        // Hide loading
-        btnLoader.style.display = 'none';
-        
-        // Hide form fields
-        form.querySelector('.form-grid').style.display = 'none';
-        submitBtn.style.display = 'none';
-        
-        // Show success animation
-        successAnimation.style.display = 'block';
-        
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          form.reset();
-          successAnimation.style.display = 'none';
-          form.querySelector('.form-grid').style.display = 'grid';
-          submitBtn.style.display = 'inline-flex';
-          btnText.style.display = 'inline';
-          submitBtn.disabled = false;
-        }, 3000);
-      }, 2000);
+  // === INQUIRY FORM VALIDATION, PROGRESS & SUBMISSION ===
+  function isContactFieldFilledValid(input) {
+    const val = String(input.value || '').trim();
+    if (!val) return false;
+    if (input.classList.contains('is-invalid') || input.classList.contains('error')) return false;
+    if (input.name === 'name') return val.length >= 2 && val.length <= 100;
+    if (input.name === 'phone') {
+      return typeof window.isValidSescoContactNumber === 'function'
+        ? window.isValidSescoContactNumber(val)
+        : /^[+]?[0-9]{7,15}$/.test(val.replace(/[\s\-\(\)]/g, ''));
+    }
+    if (input.name === 'vehicle') return val.length >= 2 && val.length <= 120;
+    if (input.name === 'message') return val.length >= 10 && val.length <= 500;
+    return input.checkValidity();
+  }
+
+  function pulseFieldValid(el) {
+    if (!el || typeof el.animate !== 'function') return;
+    el.animate([
+      { boxShadow: '0 0 0 0 rgba(16, 185, 129, 0.4)' },
+      { boxShadow: '0 0 0 10px rgba(16, 185, 129, 0)' }
+    ], {
+      duration: 500,
+      easing: 'ease-out'
     });
   }
+
+  function focusFirstInvalidElement(el) {
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (typeof el.animate === 'function') {
+      el.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-10px)' },
+        { transform: 'translateX(10px)' },
+        { transform: 'translateX(-10px)' },
+        { transform: 'translateX(10px)' },
+        { transform: 'translateX(0)' }
+      ], {
+        duration: 500,
+        easing: 'ease-in-out'
+      });
+    }
+    el.focus();
+  }
+
+  function resetInquiryFormState(targetForm, updateProgressFn, charCounterEl) {
+    targetForm.reset();
+    if (window.jQuery) {
+      const $targetForm = window.jQuery(targetForm);
+      const validator = $targetForm.data('validator');
+      if (validator) {
+        validator.resetForm();
+      }
+      $targetForm
+        .find('.is-invalid, .error, .is-valid, .valid, .field-error')
+        .removeClass('is-invalid error is-valid valid field-error');
+    }
+    targetForm.querySelectorAll('.field').forEach(fieldEl => {
+      fieldEl.classList.remove('field-has-content', 'field-focused');
+    });
+    targetForm.querySelectorAll('input, select, textarea').forEach(ctrl => {
+      ctrl.style.borderColor = '';
+    });
+    const formMessage = targetForm.querySelector('.form-message');
+    if (formMessage) {
+      formMessage.style.display = 'none';
+      formMessage.textContent = '';
+    }
+    if (charCounterEl) {
+      charCounterEl.textContent = '0 / 500 characters';
+      charCounterEl.style.opacity = '0';
+      charCounterEl.style.color = '#687789';
+    }
+    if (typeof updateProgressFn === 'function') {
+      updateProgressFn();
+    }
+  }
+
+  function submitInquiryForm(targetForm, updateProgressFn, charCounterEl) {
+    const submitBtn = targetForm.querySelector('.btn-primary');
+    const btnText = submitBtn?.querySelector('.btn-text');
+    const btnLoader = submitBtn?.querySelector('.btn-loader');
+    const formGrid = targetForm.querySelector('.form-grid');
+    const formMessage = targetForm.querySelector('.form-message');
+    const successAnimation = targetForm.querySelector('.form-success-animation');
+    if (!submitBtn || submitBtn.disabled) return;
+
+    if (formMessage) {
+      formMessage.style.display = 'none';
+      formMessage.textContent = '';
+    }
+
+    submitBtn.disabled = true;
+    if (btnText) btnText.style.display = 'none';
+    if (btnLoader) btnLoader.style.display = 'inline-flex';
+
+    setTimeout(() => {
+      if (btnLoader) btnLoader.style.display = 'none';
+      if (formGrid) formGrid.style.display = 'none';
+      submitBtn.style.display = 'none';
+      if (successAnimation) successAnimation.style.display = 'block';
+
+      setTimeout(() => {
+        resetInquiryFormState(targetForm, updateProgressFn, charCounterEl);
+        if (successAnimation) successAnimation.style.display = 'none';
+        if (formGrid) formGrid.style.display = 'grid';
+        submitBtn.style.display = 'inline-flex';
+        if (btnText) btnText.style.display = 'inline';
+        submitBtn.disabled = false;
+      }, 3000);
+    }, 2000);
+  }
+
+  function initInquiryForm() {
+    const form = document.getElementById('contactInquiryForm') || document.querySelector('[data-demo-form]');
+    if (!form) return;
+
+    form.dataset.advancedHandled = 'true';
+
+    // Character counter on inquiry message
+    let charCounterEl = null;
+    const textarea = form.querySelector('textarea[name="message"]');
+    if (textarea) {
+      charCounterEl = document.createElement('div');
+      charCounterEl.className = 'char-counter';
+      charCounterEl.style.cssText = `
+        font-family: 'Nunito Sans', ui-sans-serif, sans-serif;
+        text-align: right;
+        font-size: 11px;
+        color: #687789;
+        margin-top: 5px;
+        font-weight: 600;
+        opacity: 0;
+        transition: opacity 0.3s ease, color 0.3s ease;
+      `;
+      textarea.setAttribute('maxlength', '500');
+      textarea.parentElement.appendChild(charCounterEl);
+
+      textarea.addEventListener('input', function() {
+        const length = this.value.length;
+        const maxLength = 500;
+        charCounterEl.textContent = `${length} / ${maxLength} characters`;
+        charCounterEl.style.opacity = length > 0 ? '1' : '0';
+        if (length > maxLength * 0.9) {
+          charCounterEl.style.color = '#dc2626';
+        } else if (length > maxLength * 0.7) {
+          charCounterEl.style.color = '#d97706';
+        } else {
+          charCounterEl.style.color = '#10b981';
+        }
+      });
+    }
+
+    // Form progress indicator bar
+    const formInputs = form.querySelectorAll('input, select, textarea');
+    const progressBar = document.createElement('div');
+    progressBar.className = 'form-scroll-progress';
+    progressBar.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #38bdf8, #0891b2, #163687);
+      width: 0%;
+      transition: width 0.3s ease;
+      z-index: 10;
+      border-radius: 0;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    `;
+    form.style.position = 'relative';
+    form.insertBefore(progressBar, form.firstChild);
+
+    const updateFormProgress = () => {
+      const totalFields = formInputs.length || 1;
+      const filledFields = Array.from(formInputs).filter(isContactFieldFilledValid).length;
+      const progress = (filledFields / totalFields) * 100;
+      progressBar.style.width = progress + '%';
+
+      if (progress === 100) {
+        progressBar.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.8)';
+        progressBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+      } else {
+        progressBar.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.5)';
+        progressBar.style.background = 'linear-gradient(90deg, #38bdf8, #0891b2, #163687)';
+      }
+    };
+
+    formInputs.forEach(input => {
+      input.addEventListener('input', function() {
+        this.parentElement.classList.toggle('field-has-content', this.value.length > 0);
+        updateFormProgress();
+      });
+      input.addEventListener('change', updateFormProgress);
+      input.addEventListener('blur', function() {
+        updateFormProgress();
+        if (window.jQuery && window.jQuery(form).data('validator')) return;
+        if (this.value && this.checkValidity()) {
+          this.style.borderColor = '#10b981';
+          pulseFieldValid(this);
+        }
+      });
+    });
+
+    // Attach jQuery Validation when jQuery + plugin are available
+    if (window.jQuery && typeof window.jQuery.fn.validate === 'function') {
+      const $ = window.jQuery;
+      const $form = $(form);
+      if (typeof window.registerSescoContactMethod === 'function') {
+        window.registerSescoContactMethod($);
+      }
+      const trimNormalizer = function(val) { return $.trim(val); };
+      const phoneRules = {
+        required: false,
+        normalizer: trimNormalizer
+      };
+      if ($.validator && $.validator.methods && $.validator.methods.sescoContact) {
+        phoneRules.sescoContact = true;
+      }
+
+      $form.validate({
+        errorElement: 'span',
+        errorClass: 'contact-field-error',
+        validClass: 'is-valid',
+        ignore: [],
+        rules: {
+          name: {
+            required: true,
+            minlength: 2,
+            maxlength: 100,
+            normalizer: trimNormalizer
+          },
+          email: {
+            required: true,
+            email: true,
+            maxlength: 120,
+            normalizer: trimNormalizer
+          },
+          phone: phoneRules,
+          subject: {
+            required: true
+          },
+          vehicle: {
+            required: false,
+            minlength: 2,
+            maxlength: 120,
+            normalizer: trimNormalizer
+          },
+          message: {
+            required: true,
+            minlength: 10,
+            maxlength: 500,
+            normalizer: trimNormalizer
+          }
+        },
+        messages: {
+          name: {
+            required: 'Please enter your full name.',
+            minlength: 'Name must be at least 2 characters.',
+            maxlength: 'Name cannot exceed 100 characters.'
+          },
+          email: {
+            required: 'Please enter your email address.',
+            email: 'Please enter a valid email address.',
+            maxlength: 'Email address cannot exceed 120 characters.'
+          },
+          phone: {
+            sescoContact: 'Please enter a valid phone number (at least 7 digits).'
+          },
+          subject: {
+            required: 'Please select what we can help you with.'
+          },
+          vehicle: {
+            minlength: 'Vehicle or tyre size must be at least 2 characters.',
+            maxlength: 'Vehicle or tyre size cannot exceed 120 characters.'
+          },
+          message: {
+            required: 'Please enter your message.',
+            minlength: 'Please write at least 10 characters in your message.',
+            maxlength: 'Message cannot exceed 500 characters.'
+          }
+        },
+        highlight: function(element, _errorClass, validClass) {
+          element.style.borderColor = '';
+          $(element).addClass('is-invalid error').removeClass(validClass);
+          updateFormProgress();
+        },
+        unhighlight: function(element, _errorClass, validClass) {
+          const $el = $(element);
+          const wasValid = $el.hasClass(validClass);
+          element.style.borderColor = '';
+          $el.removeClass('is-invalid error field-error');
+          if ($.trim($el.val()) !== '') {
+            $el.addClass(validClass);
+            if (!wasValid) pulseFieldValid(element);
+          } else {
+            $el.removeClass(validClass);
+          }
+          updateFormProgress();
+        },
+        errorPlacement: function(error, element) {
+          error.addClass('contact-field-error');
+          error.insertAfter(element);
+        },
+        invalidHandler: function(_event, validator) {
+          const formMessage = form.querySelector('.form-message');
+          if (formMessage) {
+            formMessage.style.display = 'none';
+            formMessage.textContent = '';
+          }
+          if (validator.errorList && validator.errorList.length > 0) {
+            focusFirstInvalidElement(validator.errorList[0].element);
+          }
+        },
+        submitHandler: function(submittedForm, event) {
+          if (event) event.preventDefault();
+          submitInquiryForm(submittedForm, updateFormProgress, charCounterEl);
+          return false;
+        }
+      });
+
+      $form.find('select').on('change', function() {
+        if ($form.data('validator')) {
+          $(this).valid();
+        }
+      });
+      return;
+    }
+
+    // Fallback when jQuery / jQuery Validation CDN is unreachable offline
+    form.addEventListener('invalid', function(e) {
+      e.preventDefault();
+      focusFirstInvalidElement(form.querySelector(':invalid'));
+    }, true);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        focusFirstInvalidElement(form.querySelector(':invalid'));
+        return;
+      }
+      submitInquiryForm(form, updateFormProgress, charCounterEl);
+    });
+  }
+
+  initInquiryForm();
   
   // === CUSTOM TOOLTIPS ===
   const tooltip = document.getElementById('custom-tooltip');
@@ -301,81 +606,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // === FORM FIELD VALIDATION ANIMATION ===
-  const formInputs = document.querySelectorAll('.form-panel input, .form-panel select, .form-panel textarea');
-  formInputs.forEach(input => {
-    // Add success checkmark on valid input
-    input.addEventListener('blur', function() {
-      if (this.value && this.checkValidity()) {
-        this.style.borderColor = '#10b981';
-        
-        // Add success pulse
-        this.animate([
-          { boxShadow: '0 0 0 0 rgba(16, 185, 129, 0.4)' },
-          { boxShadow: '0 0 0 10px rgba(16, 185, 129, 0)' }
-        ], {
-          duration: 500,
-          easing: 'ease-out'
-        });
-      }
-    });
-    
-    // Real-time typing feedback
-    input.addEventListener('input', function() {
-      if (this.value.length > 0) {
-        this.parentElement.classList.add('field-has-content');
-      } else {
-        this.parentElement.classList.remove('field-has-content');
-      }
-    });
-  });
-  
-  // === SCROLL PROGRESS INDICATOR FOR FORM ===
-  const formPanel = document.querySelector('.form-panel');
-  if (formPanel) {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'form-scroll-progress';
-    progressBar.style.cssText = `
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #38bdf8, #0891b2, #163687);
-      width: 0%;
-      transition: width 0.3s ease;
-      z-index: 10;
-      border-radius: 0 3px 3px 0;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-    `;
-    formPanel.style.position = 'relative';
-    formPanel.insertBefore(progressBar, formPanel.firstChild);
-    
-    // Update progress based on filled fields
-    const updateFormProgress = () => {
-      const totalFields = formInputs.length;
-      const filledFields = Array.from(formInputs).filter(input => 
-        input.value && input.checkValidity()
-      ).length;
-      
-      const progress = (filledFields / totalFields) * 100;
-      progressBar.style.width = progress + '%';
-      
-      // Add glow when complete
-      if (progress === 100) {
-        progressBar.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.8)';
-        progressBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
-      } else {
-        progressBar.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.5)';
-        progressBar.style.background = 'linear-gradient(90deg, #38bdf8, #0891b2, #163687)';
-      }
-    };
-    
-    formInputs.forEach(input => {
-      input.addEventListener('input', updateFormProgress);
-      input.addEventListener('blur', updateFormProgress);
-    });
-  }
-  
   // === PARALLAX EFFECT ON CONTACT ITEMS ===
   window.addEventListener('mousemove', function(e) {
     const contactSymbols = document.querySelectorAll('.contact-symbol');
@@ -387,73 +617,6 @@ document.addEventListener('DOMContentLoaded', function() {
       symbol.style.transform = `translate(${moveX * depth}px, ${moveY * depth}px)`;
     });
   });
-  
-  // === ANIMATED COUNTER FOR FORM CHARACTERS ===
-  const textarea = document.querySelector('textarea[name="message"]');
-  if (textarea) {
-    const counter = document.createElement('div');
-    counter.className = 'char-counter';
-    counter.style.cssText = `
-      text-align: right;
-      font-size: 11px;
-      color: #687789;
-      margin-top: 5px;
-      font-weight: 600;
-      opacity: 0;
-      transition: opacity 0.3s ease, color 0.3s ease;
-    `;
-    textarea.parentElement.appendChild(counter);
-    
-    textarea.addEventListener('input', function() {
-      const length = this.value.length;
-      const maxLength = 500;
-      counter.textContent = `${length} / ${maxLength} characters`;
-      counter.style.opacity = length > 0 ? '1' : '0';
-      
-      // Change color as approaching limit
-      if (length > maxLength * 0.9) {
-        counter.style.color = '#ef4444';
-      } else if (length > maxLength * 0.7) {
-        counter.style.color = '#f59e0b';
-      } else {
-        counter.style.color = '#10b981';
-      }
-    });
-    
-    textarea.setAttribute('maxlength', '500');
-  }
-  
-  // === SMOOTH SCROLL TO FORM ON ERROR ===
-  if (form) {
-    const originalSubmitHandler = form.onsubmit;
-    form.addEventListener('invalid', function(e) {
-      e.preventDefault();
-      
-      // Find first invalid field
-      const firstInvalid = form.querySelector(':invalid');
-      if (firstInvalid) {
-        firstInvalid.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
-        });
-        
-        // Add shake animation
-        firstInvalid.animate([
-          { transform: 'translateX(0)' },
-          { transform: 'translateX(-10px)' },
-          { transform: 'translateX(10px)' },
-          { transform: 'translateX(-10px)' },
-          { transform: 'translateX(10px)' },
-          { transform: 'translateX(0)' }
-        ], {
-          duration: 500,
-          easing: 'ease-in-out'
-        });
-        
-        firstInvalid.focus();
-      }
-    }, true);
-  }
   
   // === INTERSECTION OBSERVER FOR SECTION ANIMATIONS (REVERSIBLE) ===
   const sectionObserver = new IntersectionObserver((entries) => {
@@ -568,7 +731,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     .field-has-content label {
-      color: #0891b2;
+      color: #000000;
       font-weight: 600;
     }
   `;

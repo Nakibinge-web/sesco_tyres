@@ -16,6 +16,7 @@ use Throwable;
  * - `item_type_id` stores the single type ID or array of type IDs (e.g. `[41, 1]`) when items have different types.
  * - `item_unit_id` stores the single unit ID or array of unit IDs (e.g. `[1, 3]`) when items have different units.
  * - `item_image_id` stores the single image ID or array of image IDs when items have different images (or NULL).
+ * - `quantity` stores the single item quantity (e.g. `2`) or array map of quantities (e.g. `[1 => 2, 2 => 3]`) when >1 item is ordered.
  * Target Runtime: PHP 8.5.12
  */
 final readonly class OrderRepository
@@ -107,6 +108,32 @@ final readonly class OrderRepository
     }
 
     /**
+     * Formats a map of item_id => quantity for the `orders.quantity` column:
+     * - Returns `'1'` if the map is empty.
+     * - Returns the single item quantity as string (e.g. `'2'`) when only 1 distinct item is ordered.
+     * - Returns an associative representation (e.g. `'[1 => 2, 2 => 3]'`) when 2 or more distinct items are ordered.
+     *
+     * @param array<int|string, int> $itemQtyMap Associative array of item_id => quantity
+     */
+    public function formatQuantityOrMap(array $itemQtyMap): string
+    {
+        if (count($itemQtyMap) === 0) {
+            return '1';
+        }
+
+        if (count($itemQtyMap) === 1) {
+            return (string) reset($itemQtyMap);
+        }
+
+        $parts = [];
+        foreach ($itemQtyMap as $itemId => $qty) {
+            $parts[] = "$itemId => $qty";
+        }
+
+        return '[' . implode(', ', $parts) . ']';
+    }
+
+    /**
      * Idempotently creates or migrates the `orders` table so the item columns
      * (`item_id`, `item_brand_id`, `item_category_id`, `item_type_id`, `item_unit_id`, `item_image_id`, `unit_price`)
      * can store single values or arrays of values (e.g. `[1, 2]`, `[150000.00, 160000.00]`), and consolidates any existing records.
@@ -126,10 +153,14 @@ final readonly class OrderRepository
                 $priceColInfo = $priceColStmt ? $priceColStmt->fetch() : null;
                 $priceColType = strtolower((string) ($priceColInfo['Type'] ?? ''));
 
+                $qtyColStmt = $this->pdo->query("SHOW COLUMNS FROM `orders` LIKE 'quantity'");
+                $qtyColInfo = $qtyColStmt ? $qtyColStmt->fetch() : null;
+                $qtyColType = strtolower((string) ($qtyColInfo['Type'] ?? ''));
+
                 $itemsColStmt = $this->pdo->query("SHOW COLUMNS FROM `orders` LIKE 'items'");
                 $hasItemsCol  = $itemsColStmt !== false && $itemsColStmt->fetchColumn() !== false;
 
-                if (str_contains($colType, 'int') || str_contains($priceColType, 'decimal') || $hasItemsCol) {
+                if (str_contains($colType, 'int') || str_contains($priceColType, 'decimal') || str_contains($qtyColType, 'int') || $hasItemsCol) {
                     $this->migrateOrdersColumnsToArrayCapable();
                 }
                 return;
@@ -162,7 +193,7 @@ final readonly class OrderRepository
               `item_type_id` varchar(255) DEFAULT NULL,
               `item_unit_id` varchar(255) DEFAULT NULL,
               `item_image_id` varchar(255) DEFAULT NULL,
-              `quantity` int(11) NOT NULL DEFAULT 1,
+              `quantity` varchar(255) NOT NULL DEFAULT '1',
               `unit_price` varchar(255) NOT NULL DEFAULT '0.00',
               `total_price` decimal(12,2) NOT NULL DEFAULT 0.00,
               `status` enum('Pending','Confirmed','Processing','Completed','Cancelled') NOT NULL DEFAULT 'Pending',
@@ -215,6 +246,7 @@ final readonly class OrderRepository
                   MODIFY COLUMN `item_type_id` varchar(255) DEFAULT NULL,
                   MODIFY COLUMN `item_unit_id` varchar(255) DEFAULT NULL,
                   MODIFY COLUMN `item_image_id` varchar(255) DEFAULT NULL,
+                  MODIFY COLUMN `quantity` varchar(255) NOT NULL DEFAULT '1',
                   MODIFY COLUMN `unit_price` varchar(255) NOT NULL DEFAULT '0.00'
             SQL);
         } catch (Throwable) {
@@ -254,8 +286,9 @@ final readonly class OrderRepository
                 $deleteStmt = $this->pdo->prepare('DELETE FROM `orders` WHERE `order_id` = :order_id');
 
                 foreach ($grouped as $ref => $groupRows) {
-                    $firstRow    = $groupRows[0];
-                    $keepOrderId = (int) $firstRow['order_id'];
+                    $firstRow          = $groupRows[0];
+                    $keepOrderId       = (int) $firstRow['order_id'];
+                    $formattedQuantity = null;
 
                     $itemIds    = [];
                     $brandIds   = [];
@@ -264,6 +297,7 @@ final readonly class OrderRepository
                     $unitIds    = [];
                     $imageIds   = [];
                     $unitPrices = [];
+                    $itemQtyMap = [];
                     $sumQty     = 0;
                     $sumTotal   = 0.0;
 
@@ -274,19 +308,26 @@ final readonly class OrderRepository
 
                         if (is_array($parsedItems) && count($parsedItems) > 0 && count($groupRows) === 1) {
                             foreach ($parsedItems as $pi) {
-                                $itemIds[]    = $pi['item_id'] ?? null;
+                                $iid          = (int) ($pi['item_id'] ?? 0);
+                                $iqty         = max(1, (int) ($pi['quantity'] ?? 1));
+                                $itemIds[]    = $iid ?: null;
                                 $brandIds[]   = $pi['item_brand_id'] ?? null;
                                 $catIds[]     = $pi['item_category_id'] ?? null;
                                 $typeIds[]    = $pi['item_type_id'] ?? null;
                                 $unitIds[]    = $pi['item_unit_id'] ?? null;
                                 $imageIds[]   = $pi['item_image_id'] ?? null;
                                 $unitPrices[] = $pi['unit_price'] ?? null;
+                                if ($iid > 0) {
+                                    $itemQtyMap[$iid] = ($itemQtyMap[$iid] ?? 0) + $iqty;
+                                }
                             }
                             $sumQty   = (int) $row['quantity'];
                             $sumTotal = (float) $row['total_price'];
                             break;
                         }
 
+                        $rItemId      = (int) ($row['item_id'] ?? 0);
+                        $rQty         = max(1, (int) ($row['quantity'] ?? 1));
                         $itemIds[]    = $row['item_id'] ?? null;
                         $brandIds[]   = $row['item_brand_id'] ?? null;
                         $catIds[]     = $row['item_category_id'] ?? null;
@@ -294,8 +335,11 @@ final readonly class OrderRepository
                         $unitIds[]    = $row['item_unit_id'] ?? null;
                         $imageIds[]   = $row['item_image_id'] ?? null;
                         $unitPrices[] = $row['unit_price'] ?? null;
-                        $sumQty      += max(1, (int) $row['quantity']);
+                        $sumQty      += $rQty;
                         $sumTotal    += (float) $row['total_price'];
+                        if ($rItemId > 0) {
+                            $itemQtyMap[$rItemId] = ($itemQtyMap[$rItemId] ?? 0) + $rQty;
+                        }
                     }
 
                     $formattedItemIds = $this->formatIdOrArray($itemIds) ?? (string) $firstRow['item_id'];
@@ -315,6 +359,79 @@ final readonly class OrderRepository
                             if (count($resolvedPrices) > 0) {
                                 $unitPrices = $resolvedPrices;
                             }
+
+                            // If existing row had consolidated items without per-item quantity map
+                            if (count($itemQtyMap) === 0) {
+                                $rawExistingQty    = (string) ($firstRow['quantity'] ?? '');
+                                $parsedExistingMap = [];
+                                if (str_starts_with($rawExistingQty, '[')) {
+                                    if (preg_match_all('/(\d+)\s*=>\s*(\d+)/', $rawExistingQty, $pm, PREG_SET_ORDER)) {
+                                        foreach ($pm as $m) {
+                                            $parsedExistingMap[(int) $m[1]] = (int) $m[2];
+                                        }
+                                    }
+                                }
+                                $allKeysMatch = count($parsedExistingMap) > 0 &&
+                                    count(array_diff($decodedIds, array_keys($parsedExistingMap))) === 0 &&
+                                    count(array_diff(array_keys($parsedExistingMap), $decodedIds)) === 0;
+
+                                $checkSum = 0.0;
+                                if ($allKeysMatch) {
+                                    foreach ($parsedExistingMap as $mid => $mqty) {
+                                        $mPrice = 0.0;
+                                        foreach ($decodedIds as $dIdx => $did) {
+                                            if ((int) $did === (int) $mid && isset($resolvedPrices[$dIdx])) {
+                                                $mPrice = (float) $resolvedPrices[$dIdx];
+                                                break;
+                                            }
+                                        }
+                                        $checkSum += $mPrice * $mqty;
+                                    }
+                                }
+
+                                if ($allKeysMatch && abs($checkSum - $sumTotal) < 0.01) {
+                                    $itemQtyMap = $parsedExistingMap;
+                                } else {
+                                    if (count($decodedIds) === 2 && count($resolvedPrices) === 2) {
+                                        $idA = (int) $decodedIds[0];
+                                        $idB = (int) $decodedIds[1];
+                                        $pA  = (float) $resolvedPrices[0];
+                                        $pB  = (float) $resolvedPrices[1];
+                                        $foundDeduction = false;
+                                        if ($pA > 0 && $pB > 0 && $sumTotal > 0) {
+                                            for ($qA = 1; $qA <= 50; $qA++) {
+                                                $rem = $sumTotal - ($qA * $pA);
+                                                if ($rem <= 0) {
+                                                    break;
+                                                }
+                                                $qB = (int) round($rem / $pB);
+                                                if ($qB >= 1 && abs(($qA * $pA + $qB * $pB) - $sumTotal) < 0.01) {
+                                                    $itemQtyMap[$idA] = $qA;
+                                                    $itemQtyMap[$idB] = $qB;
+                                                    $foundDeduction   = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (!$foundDeduction) {
+                                            foreach ($decodedIds as $did) {
+                                                $itemQtyMap[(int) $did] = 1;
+                                            }
+                                        }
+                                    } else {
+                                        foreach ($decodedIds as $did) {
+                                            $itemQtyMap[(int) $did] = 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($formattedQuantity === null) {
+                        $formattedQuantity = $this->formatQuantityOrMap($itemQtyMap);
+                        if ($formattedQuantity === '1' && $sumQty > 1 && count($itemQtyMap) <= 1) {
+                            $formattedQuantity = (string) $sumQty;
                         }
                     }
 
@@ -325,7 +442,7 @@ final readonly class OrderRepository
                         ':item_type_id'     => $this->formatIdOrArray($typeIds),
                         ':item_unit_id'     => $this->formatIdOrArray($unitIds),
                         ':item_image_id'    => $this->formatIdOrArray($imageIds),
-                        ':quantity'         => $sumQty,
+                        ':quantity'         => $formattedQuantity,
                         ':unit_price'       => $this->formatPriceOrArray($unitPrices),
                         ':total_price'      => number_format($sumTotal, 2, '.', ''),
                         ':order_id'         => $keepOrderId,
@@ -478,6 +595,7 @@ final readonly class OrderRepository
         $itemsArray  = [];
         $totalQty    = 0;
         $totalAmount = 0.0;
+        $itemQtyMap  = [];
 
         foreach ($cartItems as $entry) {
             $requestedItemId = (int) ($entry['item_id'] ?? 0);
@@ -520,6 +638,8 @@ final readonly class OrderRepository
             $totalQty    += $qty;
             $totalAmount += $lineTotal;
 
+            $itemQtyMap[$resolvedItemId] = ($itemQtyMap[$resolvedItemId] ?? 0) + $qty;
+
             $itemsArray[] = [
                 'item_id'          => $resolvedItemId,
                 'description'      => (string) $dbItem['description'],
@@ -535,8 +655,9 @@ final readonly class OrderRepository
         }
 
         if (count($itemsArray) === 0 && $fallbackItemRow !== null) {
+            $fallbackId = (int) $fallbackItemRow['item_id'];
             $itemsArray[] = [
-                'item_id'          => (int) $fallbackItemRow['item_id'],
+                'item_id'          => $fallbackId,
                 'description'      => (string) $fallbackItemRow['description'],
                 'item_brand_id'    => (int) ($fallbackItemRow['item_brand_id'] ?? 0) ?: null,
                 'item_category_id' => (int) ($fallbackItemRow['item_category_id'] ?? 0) ?: null,
@@ -549,6 +670,7 @@ final readonly class OrderRepository
             ];
             $totalQty    = 1;
             $totalAmount = (float) ($fallbackItemRow['db_selling_price'] ?? 0);
+            $itemQtyMap[$fallbackId] = 1;
         }
 
         $primaryItem     = $itemsArray[0];
@@ -559,6 +681,7 @@ final readonly class OrderRepository
         $itemUnitIdCol   = $this->formatIdOrArray(array_column($itemsArray, 'item_unit_id'));
         $itemImageIdCol  = $this->formatIdOrArray(array_column($itemsArray, 'item_image_id'));
         $unitPriceCol    = $this->formatPriceOrArray(array_column($itemsArray, 'unit_price'));
+        $quantityCol     = $this->formatQuantityOrMap($itemQtyMap);
 
         $this->pdo->beginTransaction();
 
@@ -583,7 +706,7 @@ final readonly class OrderRepository
             $insertOrderStmt->bindValue(':item_type_id', $itemTypeIdCol, $itemTypeIdCol === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
             $insertOrderStmt->bindValue(':item_unit_id', $itemUnitIdCol, $itemUnitIdCol === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
             $insertOrderStmt->bindValue(':item_image_id', $itemImageIdCol, $itemImageIdCol === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
-            $insertOrderStmt->bindValue(':quantity', $totalQty, PDO::PARAM_INT);
+            $insertOrderStmt->bindValue(':quantity', $quantityCol, PDO::PARAM_STR);
             $insertOrderStmt->bindValue(':unit_price', $unitPriceCol, PDO::PARAM_STR);
             $insertOrderStmt->bindValue(':total_price', number_format($totalAmount, 2, '.', ''), PDO::PARAM_STR);
 
@@ -612,7 +735,7 @@ final readonly class OrderRepository
             'item_type_id'     => $itemTypeIdCol,
             'item_unit_id'     => $itemUnitIdCol,
             'item_image_id'    => $itemImageIdCol,
-            'quantity'         => $totalQty,
+            'quantity'         => $quantityCol,
             'unit_price'       => $unitPriceCol,
             'total_price'      => $totalAmount,
             'status'           => 'Pending',
@@ -624,6 +747,7 @@ final readonly class OrderRepository
             'order_reference' => $orderReference,
             'client_id'       => $validClientId,
             'total_qty'       => $totalQty,
+            'quantity'        => $quantityCol,
             'total_amount'    => $totalAmount,
             'items'           => $itemsArray,
             'inserted_rows'   => [$insertedRecord],

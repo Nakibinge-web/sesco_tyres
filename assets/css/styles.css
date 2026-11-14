@@ -51,6 +51,48 @@ textarea {
   font-family: 'Nunito Sans', ui-sans-serif, sans-serif
 }
 
+/* Universal Form Placeholders: Enforce Nunito Sans font across all form inputs and textareas */
+::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  opacity: 1;
+}
+
+::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
 button,
 a,
 .btn {
@@ -298,6 +340,7 @@ button {
     transform: scaleX(0);
     transform-origin: left;
   }
+
   100% {
     transform: scaleX(1);
     transform-origin: left;
@@ -612,21 +655,25 @@ button {
   .header-user-wrapper {
     gap: 5px;
   }
+
   .header-user-badge {
     height: 34px;
     padding: 0 9px;
     font-size: 12px;
     border-radius: 0 !important;
   }
+
   .header-user-name {
     max-width: 85px;
   }
+
   .header-logout-btn {
     width: 34px;
     height: 34px;
     padding: 0;
     border-radius: 0 !important;
   }
+
   .header-logout-btn svg,
   .header-logout-btn i {
     width: 14px;
@@ -639,21 +686,25 @@ button {
   .header-user-wrapper {
     gap: 4px;
   }
+
   .header-user-badge {
     height: 32px;
     padding: 0 7px;
     font-size: 11px;
     border-radius: 0 !important;
   }
+
   .header-user-name {
     max-width: 65px;
   }
+
   .header-logout-btn {
     width: 32px;
     height: 32px;
     padding: 0;
     border-radius: 0 !important;
   }
+
   .header-logout-btn svg,
   .header-logout-btn i {
     width: 13px;
@@ -1493,6 +1544,24 @@ p {
   box-shadow: 0 0 0 3px rgba(56, 189, 248, .14)
 }
 
+.field input::placeholder,
+.field select::placeholder,
+.field textarea::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.field input::-webkit-input-placeholder,
+.field select::-webkit-input-placeholder,
+.field textarea::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.field input::-moz-placeholder,
+.field select::-moz-placeholder,
+.field textarea::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
 .finder-fields .btn,
 #tyre-finder .btn,
 #tyre-finder button {
@@ -2103,7 +2172,7 @@ p {
   align-items: start
 }
 
-.contact-grid > div {
+.contact-grid>div {
   display: flex;
   flex-direction: column;
   height: 100%
@@ -2368,15 +2437,75 @@ p {
   font-weight: 700
 }
 
+body[data-page="login"] .page-content,
+body[data-page="register"] .page-content {
+  padding: clamp(48px, 6vw, 76px) 0 clamp(64px, 8vw, 96px);
+  min-height: calc(100vh - 430px);
+  display: flex;
+  align-items: center;
+}
+
 .auth-wrap {
-  max-width: 470px;
-  margin: auto
+  max-width: 490px;
+  margin: 0 auto;
+  perspective: 1000px;
 }
 
 .auth-card {
-  border: 1px solid var(--line);
-  padding: 32px;
-  box-shadow: var(--shadow)
+  background: #ffffff;
+  border: 1px solid rgba(22, 54, 135, 0.12);
+  border-radius: 0;
+  padding: 36px 34px;
+  position: relative;
+  box-shadow: 0 16px 36px -8px rgba(22, 54, 135, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.35s ease;
+  will-change: transform, box-shadow;
+  animation: authFormFloat 5.5s ease-in-out infinite;
+}
+
+.auth-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, #163687 0%, #0ea5e9 50%, #163687 100%);
+  pointer-events: none;
+}
+
+@keyframes authFormFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 16px 36px -8px rgba(22, 54, 135, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  50% {
+    transform: translateY(-9px);
+    box-shadow: 0 26px 48px -10px rgba(22, 54, 135, 0.18), 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.auth-card:hover {
+  transform: translateY(-11px);
+  box-shadow: 0 30px 60px -10px rgba(22, 54, 135, 0.22), 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: rgba(14, 165, 233, 0.4);
+  animation-play-state: paused;
+}
+
+.auth-card:focus-within {
+  transform: translateY(-8px);
+  box-shadow: 0 28px 56px -10px rgba(22, 54, 135, 0.2), 0 8px 20px rgba(0, 0, 0, 0.07);
+  border-color: rgba(22, 54, 135, 0.3);
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-card {
+    animation: none !important;
+  }
 }
 
 .auth-card h1 {
@@ -2385,6 +2514,108 @@ p {
 
 .auth-card .field {
   margin: 15px 0
+}
+
+/* Auth Submit Buttons (Navbar Blue bg, White text, Nunito Sans, Explore Our Tyres Hover Effect) */
+.auth-card #loginSubmitBtn,
+.auth-card #regSubmitBtn,
+.auth-card .auth-submit-btn,
+.auth-card button[type="submit"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  background: #163687 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.3px !important;
+  padding: 13px 24px !important;
+  border: 1px solid #163687 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 14px rgba(22, 54, 135, 0.25) !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease !important;
+  z-index: 1 !important;
+  cursor: pointer;
+}
+
+.auth-card #loginSubmitBtn::before,
+.auth-card #regSubmitBtn::before,
+.auth-card .auth-submit-btn::before,
+.auth-card button[type="submit"]::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -1px !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  transform-origin: left center !important;
+  transform: perspective(600px) rotateY(-90deg) !important;
+  transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  border: 1px solid #163687 !important;
+}
+
+.auth-card #loginSubmitBtn span,
+.auth-card #regSubmitBtn span,
+.auth-card .auth-submit-btn span,
+.auth-card button[type="submit"] span {
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+  display: inline-block !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+
+.auth-card #loginSubmitBtn:hover,
+.auth-card #regSubmitBtn:hover,
+.auth-card .auth-submit-btn:hover,
+.auth-card button[type="submit"]:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #163687 !important;
+  box-shadow: 0 8px 24px rgba(22, 54, 135, 0.28) !important;
+  animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards !important;
+}
+
+.auth-card #loginSubmitBtn:hover::before,
+.auth-card #regSubmitBtn:hover::before,
+.auth-card .auth-submit-btn:hover::before,
+.auth-card button[type="submit"]:hover::before {
+  transform: perspective(600px) rotateY(0deg) !important;
+  opacity: 1 !important;
+}
+
+.auth-card #loginSubmitBtn:hover span,
+.auth-card #regSubmitBtn:hover span,
+.auth-card .auth-submit-btn:hover span,
+.auth-card button[type="submit"]:hover span {
+  color: #163687 !important;
+}
+
+.auth-card #loginSubmitBtn:hover span:last-child,
+.auth-card #regSubmitBtn:hover span:last-child,
+.auth-card .auth-submit-btn:hover span:last-child,
+.auth-card button[type="submit"]:hover span:last-child {
+  transform: translateX(4px) !important;
+}
+
+.auth-card #loginSubmitBtn:disabled,
+.auth-card #regSubmitBtn:disabled,
+.auth-card .auth-submit-btn:disabled,
+.auth-card button[type="submit"]:disabled {
+  opacity: 0.75 !important;
+  cursor: not-allowed !important;
+  animation: none !important;
 }
 
 .password-field-wrapper {
@@ -2397,6 +2628,34 @@ p {
 .password-field-wrapper input {
   width: 100%;
   padding-right: 44px !important;
+}
+
+/* Auth Card and Wrapper Placeholders in Nunito Sans */
+.auth-card input::placeholder,
+.auth-card textarea::placeholder,
+.auth-wrap input::placeholder,
+.auth-wrap textarea::placeholder,
+.password-field-wrapper input::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: #94a3b8 !important;
+}
+
+.auth-card input::-webkit-input-placeholder,
+.auth-card textarea::-webkit-input-placeholder,
+.auth-wrap input::-webkit-input-placeholder,
+.auth-wrap textarea::-webkit-input-placeholder,
+.password-field-wrapper input::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: #94a3b8 !important;
+}
+
+.auth-card input::-moz-placeholder,
+.auth-card textarea::-moz-placeholder,
+.auth-wrap input::-moz-placeholder,
+.auth-wrap textarea::-moz-placeholder,
+.password-field-wrapper input::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: #94a3b8 !important;
 }
 
 .password-toggle-btn {
@@ -4157,6 +4416,70 @@ p {
   }
 }
 
+.shop-showcase-stage.is-empty {
+  min-height: 300px;
+}
+
+.shop-showcase-track.is-empty {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-carousel-empty {
+  width: 100%;
+  max-width: 640px;
+  margin: 16px auto;
+  padding: 44px 28px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 50px rgba(8, 22, 46, 0.14);
+  text-align: center;
+  color: #0b1c32;
+}
+
+.shop-carousel-empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.shop-carousel-empty-icon.is-disconnected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.shop-carousel-empty h3 {
+  margin: 0 0 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 21px;
+  color: #0b1c32;
+}
+
+.shop-carousel-empty p {
+  margin: 0 auto 20px;
+  max-width: 480px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.shop-carousel-empty-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* ==========================================================================
    Services Section & Read More Styling (Classic Grid Fallback)
    ========================================================================== */
@@ -4790,11 +5113,11 @@ p.services-subtitle {
   visibility: hidden;
   transform: translateY(14px) scale(0.9);
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              background 0.25s ease,
-              border-color 0.25s ease,
-              box-shadow 0.25s ease,
-              visibility 0.3s;
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    visibility 0.3s;
 }
 
 .back-to-top-btn.visible {
@@ -5548,6 +5871,22 @@ body[data-page="service-detail"] .page-content {
   box-shadow: 0 0 0 3px rgba(22, 54, 135, .12);
 }
 
+.quote-field input::placeholder,
+.quote-field textarea::placeholder,
+.quote-field select::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.quote-field input::-webkit-input-placeholder,
+.quote-field textarea::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.quote-field input::-moz-placeholder,
+.quote-field textarea::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
 .quote-form-actions {
   display: flex;
   align-items: center;
@@ -5922,6 +6261,19 @@ body[data-page="service-detail"] .page-content {
 .appointment-field input::placeholder,
 .appointment-field textarea::placeholder {
   color: rgba(255, 255, 255, 0.35);
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.appointment-field input::-webkit-input-placeholder,
+.appointment-field textarea::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.appointment-field input::-moz-placeholder,
+.appointment-field textarea::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
 
 .appointment-field select {
@@ -8193,6 +8545,7 @@ body[data-page="home"] .main-header::after {
 
 /* When the user logs in: move wishlist icon, cart icon, username container and logout icon to the right a little bit */
 @media (min-width: 901px) {
+
   body.user-logged-in .main-header .header-inner .header-actions,
   .main-header.is-logged-in .header-inner .header-actions,
   .main-header .header-inner .header-actions.is-logged-in,
@@ -8213,7 +8566,7 @@ body[data-page="home"] .topbar-inner>span:first-child,
 
 body[data-page="home"] .topbar-links,
 .topbar-links {
-  margin-right: 24px !important;
+  margin-right: 50px !important;
 }
 
 /* 3. Sticky Scrolled State for Main Header */
@@ -8247,8 +8600,9 @@ body[data-page="home"] .main-header:not(.is-scrolled) .nav>a.active::after {
   background: #fff;
   z-index: 10;
 }
-  border-bottom: 2px solid #38bdf8;
-  backdrop-filter: blur(6px);
+
+border-bottom: 2px solid #38bdf8;
+backdrop-filter: blur(6px);
 }
 
 /* 5. Hero Section Height & Spacing (Hero starts at the very top, behind transparent header) */
@@ -9038,6 +9392,7 @@ body {
 }
 
 @media (min-width: 1240px) {
+
   .nav>a,
   .nav>.nav-dropdown>.dropdown-toggle {
     padding: 0 20px !important;
@@ -9233,4 +9588,1069 @@ body {
 .testimonials-title::before,
 .testimonials-title::after {
   background: #ffffff !important;
+}
+
+/* ==========================================================================
+   Wishlist Page Typography (Nunito Sans), FontAwesome Heart, & Hero Button
+   ========================================================================== */
+
+/* 1. Ensure whole Wishlist page uses Nunito Sans */
+body[data-page="wishlist"],
+body[data-page="wishlist"] * {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Preserve FontAwesome icons so their font-family is never broken */
+body[data-page="wishlist"] i.fa,
+body[data-page="wishlist"] i.fa-solid,
+body[data-page="wishlist"] i.fa-regular,
+body[data-page="wishlist"] i.fa-brands,
+body[data-page="wishlist"] [class*="fa-"] {
+  font-family: var(--fa-style-family, "Font Awesome 6 Free") !important;
+}
+
+body[data-page="wishlist"] h1,
+body[data-page="wishlist"] h2,
+body[data-page="wishlist"] h3,
+body[data-page="wishlist"] h4,
+body[data-page="wishlist"] p,
+body[data-page="wishlist"] a,
+body[data-page="wishlist"] button,
+body[data-page="wishlist"] .empty-state h2,
+body[data-page="wishlist"] .empty-state p,
+body[data-page="wishlist"] .product-card h3,
+body[data-page="wishlist"] .product-card .brand,
+body[data-page="wishlist"] .product-card .price {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* 2. Wishlist Empty State & FontAwesome Heart Icon */
+body[data-page="wishlist"] .empty-state {
+  text-align: center;
+  padding: 85px 24px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  max-width: 680px;
+  margin: 30px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+body[data-page="wishlist"] .empty-state .big-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(22, 54, 135, 0.08);
+  border: 1px solid rgba(22, 54, 135, 0.16);
+  margin: 0 auto 24px;
+  font-size: 40px;
+  color: #163687;
+  transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+body[data-page="wishlist"] .empty-state:hover .big-icon {
+  transform: scale(1.08);
+  background: rgba(22, 54, 135, 0.13);
+  border-color: rgba(22, 54, 135, 0.28);
+  box-shadow: 0 10px 26px rgba(22, 54, 135, 0.15);
+}
+
+body[data-page="wishlist"] .empty-state .big-icon i {
+  color: #163687;
+  font-size: 40px;
+  line-height: 1;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+body[data-page="wishlist"] .empty-state:hover .big-icon i {
+  color: #0f2355;
+  transform: scale(1.08);
+}
+
+body[data-page="wishlist"] .empty-state h2 {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+body[data-page="wishlist"] .empty-state p {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 440px;
+  margin: 0 auto 30px;
+  line-height: 1.55;
+}
+
+/* 3. 'Explore tyres' Button (Navbar Blue bg, White text, 3D Hero Twist Hover Effect) */
+body[data-page="wishlist"] .wishlist-explore-btn,
+body[data-page="wishlist"] .empty-state .hero-btn-main {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  background: #163687 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  padding: 14px 28px !important;
+  border: 1px solid #163687 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 24px rgba(22, 54, 135, 0.38) !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+  transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  z-index: 1 !important;
+  cursor: pointer;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn::before,
+body[data-page="wishlist"] .empty-state .hero-btn-main::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -1px !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  transform-origin: left center !important;
+  transform: perspective(600px) rotateY(-90deg) !important;
+  transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn span,
+body[data-page="wishlist"] .empty-state .hero-btn-main span {
+  color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+  display: inline-block !important;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn:hover,
+body[data-page="wishlist"] .empty-state .hero-btn-main:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28) !important;
+  animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards !important;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn:hover::before,
+body[data-page="wishlist"] .empty-state .hero-btn-main:hover::before {
+  transform: perspective(600px) rotateY(0deg) !important;
+  opacity: 1 !important;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn:hover span,
+body[data-page="wishlist"] .empty-state .hero-btn-main:hover span {
+  color: #163687 !important;
+}
+
+body[data-page="wishlist"] .wishlist-explore-btn:hover span:last-child,
+body[data-page="wishlist"] .empty-state .hero-btn-main:hover span:last-child {
+  transform: translateX(5px) !important;
+}
+
+/* 4. Wishlist Product Cards Refinement (Clean, De-cluttered, Nunito Sans, & Hero Hover Button) */
+body[data-page="wishlist"] .product-card .product-tag {
+  display: none !important;
+}
+
+body[data-page="wishlist"] .product-card .rating {
+  display: none !important;
+}
+
+body[data-page="wishlist"] .product-card,
+body[data-page="wishlist"] .product-card * {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body[data-page="wishlist"] .product-card i.fa,
+body[data-page="wishlist"] .product-card i.fa-solid,
+body[data-page="wishlist"] .product-card i.fa-regular,
+body[data-page="wishlist"] .product-card [class*="fa-"] {
+  font-family: var(--fa-style-family, "Font Awesome 6 Free") !important;
+}
+
+body[data-page="wishlist"] .product-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body[data-page="wishlist"] .product-card:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+body[data-page="wishlist"] .product-card .brand {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.8px !important;
+  color: #163687 !important;
+  text-transform: uppercase !important;
+  margin-bottom: 5px !important;
+}
+
+body[data-page="wishlist"] .product-card h3 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  margin: 0 0 8px 0 !important;
+}
+
+body[data-page="wishlist"] .product-card h3 a {
+  color: #0f172a !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+body[data-page="wishlist"] .product-card h3 a:hover {
+  color: #163687 !important;
+}
+
+body[data-page="wishlist"] .product-card .spec {
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #64748b !important;
+  margin-bottom: 8px !important;
+}
+
+/* Wishlist Page Products Grid - Expanded Spacious Card Layout (Increased Card Width) */
+body[data-page="wishlist"] #wishlist-content .products-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(330px, 1fr)) !important;
+  gap: 28px !important;
+  margin: 10px auto 40px !important;
+  width: 100% !important;
+}
+
+@media (max-width: 1140px) {
+  body[data-page="wishlist"] #wishlist-content .products-grid {
+    grid-template-columns: repeat(2, minmax(320px, 1fr)) !important;
+    gap: 22px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body[data-page="wishlist"] #wishlist-content .products-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+}
+
+body[data-page="wishlist"] .product-card .product-image {
+  height: 240px !important;
+  background: #f8fafc !important;
+  padding: 24px !important;
+}
+
+body[data-page="wishlist"] .product-card .product-image img {
+  max-height: 195px !important;
+  width: auto !important;
+  max-width: 90% !important;
+  object-fit: contain !important;
+}
+
+body[data-page="wishlist"] .product-card .product-info {
+  padding: 20px 22px !important;
+}
+
+body[data-page="wishlist"] .product-card .product-bottom {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin-top: auto !important;
+  padding-top: 14px !important;
+  border-top: 1px solid #edf0f3 !important;
+  flex-wrap: nowrap !important;
+}
+
+body[data-page="wishlist"] .product-card .price {
+  white-space: nowrap !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  line-height: 1.2 !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 2px !important;
+  flex-shrink: 0 !important;
+}
+
+body[data-page="wishlist"] .product-card .price .price-val {
+  white-space: nowrap !important;
+  display: inline !important;
+}
+
+body[data-page="wishlist"] .product-card .price small,
+body[data-page="wishlist"] .product-card .price .price-unit {
+  display: inline !important;
+  white-space: nowrap !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  margin-left: 2px !important;
+}
+
+/* Product Card Button on Wishlist Page (Navbar Blue bg, White text, 3D Hero Twist Hover) */
+body[data-page="wishlist"] .product-card .wishlist-card-btn,
+body[data-page="wishlist"] .product-card .product-bottom .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  background: #163687 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  padding: 10px 18px !important;
+  border: 1px solid #163687 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 6px 18px rgba(22, 54, 135, 0.28) !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+  transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  z-index: 1 !important;
+  cursor: pointer;
+  white-space: nowrap !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn::before,
+body[data-page="wishlist"] .product-card .product-bottom .btn::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -1px !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  transform-origin: left center !important;
+  transform: perspective(600px) rotateY(-90deg) !important;
+  transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn span,
+body[data-page="wishlist"] .product-card .product-bottom .btn span {
+  color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+  display: inline-block !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn:hover,
+body[data-page="wishlist"] .product-card .product-bottom .btn:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
+  animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn:hover::before,
+body[data-page="wishlist"] .product-card .product-bottom .btn:hover::before {
+  transform: perspective(600px) rotateY(0deg) !important;
+  opacity: 1 !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn:hover span,
+body[data-page="wishlist"] .product-card .product-bottom .btn:hover span {
+  color: #163687 !important;
+}
+
+body[data-page="wishlist"] .product-card .wishlist-card-btn:hover span:last-child,
+body[data-page="wishlist"] .product-card .product-bottom .btn:hover span:last-child {
+  transform: translateX(4px) !important;
+}
+
+/* ==========================================================================
+   Cart Page Typography (Nunito Sans), FontAwesome Cart Icon, & Hero Button
+   ========================================================================== */
+
+/* 1. Ensure whole Cart page uses Nunito Sans */
+body[data-page="cart"],
+body[data-page="cart"] * {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Preserve FontAwesome icons so their font-family is never broken */
+body[data-page="cart"] i.fa,
+body[data-page="cart"] i.fa-solid,
+body[data-page="cart"] i.fa-regular,
+body[data-page="cart"] i.fa-brands,
+body[data-page="cart"] [class*="fa-"] {
+  font-family: var(--fa-style-family, "Font Awesome 6 Free") !important;
+}
+
+body[data-page="cart"] h1,
+body[data-page="cart"] h2,
+body[data-page="cart"] h3,
+body[data-page="cart"] h4,
+body[data-page="cart"] p,
+body[data-page="cart"] a,
+body[data-page="cart"] button,
+body[data-page="cart"] input,
+body[data-page="cart"] select,
+body[data-page="cart"] table,
+body[data-page="cart"] th,
+body[data-page="cart"] td,
+body[data-page="cart"] .empty-state h2,
+body[data-page="cart"] .empty-state p {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* 2. Cart Empty State & FontAwesome Cart Icon */
+body[data-page="cart"] .empty-state {
+  text-align: center;
+  padding: 85px 24px;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  max-width: 680px;
+  margin: 30px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+body[data-page="cart"] .empty-state .big-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(22, 54, 135, 0.08);
+  border: 1px solid rgba(22, 54, 135, 0.16);
+  margin: 0 auto 24px;
+  font-size: 38px;
+  color: #163687;
+  transition: transform 0.35s ease, background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+body[data-page="cart"] .empty-state:hover .big-icon {
+  transform: scale(1.08);
+  background: rgba(22, 54, 135, 0.13);
+  border-color: rgba(22, 54, 135, 0.28);
+  box-shadow: 0 10px 26px rgba(22, 54, 135, 0.15);
+}
+
+body[data-page="cart"] .empty-state .big-icon i {
+  color: #163687;
+  font-size: 38px;
+  line-height: 1;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+body[data-page="cart"] .empty-state:hover .big-icon i {
+  color: #0f2355;
+  transform: scale(1.06);
+}
+
+body[data-page="cart"] .empty-state h2 {
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+body[data-page="cart"] .empty-state p {
+  font-size: 16px;
+  color: #64748b;
+  max-width: 480px;
+  margin: 0 auto 30px;
+  line-height: 1.55;
+}
+
+/* 3. 'Browse & select tyres' Button (Navbar Blue bg, White text, 3D Hero Twist Hover Effect) */
+body[data-page="cart"] .cart-browse-btn,
+body[data-page="cart"] .empty-state .hero-btn-main {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  background: #163687 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  padding: 14px 28px !important;
+  border: 1px solid #163687 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 24px rgba(22, 54, 135, 0.38) !important;
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+  transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+  z-index: 1 !important;
+  cursor: pointer;
+}
+
+body[data-page="cart"] .cart-browse-btn::before,
+body[data-page="cart"] .empty-state .hero-btn-main::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -1px !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  transform-origin: left center !important;
+  transform: perspective(600px) rotateY(-90deg) !important;
+  transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-page="cart"] .cart-browse-btn span,
+body[data-page="cart"] .empty-state .hero-btn-main span {
+  color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+  display: inline-block !important;
+}
+
+body[data-page="cart"] .cart-browse-btn:hover,
+body[data-page="cart"] .empty-state .hero-btn-main:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28) !important;
+  animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards !important;
+}
+
+body[data-page="cart"] .cart-browse-btn:hover::before,
+body[data-page="cart"] .empty-state .hero-btn-main:hover::before {
+  transform: perspective(600px) rotateY(0deg) !important;
+  opacity: 1 !important;
+}
+
+body[data-page="cart"] .cart-browse-btn:hover span,
+body[data-page="cart"] .empty-state .hero-btn-main:hover span {
+  color: #163687 !important;
+}
+
+body[data-page="cart"] .cart-browse-btn:hover span:last-child,
+body[data-page="cart"] .empty-state .hero-btn-main:hover span:last-child {
+  transform: translateX(5px) !important;
+}
+
+/* 4. Cart Order Summary Typography & Form Fields (Nunito Sans) */
+body[data-page="cart"] .cart-summary,
+body[data-page="cart"] .cart-summary *,
+body[data-page="cart"] .cart-summary h3,
+body[data-page="cart"] .summary-row,
+body[data-page="cart"] .summary-row span,
+body[data-page="cart"] .summary-row strong,
+body[data-page="cart"] #cartOrderRequestForm,
+body[data-page="cart"] .cart-order-fields,
+body[data-page="cart"] .cart-order-fields label,
+body[data-page="cart"] .cart-order-fields input,
+body[data-page="cart"] .cart-order-fields textarea,
+body[data-page="cart"] .cart-order-fields select,
+body[data-page="cart"] .cart-order-feedback,
+body[data-page="cart"] .cart-order-feedback * {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body[data-page="cart"] .cart-order-fields input::placeholder,
+body[data-page="cart"] .cart-order-fields textarea::placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body[data-page="cart"] .cart-order-fields input::-webkit-input-placeholder,
+body[data-page="cart"] .cart-order-fields textarea::-webkit-input-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body[data-page="cart"] .cart-order-fields input::-moz-placeholder,
+body[data-page="cart"] .cart-order-fields textarea::-moz-placeholder {
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+body[data-page="cart"] .cart-summary h3 {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.3px !important;
+  margin-bottom: 8px !important;
+}
+
+body[data-page="cart"] .cart-order-fields label {
+  font-size: 12.5px !important;
+  font-weight: 800 !important;
+  color: #1e293b !important;
+  margin-bottom: 5px !important;
+}
+
+body[data-page="cart"] .cart-order-fields input,
+body[data-page="cart"] .cart-order-fields textarea,
+body[data-page="cart"] .cart-order-fields select {
+  font-size: 14px !important;
+  color: #0f172a !important;
+  padding: 10px 14px !important;
+  background: #f8fafc !important;
+  border: 1.5px solid #cbd5e1 !important;
+  border-radius: 0 !important;
+  /* Flat corners */
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+body[data-page="cart"] .cart-order-fields input:focus,
+body[data-page="cart"] .cart-order-fields textarea:focus,
+body[data-page="cart"] .cart-order-fields select:focus {
+  border-color: #163687 !important;
+  background: #ffffff !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 0 3px rgba(22, 54, 135, 0.12) !important;
+  outline: none !important;
+}
+
+/* 5. 'Send Order Request' Button (Navbar Blue bg, White text, 3D Hero Twist Hover Effect - No Shadow) */
+body[data-page="cart"] #sendOrderRequestBtn,
+body[data-page="cart"] .cart-order-submit-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  font-family: 'Nunito Sans', ui-sans-serif, sans-serif !important;
+  background: #163687 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 13.5px !important;
+  letter-spacing: 0.2px !important;
+  padding: 11.5px 20px !important;
+  border: 1px solid #163687 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  /* Removed shadow effect */
+  position: relative !important;
+  transform-style: preserve-3d !important;
+  overflow: visible !important;
+  text-decoration: none !important;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease !important;
+  z-index: 1 !important;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn::before,
+body[data-page="cart"] .cart-order-submit-btn::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -1px !important;
+  background: #ffffff !important;
+  z-index: 1 !important;
+  transform-origin: left center !important;
+  transform: perspective(600px) rotateY(-90deg) !important;
+  transition: transform 0.36s cubic-bezier(0.22, 1.25, 0.36, 1), opacity 0.2s ease !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn span,
+body[data-page="cart"] .cart-order-submit-btn span {
+  color: #ffffff !important;
+  position: relative !important;
+  z-index: 2 !important;
+  transition: color 0.25s ease, transform 0.25s ease !important;
+  display: inline-block !important;
+  font-size: 13.5px !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:hover,
+body[data-page="cart"] .cart-order-submit-btn:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #163687 !important;
+  box-shadow: none !important;
+  /* No shadow on hover */
+  animation: navTwist 0.38s cubic-bezier(0.22, 1.25, 0.36, 1) forwards !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:focus,
+body[data-page="cart"] .cart-order-submit-btn:focus,
+body[data-page="cart"] #sendOrderRequestBtn:active,
+body[data-page="cart"] .cart-order-submit-btn:active {
+  box-shadow: none !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:hover::before,
+body[data-page="cart"] .cart-order-submit-btn:hover::before {
+  transform: perspective(600px) rotateY(0deg) !important;
+  opacity: 1 !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:hover span,
+body[data-page="cart"] .cart-order-submit-btn:hover span {
+  color: #163687 !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:hover span:last-child,
+body[data-page="cart"] .cart-order-submit-btn:hover span:last-child {
+  transform: translateX(5px) !important;
+}
+
+body[data-page="cart"] #sendOrderRequestBtn:disabled,
+body[data-page="cart"] .cart-order-submit-btn:disabled {
+  opacity: 0.75 !important;
+  cursor: not-allowed !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+/* Continue Shopping Button inside Cart Summary */
+body[data-page="cart"] .cart-continue-shopping-btn,
+body[data-page="cart"] .cart-summary a.btn-outline {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.2px !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  color: #163687 !important;
+  /* Blue text */
+  border: 1.5px solid #cbd5e1 !important;
+  /* Light border */
+  padding: 11px 18px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease !important;
+  cursor: pointer !important;
+}
+
+body[data-page="cart"] .cart-continue-shopping-btn:hover,
+body[data-page="cart"] .cart-summary a.btn-outline:hover {
+  background: #163687 !important;
+  /* Navbar blue bg on hover */
+  color: #ffffff !important;
+  /* White text on hover */
+  border-color: #163687 !important;
+  box-shadow: none !important;
+}
+
+body[data-page="cart"] .cart-continue-shopping-btn:focus,
+body[data-page="cart"] .cart-summary a.btn-outline:focus,
+body[data-page="cart"] .cart-continue-shopping-btn:active,
+body[data-page="cart"] .cart-summary a.btn-outline:active {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ==========================================================================
+   Wishlist Page Sweet Alert (Centered, Flat Corner Small Card, 0.7s)
+   ========================================================================== */
+.swal-flat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+  pointer-events: auto;
+}
+
+.swal-flat-overlay.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.swal-flat-card {
+  background: #ffffff;
+  border-radius: 0 !important;
+  /* Flat corner small card */
+  border: 1.5px solid #163687;
+  box-shadow: 0 20px 45px rgba(15, 35, 85, 0.28), 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: min(320px, 90vw);
+  padding: 24px 22px 20px;
+  text-align: center;
+  font-family: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif !important;
+  animation: swalCardPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+}
+
+.swal-flat-overlay.is-closing .swal-flat-card {
+  animation: swalCardFadeOut 0.15s ease forwards;
+}
+
+.swal-flat-icon {
+  width: 56px;
+  height: 56px;
+  border: 3px solid #10b981;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+  font-size: 26px;
+  animation: swalCheckmark 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.swal-flat-icon.swal-flat-icon-remove {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.swal-flat-card.swal-flat-card-remove {
+  border-color: #ef4444 !important;
+  box-shadow: 0 20px 45px rgba(239, 68, 68, 0.22), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal-flat-icon.swal-flat-icon-wishlist {
+  border-color: #e11d48 !important;
+  color: #e11d48 !important;
+  background: rgba(225, 29, 72, 0.1) !important;
+}
+
+.swal-flat-card.swal-flat-card-wishlist {
+  border-color: #e11d48 !important;
+  box-shadow: 0 20px 45px rgba(225, 29, 72, 0.24), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal-flat-icon.swal-flat-icon-login {
+  border-color: #163687 !important;
+  color: #163687 !important;
+  background: rgba(22, 54, 135, 0.08) !important;
+}
+
+.swal-flat-card.swal-flat-card-login {
+  border-color: #163687 !important;
+  box-shadow: 0 20px 45px rgba(22, 54, 135, 0.28), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  width: min(340px, 92vw) !important;
+}
+
+.swal-flat-card.swal-flat-card-login .swal-flat-title {
+  word-break: break-word;
+  line-height: 1.3 !important;
+}
+
+.swal-flat-title {
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 0 6px 0 !important;
+  letter-spacing: -0.3px !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+}
+
+.swal-flat-sub {
+  font-size: 13.5px !important;
+  color: #64748b !important;
+  margin: 0 !important;
+  font-weight: 600 !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+@keyframes swalCheckmark {
+  0% {
+    transform: scale(0.6) rotate(-10deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.15) rotate(4deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes swalCardPop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes swalCardFadeOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   jQuery Validation — Cart Page Order Summary Form
+   ========================================================================== */
+body[data-page="cart"] .cart-order-fields .cart-form-group,
+body[data-page="cart"] .cart-order-fields>div {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+body[data-page="cart"] .cart-order-fields input.is-invalid,
+body[data-page="cart"] .cart-order-fields input.error {
+  border-color: #ef4444 !important;
+  background-color: #fff5f5 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14) !important;
+}
+
+body[data-page="cart"] .cart-order-fields input.is-valid,
+body[data-page="cart"] .cart-order-fields input.valid {
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
+}
+
+body[data-page="cart"] .cart-order-fields span.cart-field-error,
+body[data-page="cart"] .cart-order-fields label.error,
+body[data-page="cart"] .cart-order-fields .cart-error-message {
+  color: #ef4444 !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  margin-top: 5px !important;
+  margin-bottom: 2px !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.3 !important;
+  animation: cartErrorFadeIn 0.2s ease forwards;
+}
+
+body[data-page="cart"] .cart-order-fields span.cart-field-error::before,
+body[data-page="cart"] .cart-order-fields label.error::before,
+body[data-page="cart"] .cart-order-fields .cart-error-message::before {
+  content: "\f06a";
+  /* FontAwesome circle-exclamation */
+  font-family: var(--fa-style-family, "Font Awesome 6 Free") !important;
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  color: #ef4444 !important;
+  line-height: 1;
+}
+
+@keyframes cartErrorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auth Cards jQuery Validation Styling */
+.auth-card input.is-invalid,
+.auth-card input.error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+}
+
+.auth-card input.valid {
+  border-color: #10b981 !important;
+  background-color: #f0fdf4 !important;
+}
+
+.auth-card span.auth-field-error,
+.auth-card label.error,
+.auth-card .auth-error-message {
+  color: #ef4444 !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  margin-top: 5px !important;
+  margin-bottom: 2px !important;
+  font-family: 'Nunito Sans', sans-serif !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.3 !important;
+  animation: authErrorFadeIn 0.2s ease forwards;
+}
+
+.auth-card span.auth-field-error::before,
+.auth-card label.error::before,
+.auth-card .auth-error-message::before {
+  content: "\f06a";
+  /* FontAwesome circle-exclamation */
+  font-family: var(--fa-style-family, "Font Awesome 6 Free") !important;
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  color: #ef4444 !important;
+  line-height: 1;
+}
+
+@keyframes authErrorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure login button in header on login and register pages matches about us page */
+body[data-page="login"] .header-action-login.outlined,
+body[data-page="register"] .header-action-login.outlined,
+body[data-page="login"] .header-action-login.outlined.active,
+body[data-page="register"] .header-action-login.outlined.active {
+  background: transparent !important;
+  border: 1.5px solid #ffffff !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+body[data-page="login"] .header-action-login.outlined:hover,
+body[data-page="register"] .header-action-login.outlined:hover,
+body[data-page="login"] .header-action-login.outlined.active:hover,
+body[data-page="register"] .header-action-login.outlined.active:hover {
+  background: #ffffff !important;
+  color: #163687 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .22) !important;
 }

@@ -66560,6 +66560,29 @@ INSERT INTO `task` (`task_id`, `title`, `description`, `status`, `priority`, `us
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `testimonials`
+--
+
+CREATE TABLE `testimonials` (
+  `testimonial_id` int(11) NOT NULL,
+  `client_id` int(5) DEFAULT NULL COMMENT 'Nullable link to logged-in client account',
+  `reviewer_name` varchar(100) NOT NULL,
+  `reviewer_email` varchar(100) DEFAULT NULL,
+  `vehicle` varchar(120) DEFAULT NULL COMMENT 'Vehicle model & location e.g. Toyota Prado · Kampala',
+  `review_type` enum('Service','Product','Service & Product','General') NOT NULL DEFAULT 'Service',
+  `subject_reviewed` varchar(120) NOT NULL COMMENT 'Specific service or product reviewed',
+  `headline` varchar(160) NOT NULL,
+  `review_text` text NOT NULL,
+  `rating` tinyint(1) NOT NULL DEFAULT 5,
+  `avatar_url` varchar(255) DEFAULT NULL,
+  `source_label` varchar(80) NOT NULL DEFAULT 'Website Feedback',
+  `status` enum('Published','Pending','Hidden') NOT NULL DEFAULT 'Pending',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transport_allowance`
 --
 
@@ -68010,6 +68033,14 @@ ALTER TABLE `task`
   ADD KEY `fk_task_user` (`user_id`);
 
 --
+-- Indexes for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD PRIMARY KEY (`testimonial_id`),
+  ADD KEY `idx_testimonials_status_created` (`status`,`created_at`),
+  ADD KEY `fk_testimonials_client` (`client_id`);
+
+--
 -- Indexes for table `transport_allowance`
 --
 ALTER TABLE `transport_allowance`
@@ -68774,6 +68805,12 @@ ALTER TABLE `task`
   MODIFY `task_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
+-- AUTO_INCREMENT for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `transport_allowance`
 --
 ALTER TABLE `transport_allowance`
@@ -69088,6 +69125,12 @@ ALTER TABLE `targets`
 --
 ALTER TABLE `task`
   ADD CONSTRAINT `fk_task_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `testimonials`
+--
+ALTER TABLE `testimonials`
+  ADD CONSTRAINT `fk_testimonials_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_department`

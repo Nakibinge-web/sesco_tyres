@@ -6,6 +6,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Shop genuine tyres, rims, lubricants and automotive parts at Sesco Tyres Uganda — powered by the live Treads inventory database.">
   <title>Shop Tyres &amp; Catalogue | Sesco Tyres Uganda</title>
+  <!-- Favicon / Browser Tab Icons -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon-48x48.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png?v=2">
+  <link rel="shortcut icon" href="favicon.ico?v=2">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0b1c32">
+
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,17 +26,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=7.7">
+  <link rel="stylesheet" href="assets/css/styles.css?v=7.9">
   <link rel="stylesheet" href="assets/css/about-3d.css?v=6.2">
-  <link rel="stylesheet" href="assets/css/shop-advanced.css?v=1.0">
+  <link rel="stylesheet" href="assets/css/shop-advanced.css?v=1.8">
 </head>
 
 <body data-page="shop">
-
-  <!-- Scroll Progress Bar -->
-  <div class="shop-scroll-progress" aria-hidden="true">
-    <div class="shop-scroll-progress-bar" id="shopScrollProgressBar"></div>
-  </div>
 
   <!-- TOPBAR -->
   <div class="topbar">
@@ -82,19 +87,17 @@
           </div>
         </div>
         <div class="nav-dropdown">
-          <a href="blog.html" class="dropdown-toggle" data-nav="more">
+          <a href="#" class="dropdown-toggle" data-nav="more">
             More
             <svg class="nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </a>
           <div class="dropdown-menu">
-            <a href="#">Tyre Size Calculator</a>
-            <a href="#">Feedback</a>
-            <a href="blog.html">Blog</a>
+            <a href="tyre-size-calculator.html">Tyre Size Calculator</a>
+            <a href="feedback.html">Feedback</a>
             <a href="#">Promotional Offers</a>
-            <a href="#">About Tyre Sizes</a>
-            <a href="login.html">Account</a>
+            <a href="tyre-sizes.html">About Tyre Sizes</a>
           </div>
         </div>
         <a href="contact.html" data-nav="contact" class="">Contact Us</a>
@@ -130,10 +133,6 @@
        HERO SECTION: 3D TYRE STAGE & ANIMATED TITLE REVEAL
        ==================================================================== -->
   <section class="about-hero-banner" id="hero-banner">
-    <button class="hero-replay-btn" id="hero-motion-replay-btn" title="Replay Motion Sequence" aria-label="Replay motion animation">
-      <i class="fa-solid fa-rotate-right"></i> <span>Replay Motion</span>
-    </button>
-
     <div class="container hero-banner-container">
       <div class="hero-motion-stage" id="hero-motion-stage">
         <!-- STAGE 1: REALISTIC 3D TYRE -->
@@ -146,121 +145,94 @@
           <h1 class="hero-main-sentence" id="hero-main-sentence" aria-label="Shop Tyres & Parts">
             <span class="hero-word"><span class="hero-char">S</span><span class="hero-char">h</span><span class="hero-char">o</span><span class="hero-char">p</span></span><span class="hero-space">&nbsp;</span><span class="hero-word"><span class="hero-char">T</span><span class="hero-char">y</span><span class="hero-char">r</span><span class="hero-char">e</span><span class="hero-char">s</span></span><span class="hero-space">&nbsp;</span><span class="hero-word"><span class="hero-char">&amp;</span></span><span class="hero-space">&nbsp;</span><span class="hero-word"><span class="hero-char">P</span><span class="hero-char">a</span><span class="hero-char">r</span><span class="hero-char">t</span><span class="hero-char">s</span></span>
           </h1>
-          <p class="hero-main-desc">Explore genuine tyres and specifications fetched directly from the Sesco Tyres <code>treads</code> database.</p>
+          <p class="hero-main-desc">Explore genuine tyres and specifications fetched directly from the Sesco Tyres collection.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ====================================================================
-       LIVE DATABASE TELEMETRY RIBBON
+       BRAND & DIMENSION FILTER CONTAINER
        ==================================================================== -->
-  <section class="shop-db-ribbon" aria-label="Database Telemetry">
-    <div class="container shop-db-ribbon-inner">
-      <div class="db-status-cluster">
-        <span class="db-live-pill" id="dbLiveStatusPill">
-          <span class="db-pulse-dot"></span>
-          <span id="dbLiveStatusText">Connecting to treads.item…</span>
-        </span>
-        <span class="db-runtime-tag" id="dbPhpVersionTag">
-          <i class="fa-brands fa-php"></i> PHP 8.5.12 · PDO MySQL
-        </span>
+  <section class="shop-brand-banner" id="shopBrandBanner" aria-label="Brand and Dimension Filters">
+    <div class="container shop-brand-banner-inner">
+      <div class="brand-banner-top-row">
+        <div class="brand-banner-title-cluster">
+          <h2 class="brand-banner-title">BRANDS</h2>
+          <span class="brand-banner-count-meta" id="brandBannerCountMeta">Loading brands…</span>
+        </div>
+
+        <div class="brand-banner-search-col">
+          <div class="banner-input-shell">
+            <i class="fa-solid fa-magnifying-glass banner-input-icon" aria-hidden="true"></i>
+            <input
+              type="search"
+              id="brandFilterSearch"
+              class="banner-search-input"
+              placeholder="Search by brand"
+              aria-label="Search by brand"
+              autocomplete="off"
+            >
+            <button type="button" class="banner-input-clear" id="clearBrandSearchBtn" aria-label="Clear brand search">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="brand-banner-dimension-col">
+          <label for="dimensionSearchInput" class="dimension-search-label">search by dimension:</label>
+          <div class="banner-input-shell banner-input-shell--dimension">
+            <i class="fa-solid fa-ruler-combined banner-input-icon" aria-hidden="true"></i>
+            <input
+              type="search"
+              id="dimensionSearchInput"
+              class="banner-search-input"
+              placeholder="e.g. 185/70 R13"
+              aria-label="Search by tyre dimension"
+              autocomplete="off"
+            >
+            <button type="button" class="banner-input-clear" id="clearDimensionSearchBtn" aria-label="Clear dimension search">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="db-telemetry-metrics">
-        <div class="db-metric-item">
-          <span class="db-metric-val" id="statTotalDbItems">690</span>
-          <span class="db-metric-label">Total Items in <code>item</code> Table</span>
-        </div>
-        <div class="db-metric-item">
-          <span class="db-metric-val" id="statSampleCount">10</span>
-          <span class="db-metric-label">Sampled Items Displayed</span>
-        </div>
-        <div class="db-metric-item">
-          <span class="db-metric-val" id="statTotalBrands">210</span>
-          <span class="db-metric-label">Registered Brands</span>
-        </div>
-      </div>
+      <div class="brand-banner-active-summary" id="brandFilterActiveSummary" style="display:none"></div>
 
-      <button type="button" class="db-shuffle-btn" id="dbShuffleSampleBtn" title="Fetch a random 10-item sample from the treads database">
-        <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
-        <span>Shuffle 10-Item DB Sample</span>
-      </button>
-    </div>
-  </section>
+      <div class="brand-banner-pills-row" id="brandBannerPillsRow">
+        <div class="top-brands-list" id="topBrandList" role="group" aria-label="Top 10 tyre brands by product count">
+          <!-- Dynamically populated with top 10 brands from treads.item_brand -->
+        </div>
 
-  <!-- ====================================================================
-       FLOATING COMMAND DOCK (SEARCH + SAMPLE MODE + CATEGORY PILLS)
-       ==================================================================== -->
-  <div class="container shop-command-dock-wrap">
-    <section class="shop-command-dock" data-shop-aos="zoom-blur" aria-label="Search and Filter Controls">
-      <div class="dock-top-row">
-        <div class="dock-search-box">
-          <i class="fa-solid fa-magnifying-glass dock-search-icon" aria-hidden="true"></i>
-          <input
-            type="search"
-            id="shopSearchInput"
-            class="dock-search-input"
-            placeholder="Search sampled items by tyre size (e.g. 205/65R16, 255/70R16), brand (RODEO, HABILEAD, COUGAR) or DB item_id…"
-            aria-label="Search tyres and items"
+        <div class="other-brands-hover-zone" id="otherBrandsHoverZone">
+          <button
+            type="button"
+            class="brand-banner-pill brand-banner-pill--other"
+            id="otherBrandsTriggerBtn"
+            aria-expanded="false"
+            aria-controls="otherBrandsPopover"
           >
-          <button type="button" class="dock-search-clear" id="shopSearchClear" aria-label="Clear search" title="Clear search">
-            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            <span>OTHER BRANDS</span>
+            <span class="brand-pill-count" id="otherBrandsCountBadge">0</span>
+            <i class="fa-solid fa-chevron-down brand-other-chevron" aria-hidden="true"></i>
           </button>
-        </div>
 
-        <div class="dock-sample-selector" role="group" aria-label="Database Sample Mode">
-          <button type="button" class="sample-mode-btn active" data-sample-mode="first10" title="First 10 records in item table">
-            <i class="fa-solid fa-list-ol" aria-hidden="true"></i>
-            <span>First 10 (ID 1–11)</span>
-          </button>
-          <button type="button" class="sample-mode-btn" data-sample-mode="featured" title="10 diverse tyre brands from item table">
-            <i class="fa-solid fa-star" aria-hidden="true"></i>
-            <span>Featured 10 Brands</span>
-          </button>
-          <button type="button" class="sample-mode-btn" data-sample-mode="random" title="Random 10 items from 690 DB records">
-            <i class="fa-solid fa-dice" aria-hidden="true"></i>
-            <span>Random 10 Sample</span>
-          </button>
+          <div class="other-brands-popover" id="otherBrandsPopover" role="region" aria-label="All remaining tyre brands">
+            <div class="other-brands-popover-surface">
+              <div class="other-brands-popover-head">
+                <span class="other-brands-popover-title" id="otherBrandsPopoverTitle">OTHER BRANDS</span>
+                <span class="other-brands-popover-hint">Sorted A–Z · Click a brand to filter tyres</span>
+              </div>
+              <div class="other-brands-5col-grid" id="otherBrandsGrid">
+                <!-- Dynamically populated in a 5-column grid -->
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="dock-categories-row">
-        <div class="category-pills-track" role="tablist" aria-label="Filter by tyre category">
-          <button type="button" class="cat-pill-btn active" data-cat-pill="all">
-            <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-            <span>All Sampled</span>
-            <span class="cat-pill-count">10</span>
-          </button>
-          <button type="button" class="cat-pill-btn" data-cat-pill="touring">
-            <i class="fa-solid fa-car-side" aria-hidden="true"></i>
-            <span>Touring Comfort</span>
-            <span class="cat-pill-count">0</span>
-          </button>
-          <button type="button" class="cat-pill-btn" data-cat-pill="suv">
-            <i class="fa-solid fa-truck-monster" aria-hidden="true"></i>
-            <span>SUV &amp; 4x4 Terrain</span>
-            <span class="cat-pill-count">0</span>
-          </button>
-          <button type="button" class="cat-pill-btn" data-cat-pill="commercial">
-            <i class="fa-solid fa-truck-moving" aria-hidden="true"></i>
-            <span>Commercial / LT</span>
-            <span class="cat-pill-count">0</span>
-          </button>
-          <button type="button" class="cat-pill-btn" data-cat-pill="performance">
-            <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
-            <span>Performance XL</span>
-            <span class="cat-pill-count">0</span>
-          </button>
-          <button type="button" class="cat-pill-btn" data-cat-pill="economy">
-            <i class="fa-solid fa-leaf" aria-hidden="true"></i>
-            <span>Everyday Value</span>
-            <span class="cat-pill-count">0</span>
-          </button>
-        </div>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 
   <!-- ====================================================================
        MAIN SHOP WORKSPACE (SIDEBAR + 3D PRODUCT CATALOGUE)
@@ -271,48 +243,44 @@
       <!-- LEFT STICKY SIDEBAR -->
       <aside class="shop-sidebar" aria-label="Catalogue Filters">
 
-        <!-- Live Database Connection Inspector Card -->
-        <div class="db-schema-card" data-shop-aos="slide-right">
-          <div class="db-schema-head">
-            <div class="db-schema-icon">
-              <i class="fa-solid fa-database" aria-hidden="true"></i>
-            </div>
-            <div>
-              <h3 class="db-schema-title">Treads DB Connector</h3>
-              <span class="db-schema-sub">Live SQL Schema Mapping</span>
-            </div>
-          </div>
-          <div class="db-schema-rows">
-            <div class="db-schema-row"><span>Database</span><code>treads</code></div>
-            <div class="db-schema-row"><span>Primary Table</span><code>item (690 rows)</code></div>
-            <div class="db-schema-row"><span>Joined Tables</span><code>item_brand, price_list</code></div>
-            <div class="db-schema-row"><span>Sample Limit</span><code>LIMIT 10</code></div>
-            <div class="db-schema-row"><span>Backend Engine</span><code>PHP 8.5.12 PDO</code></div>
-          </div>
-          <button type="button" class="btn btn-primary" id="sidebarRefreshDbBtn" style="width:100%;font-size:12.5px;padding:9px 14px;display:inline-flex;align-items:center;justify-content:center;gap:7px;">
-            <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
-            <span>Re-fetch 10 Items from DB</span>
-          </button>
-        </div>
-
-        <!-- Brand Filter Panel -->
+        <!-- Product Type Filter Panel (ALL rows from treads.item_type) -->
         <div class="sidebar-panel" data-shop-aos="slide-right">
           <div class="sidebar-panel-head">
-            <h3><i class="fa-solid fa-award" aria-hidden="true"></i> Item Brands</h3>
-            <button type="button" class="reset-filters-link" id="resetAllFiltersBtn">Reset all</button>
+            <h3>
+              <i class="fa-solid fa-shapes" aria-hidden="true"></i>
+              <span>Product Types</span>
+              <span class="filter-panel-total" id="typeFilterTotalBadge">0</span>
+            </h3>
+            <button type="button" class="reset-filters-link" id="clearTypeFiltersBtn">Clear</button>
           </div>
-          <div class="brand-filter-list" id="brandFilterList">
-            <!-- Dynamically populated from treads.item_brand -->
+          <div class="sidebar-filter-search-wrap">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input
+              type="search"
+              id="typeFilterSearch"
+              class="sidebar-filter-search"
+              placeholder="Filter product types…"
+              aria-label="Filter product types"
+            >
+          </div>
+          <div class="filter-active-summary" id="typeFilterActiveSummary" style="display:none"></div>
+          <div class="brand-filter-list type-filter-list" id="typeFilterList">
+            <!-- Dynamically populated with ALL rows from treads.item_type -->
           </div>
         </div>
 
-        <!-- Rim Diameter Quick Filter Panel -->
+        <!-- Rim Diameter Quick Filter Panel (ALL distinct rim diameters in treads.item) -->
         <div class="sidebar-panel" data-shop-aos="slide-right">
           <div class="sidebar-panel-head">
-            <h3><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> Rim Diameter</h3>
+            <h3>
+              <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+              <span>Rim Diameter</span>
+              <span class="filter-panel-total" id="rimFilterTotalBadge">0</span>
+            </h3>
+            <button type="button" class="reset-filters-link" id="clearRimFilterBtn">Clear</button>
           </div>
           <div class="rim-chips-grid" id="rimChipsGrid">
-            <!-- Dynamically populated from parsed item sizes -->
+            <!-- Dynamically populated with ALL distinct rim diameters in treads.item -->
           </div>
         </div>
 
@@ -324,20 +292,20 @@
           <div class="price-range-wrap">
             <div class="price-range-readout">
               <span>Up to</span>
-              <span id="shopPriceReadout">UGX 650,000</span>
+              <span id="shopPriceReadout">UGX 0</span>
             </div>
             <input
               type="range"
               id="shopPriceSlider"
               class="shop-range-slider"
-              min="100000"
+              min="0"
               max="700000"
               step="10000"
               value="700000"
               aria-label="Maximum selling price in UGX"
             >
             <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;font-weight:600;">
-              <span>UGX 100k</span>
+              <span>UGX 0</span>
               <span>From <code>price_list</code></span>
             </div>
           </div>
@@ -351,10 +319,15 @@
         <!-- Toolbar -->
         <div class="shop-advanced-toolbar" data-shop-aos="fade-up">
           <div class="toolbar-meta">
-            <p class="toolbar-count-text" id="product-count">Loading 10 items from <code>treads.item</code>…</p>
+            <p class="toolbar-count-text" id="product-count">Connecting to <code>treads.item</code>…</p>
           </div>
 
           <div class="toolbar-controls">
+            <button type="button" class="reset-filters-link toolbar-reset-btn" id="resetAllFiltersBtn">
+              <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+              <span>Reset filters</span>
+            </button>
+
             <select id="sort-products" class="shop-sort-select" aria-label="Sort sampled items">
               <option value="id-asc">Sort: DB item_id (Ascending)</option>
               <option value="price-low">Price: Low to High (UGX)</option>
@@ -373,10 +346,12 @@
           </div>
         </div>
 
-        <!-- 10-Item Database Grid -->
+        <!-- Database Products Grid -->
         <div class="shop-products-grid" id="shop-products" data-db-shop="true">
           <!-- Populated dynamically via backend/get_items.php -->
         </div>
+
+        <div class="shop-pagination-footer" id="shopPaginationFooter"></div>
 
       </section>
     </div>
@@ -467,8 +442,8 @@
   <!-- Scripts -->
   <script src="assets/js/three.min.js"></script>
   <script src="assets/js/about-3d.js"></script>
-  <script src="assets/js/main.js?v=7.7"></script>
-  <script src="assets/js/shop-advanced.js"></script>
+  <script src="assets/js/main.js?v=8.9"></script>
+  <script src="assets/js/shop-advanced.js?v=1.8"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 
