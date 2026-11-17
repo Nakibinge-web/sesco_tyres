@@ -1,0 +1,58 @@
+From: "Sesco Tyres Client Portal" <no-reply@sescotyres.com>
+To: <nakibingecollins2@gmail.com>
+Subject: Sesco Tyres - Password Reset Verification Code
+Date: Tue, 17 Nov 2026 11:38:31 +0000
+Message-ID: <4851eb27f37949d1e614f0bc@sescotyres.local>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="sesco_c71a4633d295eebcb26b5223"
+
+--sesco_c71a4633d295eebcb26b5223
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hello kilia faith,
+
+We received a request to reset the password for your Sesco Tyres account (nakibingecollins2@gmail.com).
+
+Your 6-digit password reset verification code is: 731122
+
+This code expires in 15 minutes and only works for this account (nakibingecollins2@gmail.com).
+If you did not request a password reset, you can safely ignore this email and your password will remain unchanged.
+
+Sesco Tyres Client Portal
+
+--sesco_c71a4633d295eebcb26b5223
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Sesco Tyres Password Reset</title></head>
+<body style="margin:0;padding:24px;background:#f8fafc;font-family:'Segoe UI',Arial,sans-serif;color:#0f172a;">
+  <div style="max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;padding:28px;">
+    <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#163687;margin-bottom:10px;">
+      Sesco Tyres Client Portal
+    </div>
+    <h1 style="margin:0 0 12px;font-size:22px;color:#0f172a;">Password Reset Verification Code</h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:#334155;">
+      Hello kilia faith,
+    </p>
+    <p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:#334155;">
+      Enter the verification code below on the Sesco Tyres Sign In page to confirm ownership of <strong>nakibingecollins2@gmail.com</strong> and choose a new password:
+    </p>
+    <div style="margin:0 0 18px;padding:16px 20px;background:#f1f5f9;border-left:4px solid #163687;text-align:center;">
+      <div style="font-size:32px;font-weight:800;letter-spacing:0.28em;color:#0f172a;font-family:Consolas,monospace;">
+        731122
+      </div>
+    </div>
+    <p style="margin:0 0 10px;font-size:13px;line-height:1.5;color:#475569;">
+      This verification code expires in <strong>15 minutes</strong> and is strictly bound to <strong>nakibingecollins2@gmail.com</strong>.
+    </p>
+    <p style="margin:0;font-size:13px;line-height:1.5;color:#64748b;">
+      If you did not request a password reset, you can safely ignore this message.
+    </p>
+  </div>
+</body>
+</html>
+
+--sesco_c71a4633d295eebcb26b5223--

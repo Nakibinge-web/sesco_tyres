@@ -1062,19 +1062,60 @@
     }
   }
 
+  const currentPage = document.body?.dataset?.page;
+  const pageFooter = (currentPage === 'about' || currentPage === 'contact')
+    ? document.querySelector('.site-footer')
+    : null;
+
+  function updatePageFooterScroll() {
+    if (!pageFooter) return;
+    const rect = pageFooter.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const docHeight = Math.max(
+      document.body ? document.body.scrollHeight : 0,
+      document.documentElement ? document.documentElement.scrollHeight : 0
+    );
+    const atPageBottom = (window.scrollY + vh) >= (docHeight - 24);
+    const inView = atPageBottom || (rect.top <= vh - 8 && rect.bottom >= 8);
+
+    if (inView) {
+      if (!pageFooter.classList.contains('is-revealed')) {
+        pageFooter.classList.add('is-revealed');
+      }
+    } else if (rect.top > vh - 2 || rect.bottom < 8) {
+      if (pageFooter.classList.contains('is-revealed')) {
+        pageFooter.classList.remove('is-revealed');
+      }
+    }
+  }
+
+  if (pageFooter) {
+    pageFooter.classList.add('footer-scroll-ready');
+    if (typeof IntersectionObserver === 'function') {
+      const footerObserver = new IntersectionObserver(() => {
+        updatePageFooterScroll();
+      }, { threshold: [0, 0.02] });
+      footerObserver.observe(pageFooter);
+    }
+    window.addEventListener('load', updatePageFooterScroll);
+  }
+
   window.addEventListener('scroll', () => {
     requestAnimationFrame(updateWhoWeAreSectionScroll);
     requestAnimationFrame(updateOurServicesSectionScroll);
     requestAnimationFrame(updateWhyChooseSectionScroll);
+    requestAnimationFrame(updatePageFooterScroll);
   }, { passive: true });
   window.addEventListener('resize', () => {
     requestAnimationFrame(updateWhoWeAreSectionScroll);
     requestAnimationFrame(updateOurServicesSectionScroll);
     requestAnimationFrame(updateWhyChooseSectionScroll);
+    requestAnimationFrame(updatePageFooterScroll);
   }, { passive: true });
   updateWhoWeAreSectionScroll();
   updateOurServicesSectionScroll();
   updateWhyChooseSectionScroll();
+  updatePageFooterScroll();
 
   if (revealElements.length > 0) {
     const revealObserver = new IntersectionObserver((entries) => {

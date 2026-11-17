@@ -1736,13 +1736,6 @@
   margin-left: 0;
 }
 
-/* ==========================================================================
-   TOPBAR LINKS ALIGNMENT (TYRE SIZE CALCULATOR PAGE)
-   ========================================================================== */
-.topbar .topbar-links {
-  margin-right: 10px !important;
-}
-
 .calc-workspace {
   overflow-x: hidden;
 }

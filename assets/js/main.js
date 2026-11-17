@@ -72,20 +72,28 @@ let _swalAddToCartTimer = null;
 let _swalRemoveTimer = null;
 let _swalWishlistTimer = null;
 let _swalLoginTimer = null;
+let _swalLogoutTimer = null;
 
-function showSweetAlertAddToCart(productName) {
-  const existing = document.getElementById('sweetAlertAddToCartModal');
-  if (existing) existing.remove();
-  const existingRem = document.getElementById('sweetAlertRemoveModal');
-  if (existingRem) existingRem.remove();
-  const existingWish = document.getElementById('sweetAlertWishlistModal');
-  if (existingWish) existingWish.remove();
-  const existingLogin = document.getElementById('sweetAlertLoginModal');
-  if (existingLogin) existingLogin.remove();
+function clearAllSweetAlerts() {
+  [
+    'sweetAlertAddToCartModal',
+    'sweetAlertRemoveModal',
+    'sweetAlertWishlistModal',
+    'sweetAlertLoginModal',
+    'sweetAlertLogoutModal'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.remove();
+  });
   clearTimeout(_swalAddToCartTimer);
   clearTimeout(_swalRemoveTimer);
   clearTimeout(_swalWishlistTimer);
   clearTimeout(_swalLoginTimer);
+  clearTimeout(_swalLogoutTimer);
+}
+
+function showSweetAlertAddToCart(productName) {
+  clearAllSweetAlerts();
   const overlay = document.createElement('div');
   overlay.id = 'sweetAlertAddToCartModal';
   overlay.className = 'swal-flat-overlay';
@@ -102,18 +110,7 @@ window.showSweetAlertAddToCart = showSweetAlertAddToCart;
 window.showWishlistSweetAlert = showSweetAlertAddToCart;
 
 function showSweetAlertRemoveFromCart(productName, customTitle) {
-  const existing = document.getElementById('sweetAlertAddToCartModal');
-  if (existing) existing.remove();
-  const existingRem = document.getElementById('sweetAlertRemoveModal');
-  if (existingRem) existingRem.remove();
-  const existingWish = document.getElementById('sweetAlertWishlistModal');
-  if (existingWish) existingWish.remove();
-  const existingLogin = document.getElementById('sweetAlertLoginModal');
-  if (existingLogin) existingLogin.remove();
-  clearTimeout(_swalAddToCartTimer);
-  clearTimeout(_swalRemoveTimer);
-  clearTimeout(_swalWishlistTimer);
-  clearTimeout(_swalLoginTimer);
+  clearAllSweetAlerts();
   const titleText = customTitle || 'Removed from cart';
   const defaultSub = customTitle ? (customTitle === 'Removed from wishlist' ? 'Item removed from your wishlist' : 'Item removed') : 'Item removed from your cart';
   const overlay = document.createElement('div');
@@ -134,18 +131,7 @@ window.showSweetAlertRemoveFromWishlist = function(productName) {
 };
 
 function showSweetAlertSaveToWishlist(productName) {
-  const existing = document.getElementById('sweetAlertAddToCartModal');
-  if (existing) existing.remove();
-  const existingRem = document.getElementById('sweetAlertRemoveModal');
-  if (existingRem) existingRem.remove();
-  const existingWish = document.getElementById('sweetAlertWishlistModal');
-  if (existingWish) existingWish.remove();
-  const existingLogin = document.getElementById('sweetAlertLoginModal');
-  if (existingLogin) existingLogin.remove();
-  clearTimeout(_swalAddToCartTimer);
-  clearTimeout(_swalRemoveTimer);
-  clearTimeout(_swalWishlistTimer);
-  clearTimeout(_swalLoginTimer);
+  clearAllSweetAlerts();
   const overlay = document.createElement('div');
   overlay.id = 'sweetAlertWishlistModal';
   overlay.className = 'swal-flat-overlay';
@@ -161,18 +147,7 @@ function showSweetAlertSaveToWishlist(productName) {
 window.showSweetAlertSaveToWishlist = showSweetAlertSaveToWishlist;
 
 function showSweetAlertLogin(username, onDismiss) {
-  const existingAdd = document.getElementById('sweetAlertAddToCartModal');
-  if (existingAdd) existingAdd.remove();
-  const existingRem = document.getElementById('sweetAlertRemoveModal');
-  if (existingRem) existingRem.remove();
-  const existingWish = document.getElementById('sweetAlertWishlistModal');
-  if (existingWish) existingWish.remove();
-  const existingLogin = document.getElementById('sweetAlertLoginModal');
-  if (existingLogin) existingLogin.remove();
-  clearTimeout(_swalAddToCartTimer);
-  clearTimeout(_swalRemoveTimer);
-  clearTimeout(_swalWishlistTimer);
-  clearTimeout(_swalLoginTimer);
+  clearAllSweetAlerts();
 
   const rawName = (username || '').trim();
   const displayName = rawName ? rawName : 'User';
@@ -193,6 +168,39 @@ function showSweetAlertLogin(username, onDismiss) {
   }, 1000);
 }
 window.showSweetAlertLogin = showSweetAlertLogin;
+
+function showSweetAlertLogout(onDismiss) {
+  clearAllSweetAlerts();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'sweetAlertLogoutModal';
+  overlay.className = 'swal-flat-overlay';
+  overlay.setAttribute('role', 'alert');
+  overlay.setAttribute('aria-live', 'assertive');
+  overlay.innerHTML = `
+    <div class="swal-flat-card swal-flat-card-login">
+      <div class="swal-flat-icon swal-flat-icon-login">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </div>
+      <h3 class="swal-flat-title">Logged out</h3>
+      <p class="swal-flat-sub">You have been signed out cleanly</p>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  _swalLogoutTimer = setTimeout(() => {
+    overlay.classList.add('is-closing');
+    setTimeout(() => {
+      overlay.remove();
+      if (typeof onDismiss === 'function') onDismiss();
+    }, 150);
+  }, 1500);
+}
+window.showSweetAlertLogout = showSweetAlertLogout;
 
 function addCart(id) {
   if (!DB_PRODUCTS_CONNECTED) {
@@ -501,7 +509,7 @@ async function loadProductPage() {
     }
   }
 }
-document.addEventListener('click', e => { const menu = e.target.closest('.menu-toggle'); if (menu) { document.querySelector('.nav')?.classList.toggle('open'); } else if (!e.target.closest('.nav')) { document.querySelector('.nav')?.classList.remove('open'); } const navLink = e.target.closest('.nav a'); if (navLink) { document.querySelector('.nav')?.classList.remove('open'); } const add = e.target.closest('[data-add]'); if (add) addCart(add.dataset.add); const wish = e.target.closest('[data-wish]'); if (wish) toggleWish(wish.dataset.wish); const qtyBtn = e.target.closest('[data-cart-qty-btn]'); if (qtyBtn) { const id = qtyBtn.dataset.cartQtyBtn; const delta = Number(qtyBtn.dataset.delta || 0); let c = getStore('sesco-cart'); const f = c.find(x => x.id === id); if (f) { const nextQty = (Number(f.qty) || 1) + delta; if (nextQty < 1) { toast('Minimum quantity is 1 — click Remove to delete item'); return; } f.qty = Math.min(50, nextQty); setStore('sesco-cart', c); renderCart(); updateCounts(); } } const rem = e.target.closest('[data-remove]'); if (rem) { removeCartItem(rem.dataset.remove); } const faq = e.target.closest('.faq-question'); if (faq) faq.parentElement.classList.toggle('open'); const checkout = e.target.closest('[data-demo-checkout]'); if (checkout) toast('Demo only — connect this button to your enquiry workflow later'); const filterBtn = e.target.closest('[data-mobile-filters]'); if (filterBtn) document.querySelector('.shop-layout')?.classList.toggle('filters-open'); const logoutBtn = e.target.closest('[data-header-logout]'); if (logoutBtn) { e.preventDefault(); localStorage.removeItem('sesco-client-id'); localStorage.removeItem('sesco-client-name'); localStorage.removeItem('sesco-client-email'); localStorage.removeItem('sesco-client-phone'); sessionStorage.removeItem('sesco-client-id'); sessionStorage.removeItem('sesco-client-name'); const candidateUrls = ['backend/logout.php', 'http://localhost/sesco_tyres_frontend_redesign/backend/logout.php', 'http://127.0.0.1/sesco_tyres_frontend_redesign/backend/logout.php']; for (const endpointUrl of candidateUrls) { try { fetch(endpointUrl, { method: 'POST' }); break; } catch (err) {} } updateHeaderAuth(); toast('Logged out successfully.'); if (document.body.dataset.page === 'cart') { renderCart(); } } const passToggle = e.target.closest('[data-toggle-password]'); if (passToggle) { const targetId = passToggle.dataset.togglePassword; const input = document.getElementById(targetId); if (input) { const isPassword = input.type === 'password'; input.type = isPassword ? 'text' : 'password'; passToggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password'); passToggle.setAttribute('title', isPassword ? 'Hide password' : 'Show password'); const icon = passToggle.querySelector('i'); if (icon) { icon.className = isPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'; } } } const vidBtn = e.target.closest('#heroVideoToggle'); if (vidBtn) { const v = document.getElementById('heroVideo'); if (v) { if (v.paused) { v.play(); vidBtn.querySelector('.video-control-icon').textContent = '⏸'; vidBtn.querySelector('.video-control-label').textContent = 'Pause'; vidBtn.setAttribute('aria-label', 'Pause background video') } else { v.pause(); vidBtn.querySelector('.video-control-icon').textContent = '▶'; vidBtn.querySelector('.video-control-label').textContent = 'Play'; vidBtn.setAttribute('aria-label', 'Play background video') } } } });
+document.addEventListener('click', e => { const menu = e.target.closest('.menu-toggle'); if (menu) { document.querySelector('.nav')?.classList.toggle('open'); } else if (!e.target.closest('.nav')) { document.querySelector('.nav')?.classList.remove('open'); } const navLink = e.target.closest('.nav a'); if (navLink) { document.querySelector('.nav')?.classList.remove('open'); } const add = e.target.closest('[data-add]'); if (add) addCart(add.dataset.add); const wish = e.target.closest('[data-wish]'); if (wish) toggleWish(wish.dataset.wish); const qtyBtn = e.target.closest('[data-cart-qty-btn]'); if (qtyBtn) { const id = qtyBtn.dataset.cartQtyBtn; const delta = Number(qtyBtn.dataset.delta || 0); let c = getStore('sesco-cart'); const f = c.find(x => x.id === id); if (f) { const nextQty = (Number(f.qty) || 1) + delta; if (nextQty < 1) { toast('Minimum quantity is 1 — click Remove to delete item'); return; } f.qty = Math.min(50, nextQty); setStore('sesco-cart', c); renderCart(); updateCounts(); } } const rem = e.target.closest('[data-remove]'); if (rem) { removeCartItem(rem.dataset.remove); } const faq = e.target.closest('.faq-question'); if (faq) faq.parentElement.classList.toggle('open'); const checkout = e.target.closest('[data-demo-checkout]'); if (checkout) toast('Demo only — connect this button to your enquiry workflow later'); const filterBtn = e.target.closest('[data-mobile-filters]'); if (filterBtn) document.querySelector('.shop-layout')?.classList.toggle('filters-open'); const profileTrigger = e.target.closest('[data-header-profile]'); if (profileTrigger) { e.preventDefault(); if (typeof window.openClientProfileModal === 'function') { window.openClientProfileModal(); } } const logoutBtn = e.target.closest('[data-header-logout]'); if (logoutBtn) { e.preventDefault(); if (typeof window.closeClientProfileModal === 'function') { window.closeClientProfileModal(); } localStorage.removeItem('sesco-client-id'); localStorage.removeItem('sesco-client-name'); localStorage.removeItem('sesco-client-email'); localStorage.removeItem('sesco-client-phone'); sessionStorage.removeItem('sesco-client-id'); sessionStorage.removeItem('sesco-client-name'); const candidateUrls = ['backend/logout.php', 'http://localhost/sesco_tyres_frontend_redesign/backend/logout.php', 'http://127.0.0.1/sesco_tyres_frontend_redesign/backend/logout.php']; for (const endpointUrl of candidateUrls) { try { fetch(endpointUrl, { method: 'POST', credentials: 'same-origin' }); break; } catch (err) {} } updateHeaderAuth(); showSweetAlertLogout(); if (document.body.dataset.page === 'cart') { renderCart(); } } const passToggle = e.target.closest('[data-toggle-password]'); if (passToggle) { const targetId = passToggle.dataset.togglePassword; const input = document.getElementById(targetId); if (input) { const isPassword = input.type === 'password'; input.type = isPassword ? 'text' : 'password'; passToggle.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password'); passToggle.setAttribute('title', isPassword ? 'Hide password' : 'Show password'); const icon = passToggle.querySelector('i'); if (icon) { icon.className = isPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'; } const eyeSvg = passToggle.querySelector('svg[data-eye-svg]'); if (eyeSvg) { eyeSvg.innerHTML = isPassword ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>' : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'; } } } const vidBtn = e.target.closest('#heroVideoToggle'); if (vidBtn) { const v = document.getElementById('heroVideo'); if (v) { if (v.paused) { v.play(); vidBtn.querySelector('.video-control-icon').textContent = '⏸'; vidBtn.querySelector('.video-control-label').textContent = 'Pause'; vidBtn.setAttribute('aria-label', 'Pause background video') } else { v.pause(); vidBtn.querySelector('.video-control-icon').textContent = '▶'; vidBtn.querySelector('.video-control-label').textContent = 'Play'; vidBtn.setAttribute('aria-label', 'Play background video') } } } });
 document.addEventListener('change', e => { if (e.target.matches('[data-qty]')) { let c = getStore('sesco-cart'); const f = c.find(x => x.id === e.target.dataset.qty); if (f) { const val = Number(e.target.value); if (val <= 0 || isNaN(val)) { removeCartItem(e.target.dataset.qty); } else { f.qty = Math.max(1, Math.min(50, val)); setStore('sesco-cart', c); renderCart(); updateCounts(); } } } if (e.target.matches('[data-filter]')) { const shopContainer = document.querySelector('#shop-products'); if (!shopContainer || shopContainer.hasAttribute('data-db-shop') || !DB_PRODUCTS_CONNECTED) return; const checked = [...document.querySelectorAll('[data-filter]:checked')].map(x => x.value); const items = PRODUCTS.filter(p => !checked.length || checked.includes(p.category)); renderProducts('#shop-products', items); const count = document.querySelector('#product-count'); if (count) count.textContent = items.length + ' products shown' } if (e.target.matches('#sort-products')) { const shopContainer = document.querySelector('#shop-products'); if (!shopContainer || shopContainer.hasAttribute('data-db-shop') || !DB_PRODUCTS_CONNECTED) return; const v = e.target.value; const arr = [...PRODUCTS]; if (v === 'price-low') arr.sort((a, b) => a.price - b.price); if (v === 'price-high') arr.sort((a, b) => b.price - a.price); if (v === 'name') arr.sort((a, b) => a.name.localeCompare(b.name)); renderProducts('#shop-products', arr) } });
 function isValidSescoContactNumber(value) {
   const cleaned = String(value || '').trim().replace(/[\s\-\(\)]/g, '');
@@ -897,6 +905,7 @@ async function handleClientRegisterSubmit(form) {
     try {
       const res = await fetch(endpointUrl, {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -985,6 +994,7 @@ async function handleClientLoginSubmit(form) {
     try {
       const res = await fetch(endpointUrl, {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       });
@@ -1024,13 +1034,8 @@ async function handleClientLoginSubmit(form) {
     });
 
     if (feedback) {
-      feedback.style.display = 'block';
-      feedback.style.background = '#ecfdf5';
-      feedback.style.color = '#065f46';
-      feedback.style.border = '1px solid #a7f3d0';
-      feedback.style.padding = '12px 14px';
-      feedback.style.borderRadius = '0';
-      feedback.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Signed in successfully!</strong><br>Welcome back, <strong>${client.name || 'Client'}</strong>.<div style="margin-top:10px;display:flex;gap:8px"><a href="cart.html" class="btn btn-primary" style="font-size:12px;padding:6px 12px">Go to Cart</a><a href="shop.html" class="btn btn-outline" style="font-size:12px;padding:6px 12px">Browse Tyres</a></div>`;
+      feedback.style.display = 'none';
+      feedback.innerHTML = '';
     }
   } else {
     if (feedback) {
@@ -1046,6 +1051,457 @@ async function handleClientLoginSubmit(form) {
   }
 }
 window.handleClientLoginSubmit = handleClientLoginSubmit;
+
+function setForgotButtonLoading(button, isLoading, loadingLabel) {
+  if (!button) return;
+  const labelSpan = button.querySelector('span');
+  if (isLoading) {
+    if (!button.dataset.originalLabel && labelSpan) {
+      button.dataset.originalLabel = labelSpan.textContent;
+    }
+    button.disabled = true;
+    if (labelSpan) labelSpan.textContent = loadingLabel;
+  } else {
+    button.disabled = false;
+    if (button.dataset.originalLabel && labelSpan) {
+      labelSpan.textContent = button.dataset.originalLabel;
+    }
+  }
+}
+
+async function postForgotPasswordAction(payload) {
+  const candidateUrls = [
+    'backend/forgot_password.php',
+    'http://localhost/sesco_tyres_frontend_redesign/backend/forgot_password.php',
+    'http://127.0.0.1/sesco_tyres_frontend_redesign/backend/forgot_password.php'
+  ];
+
+  let lastNetworkError = null;
+  for (const endpointUrl of candidateUrls) {
+    try {
+      const response = await fetch(endpointUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        return { status: response.status, data };
+      }
+      if (response.status === 404) {
+        continue;
+      }
+      const text = await response.text();
+      try {
+        const parsed = JSON.parse(text);
+        return { status: response.status, data: parsed };
+      } catch (parseErr) {
+        lastNetworkError = new Error('Unexpected server response.');
+      }
+    } catch (err) {
+      lastNetworkError = err;
+    }
+  }
+
+  throw lastNetworkError || new Error('Could not reach password reset service.');
+}
+
+function initForgotPasswordFlow() {
+  const loginForm = document.getElementById('clientLoginForm');
+  const forgotSection = document.getElementById('forgotPasswordSection');
+  if (!loginForm || !forgotSection || forgotSection.dataset.fpInitialized === '1') {
+    return;
+  }
+  forgotSection.dataset.fpInitialized = '1';
+
+  const openBtn = document.getElementById('openForgotPasswordBtn');
+  const backToLoginBtn = document.getElementById('fpBackToLoginBtn');
+  const changeEmailBtn = document.getElementById('fpChangeEmailBtn');
+  const resendBtn = document.getElementById('fpResendCodeBtn');
+
+  const emailForm = document.getElementById('fpEmailForm');
+  const codeForm = document.getElementById('fpCodeForm');
+  const newPasswordForm = document.getElementById('fpNewPasswordForm');
+
+  const emailInput = document.getElementById('fp-email');
+  const codeInput = document.getElementById('fp-code');
+  const newPassInput = document.getElementById('fp-new-password');
+  const confirmPassInput = document.getElementById('fp-confirm-password');
+
+  const lockedEmailDisplay = document.getElementById('fpLockedEmailDisplay');
+  const verifiedEmailDisplay = document.getElementById('fpVerifiedEmailDisplay');
+  const feedbackEl = document.getElementById('fpFeedback');
+  const stepPills = forgotSection.querySelectorAll('[data-fp-step-pill]');
+
+  const fpState = {
+    email: '',
+    verifiedCode: '',
+    resetToken: '',
+    step: 1
+  };
+
+  function clearVerificationTokens() {
+    fpState.verifiedCode = '';
+    fpState.resetToken = '';
+  }
+
+  function hideFeedback() {
+    if (!feedbackEl) return;
+    feedbackEl.style.display = 'none';
+    feedbackEl.className = 'form-message';
+    feedbackEl.textContent = '';
+  }
+
+  function createFeedbackSvg(type) {
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNs, 'svg');
+    svg.setAttribute('width', '15');
+    svg.setAttribute('height', '15');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2.3');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.style.verticalAlign = '-2.5px';
+    svg.style.marginRight = '7px';
+    svg.style.flexShrink = '0';
+
+    const circle = document.createElementNS(svgNs, 'circle');
+    circle.setAttribute('cx', '12');
+    circle.setAttribute('cy', '12');
+    circle.setAttribute('r', '10');
+    svg.appendChild(circle);
+
+    if (type === 'success' || type === 'info') {
+      const poly = document.createElementNS(svgNs, 'polyline');
+      poly.setAttribute('points', '9 12 11.2 14.2 15.5 9.8');
+      svg.appendChild(poly);
+    } else {
+      const l1 = document.createElementNS(svgNs, 'line');
+      l1.setAttribute('x1', '15');
+      l1.setAttribute('y1', '9');
+      l1.setAttribute('x2', '9');
+      l1.setAttribute('y2', '15');
+      const l2 = document.createElementNS(svgNs, 'line');
+      l2.setAttribute('x1', '9');
+      l2.setAttribute('y1', '9');
+      l2.setAttribute('x2', '15');
+      l2.setAttribute('y2', '15');
+      svg.appendChild(l1);
+      svg.appendChild(l2);
+    }
+    return svg;
+  }
+
+  function showFeedback(type, message) {
+    if (!feedbackEl) return;
+    feedbackEl.className = `form-message fp-feedback-${type}`;
+    feedbackEl.style.display = 'flex';
+    feedbackEl.style.alignItems = 'flex-start';
+    feedbackEl.innerHTML = '';
+
+    const span = document.createElement('span');
+    span.textContent = message;
+
+    feedbackEl.appendChild(createFeedbackSvg(type));
+    feedbackEl.appendChild(span);
+  }
+
+  function goToStep(requestedStep) {
+    let step = requestedStep;
+    if (step === 3 && (!fpState.email || !fpState.verifiedCode || !fpState.resetToken)) {
+      step = fpState.email ? 2 : 1;
+    }
+    if (step === 2 && !fpState.email) {
+      step = 1;
+    }
+
+    fpState.step = step;
+
+    if (emailForm) emailForm.style.display = step === 1 ? 'block' : 'none';
+    if (codeForm) codeForm.style.display = step === 2 ? 'block' : 'none';
+    if (newPasswordForm) newPasswordForm.style.display = step === 3 ? 'block' : 'none';
+
+    if (lockedEmailDisplay) lockedEmailDisplay.textContent = fpState.email;
+    if (verifiedEmailDisplay) verifiedEmailDisplay.textContent = fpState.email;
+
+    stepPills.forEach(pill => {
+      const n = Number(pill.getAttribute('data-fp-step-pill'));
+      pill.classList.toggle('active', n === step);
+      pill.classList.toggle('done', n < step);
+    });
+  }
+
+  function resetFlowState() {
+    fpState.email = '';
+    clearVerificationTokens();
+    if (codeInput) codeInput.value = '';
+    if (newPassInput) newPassInput.value = '';
+    if (confirmPassInput) confirmPassInput.value = '';
+    hideFeedback();
+    goToStep(1);
+  }
+
+  function openForgotPasswordView() {
+    resetFlowState();
+    const loginEmailEl = document.getElementById('login-email');
+    const prefillEmail = loginEmailEl ? loginEmailEl.value.trim() : '';
+    if (emailInput && prefillEmail) {
+      emailInput.value = prefillEmail;
+    }
+    const loginFeedback = document.getElementById('loginFeedback');
+    if (loginFeedback) loginFeedback.style.display = 'none';
+
+    loginForm.style.display = 'none';
+    forgotSection.style.display = 'block';
+    if (emailInput) emailInput.focus();
+  }
+
+  function closeForgotPasswordView(prefillEmail, successMessage) {
+    resetFlowState();
+    forgotSection.style.display = 'none';
+    loginForm.style.display = 'block';
+
+    const loginEmailEl = document.getElementById('login-email');
+    const loginPassEl = document.getElementById('login-password');
+    const loginFeedback = document.getElementById('loginFeedback');
+
+    if (loginEmailEl && prefillEmail) {
+      loginEmailEl.value = prefillEmail;
+    }
+    if (loginPassEl) {
+      loginPassEl.value = '';
+    }
+    if (loginFeedback && successMessage) {
+      loginFeedback.style.display = 'flex';
+      loginFeedback.style.alignItems = 'flex-start';
+      loginFeedback.style.background = '#ecfdf5';
+      loginFeedback.style.color = '#065f46';
+      loginFeedback.style.border = '1px solid #a7f3d0';
+      loginFeedback.style.padding = '12px 14px';
+      loginFeedback.style.borderRadius = '0';
+      loginFeedback.innerHTML = '';
+      const txt = document.createElement('span');
+      txt.textContent = successMessage;
+      loginFeedback.appendChild(createFeedbackSvg('success'));
+      loginFeedback.appendChild(txt);
+    }
+    if (prefillEmail && loginPassEl) {
+      loginPassEl.focus();
+    } else if (loginEmailEl) {
+      loginEmailEl.focus();
+    }
+  }
+
+  async function submitCodeRequest(targetEmail, triggerButton, loadingLabel) {
+    const cleanEmail = String(targetEmail || '').trim();
+    if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      showFeedback('error', 'Please enter a valid email address.');
+      if (emailInput) emailInput.focus();
+      return;
+    }
+
+    clearVerificationTokens();
+    if (codeInput) codeInput.value = '';
+    hideFeedback();
+    setForgotButtonLoading(triggerButton, true, loadingLabel);
+    if (resendBtn) resendBtn.disabled = true;
+
+    try {
+      const { data } = await postForgotPasswordAction({
+        action: 'request_code',
+        email: cleanEmail
+      });
+
+      if (data && data.success) {
+        fpState.email = String(data.email || cleanEmail).trim().toLowerCase();
+        goToStep(2);
+        showFeedback('info', data.message || `Verification code sent to ${fpState.email}.`);
+        toast('Verification code sent. Check your email.');
+        if (codeInput) codeInput.focus();
+      } else {
+        showFeedback('error', (data && data.message) || 'Could not send verification code.');
+        if (emailInput && fpState.step === 1) emailInput.focus();
+      }
+    } catch (err) {
+      showFeedback('error', 'Network error while requesting verification code. Please try again.');
+    } finally {
+      setForgotButtonLoading(triggerButton, false);
+      if (resendBtn) resendBtn.disabled = false;
+    }
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener('click', openForgotPasswordView);
+  }
+
+  if (backToLoginBtn) {
+    backToLoginBtn.addEventListener('click', () => closeForgotPasswordView('', ''));
+  }
+
+  if (changeEmailBtn) {
+    changeEmailBtn.addEventListener('click', () => {
+      clearVerificationTokens();
+      if (codeInput) codeInput.value = '';
+      hideFeedback();
+      goToStep(1);
+      if (emailInput) {
+        emailInput.value = fpState.email || emailInput.value;
+        emailInput.focus();
+      }
+    });
+  }
+
+  if (codeInput) {
+    codeInput.addEventListener('input', () => {
+      const digits = codeInput.value.replace(/\D/g, '').slice(0, 6);
+      if (codeInput.value !== digits) {
+        codeInput.value = digits;
+      }
+    });
+  }
+
+  if (emailForm) {
+    emailForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const sendBtn = document.getElementById('fpSendCodeBtn');
+      await submitCodeRequest(emailInput ? emailInput.value : '', sendBtn, 'Sending...');
+    });
+  }
+
+  if (resendBtn) {
+    resendBtn.addEventListener('click', async () => {
+      if (!fpState.email) {
+        goToStep(1);
+        return;
+      }
+      await submitCodeRequest(fpState.email, null, 'Sending...');
+    });
+  }
+
+  if (codeForm) {
+    codeForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const verifyBtn = document.getElementById('fpVerifyCodeBtn');
+      const rawCode = codeInput ? codeInput.value.replace(/\s+/g, '') : '';
+
+      if (!fpState.email) {
+        goToStep(1);
+        showFeedback('error', 'Please enter your email address first.');
+        return;
+      }
+
+      if (!/^\d{6}$/.test(rawCode)) {
+        clearVerificationTokens();
+        showFeedback('error', 'Please enter the exact 6-digit verification code sent to your email.');
+        if (codeInput) codeInput.focus();
+        return;
+      }
+
+      clearVerificationTokens();
+      hideFeedback();
+      setForgotButtonLoading(verifyBtn, true, 'Verifying...');
+
+      try {
+        const { data } = await postForgotPasswordAction({
+          action: 'verify_code',
+          email: fpState.email,
+          code: rawCode
+        });
+
+        if (data && data.success && data.reset_token) {
+          fpState.email = String(data.email || fpState.email).trim().toLowerCase();
+          fpState.verifiedCode = rawCode;
+          fpState.resetToken = String(data.reset_token);
+          goToStep(3);
+          showFeedback('success', data.message || 'Verification code confirmed. Enter your new password.');
+          toast('Code verified. Create your new password.');
+          if (newPassInput) newPassInput.focus();
+        } else {
+          // Reject proceeding to step 3 whenever wrong code or isolation check fails
+          clearVerificationTokens();
+          goToStep(2);
+          showFeedback('error', (data && data.message) || 'Wrong verification code. You cannot create a new password.');
+          toast('Wrong verification code.');
+          if (codeInput) {
+            codeInput.focus();
+            codeInput.select();
+          }
+        }
+      } catch (err) {
+        clearVerificationTokens();
+        showFeedback('error', 'Unable to verify code due to a network error. Please try again.');
+      } finally {
+        setForgotButtonLoading(verifyBtn, false);
+      }
+    });
+  }
+
+  if (newPasswordForm) {
+    newPasswordForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const resetBtn = document.getElementById('fpResetPasswordBtn');
+      const newPassword = newPassInput ? newPassInput.value : '';
+      const confirmPassword = confirmPassInput ? confirmPassInput.value : '';
+
+      if (!fpState.email || !fpState.verifiedCode || !fpState.resetToken) {
+        clearVerificationTokens();
+        goToStep(fpState.email ? 2 : 1);
+        showFeedback('error', 'Please verify the code sent to your email before creating a new password.');
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        showFeedback('error', 'New password must be at least 6 characters long.');
+        if (newPassInput) newPassInput.focus();
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        showFeedback('error', 'New password and confirmation password do not match.');
+        if (confirmPassInput) confirmPassInput.focus();
+        return;
+      }
+
+      hideFeedback();
+      setForgotButtonLoading(resetBtn, true, 'Updating...');
+
+      try {
+        const { status, data } = await postForgotPasswordAction({
+          action: 'reset_password',
+          email: fpState.email,
+          code: fpState.verifiedCode,
+          reset_token: fpState.resetToken,
+          new_password: newPassword,
+          confirm_password: confirmPassword
+        });
+
+        if (data && data.success) {
+          const updatedEmail = String(data.email || fpState.email);
+          toast('Password updated! You can now sign in.');
+          closeForgotPasswordView(
+            updatedEmail,
+            data.message || 'Password updated successfully. Sign in with your new password.'
+          );
+        } else {
+          if (status === 401 || status === 403 || status === 400) {
+            clearVerificationTokens();
+            goToStep(2);
+          }
+          showFeedback('error', (data && data.message) || 'Unable to update password.');
+        }
+      } catch (err) {
+        showFeedback('error', 'Network error while updating your password. Please try again.');
+      } finally {
+        setForgotButtonLoading(resetBtn, false);
+      }
+    });
+  }
+}
+window.initForgotPasswordFlow = initForgotPasswordFlow;
 
 document.addEventListener('submit', async e => {
   if (e.target.matches('#cartOrderRequestForm')) {
@@ -1378,6 +1834,15 @@ function initServicesCarousel() {
   startAutoplay();
 }
 
+function escapeHtmlAttr(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 function updateHeaderAuth() {
   const clientName = localStorage.getItem('sesco-client-name');
   const clientId = localStorage.getItem('sesco-client-id');
@@ -1397,13 +1862,25 @@ function updateHeaderAuth() {
       if (loginBtn) loginBtn.style.display = 'none';
 
       const displayName = clientName.trim();
+      const safeName = escapeHtmlAttr(displayName);
       const userHtml = `
-        <div class="header-user-badge" title="Logged in as ${displayName} (Client #${clientId})">
-          <i class="fa-solid fa-circle-user header-user-icon" aria-hidden="true"></i>
-          <span class="header-user-name">${displayName}</span>
-        </div>
+        <button type="button" class="header-user-badge" data-header-profile aria-label="Edit profile for ${safeName}" title="Edit profile (${safeName})">
+          <svg class="header-user-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="header-user-name">${safeName}</span>
+          <svg class="header-user-edit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"></path>
+          </svg>
+        </button>
         <button type="button" class="header-logout-btn" data-header-logout aria-label="Log out of account" title="Log out">
-          <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
         </button>
       `;
 
@@ -1453,6 +1930,406 @@ function updateHeaderAuth() {
   });
 }
 window.updateHeaderAuth = updateHeaderAuth;
+
+const PROFILE_EYE_OPEN_SVG = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+
+function buildProfilePasswordField(inputId, nameAttr, labelText, placeholderText, autoCompleteAttr) {
+  return `
+    <div class="profile-field">
+      <label for="${inputId}">${labelText}</label>
+      <div class="profile-password-wrapper">
+        <input id="${inputId}" name="${nameAttr}" type="password" placeholder="${placeholderText}" autocomplete="${autoCompleteAttr}">
+        <button type="button" class="profile-password-toggle" data-toggle-password="${inputId}" aria-label="Show password" title="Show password">
+          <svg data-eye-svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PROFILE_EYE_OPEN_SVG}</svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+async function requestProfileApi(method, payload = null) {
+  const candidateUrls = [
+    'backend/profile.php',
+    'http://localhost/sesco_tyres_frontend_redesign/backend/profile.php',
+    'http://127.0.0.1/sesco_tyres_frontend_redesign/backend/profile.php'
+  ];
+
+  let lastError = null;
+  for (const endpointUrl of candidateUrls) {
+    try {
+      const isSameOriginUrl = !/^https?:/i.test(endpointUrl) || endpointUrl.startsWith(location.origin);
+      const options = {
+        method,
+        credentials: isSameOriginUrl ? 'same-origin' : 'include',
+        headers: { 'Accept': 'application/json' }
+      };
+      if (method === 'POST') {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(payload || {});
+      }
+
+      const response = await fetch(endpointUrl, options);
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const data = await response.json();
+        return { status: response.status, data };
+      }
+      if (response.status === 404) {
+        continue;
+      }
+      const text = await response.text();
+      try {
+        return { status: response.status, data: JSON.parse(text) };
+      } catch {
+        lastError = new Error('Unexpected response from profile service.');
+      }
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error('Unable to reach profile service.');
+}
+
+function setProfileModalFeedback(type, message, includeSignInLink = false) {
+  const box = document.getElementById('profileModalFeedback');
+  if (!box) return;
+  if (!type || !message) {
+    box.className = 'profile-modal-feedback';
+    box.textContent = '';
+    return;
+  }
+
+  box.className = `profile-modal-feedback is-${type}`;
+  box.innerHTML = '';
+
+  const svgNs = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNs, 'svg');
+  svg.setAttribute('width', '15');
+  svg.setAttribute('height', '15');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '2.2');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.style.marginRight = '8px';
+  svg.style.marginTop = '2px';
+  svg.style.flexShrink = '0';
+
+  const circle = document.createElementNS(svgNs, 'circle');
+  circle.setAttribute('cx', '12');
+  circle.setAttribute('cy', '12');
+  circle.setAttribute('r', '10');
+  svg.appendChild(circle);
+
+  if (type === 'success' || type === 'info') {
+    const poly = document.createElementNS(svgNs, 'polyline');
+    poly.setAttribute('points', '9 12 11.2 14.2 15.5 9.8');
+    svg.appendChild(poly);
+  } else {
+    const l1 = document.createElementNS(svgNs, 'line');
+    l1.setAttribute('x1', '15');
+    l1.setAttribute('y1', '9');
+    l1.setAttribute('x2', '9');
+    l1.setAttribute('y2', '15');
+    const l2 = document.createElementNS(svgNs, 'line');
+    l2.setAttribute('x1', '9');
+    l2.setAttribute('y1', '9');
+    l2.setAttribute('x2', '15');
+    l2.setAttribute('y2', '15');
+    svg.appendChild(l1);
+    svg.appendChild(l2);
+  }
+
+  const wrap = document.createElement('div');
+  const msgSpan = document.createElement('div');
+  msgSpan.textContent = message;
+  wrap.appendChild(msgSpan);
+
+  if (includeSignInLink) {
+    const loginLink = document.createElement('a');
+    const currentPath = location.pathname.split('/').pop() || 'index.html';
+    loginLink.href = `login.html?redirect=${encodeURIComponent(currentPath + location.search)}`;
+    loginLink.className = 'profile-reauth-link';
+    loginLink.textContent = 'Sign in again →';
+    wrap.appendChild(loginLink);
+  }
+
+  box.appendChild(svg);
+  box.appendChild(wrap);
+}
+
+function resetProfilePasswordInputs(modalEl) {
+  ['profile-current-password', 'profile-new-password', 'profile-confirm-password'].forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.value = '';
+      input.type = 'password';
+    }
+    const toggle = modalEl?.querySelector(`[data-toggle-password="${id}"]`);
+    if (toggle) {
+      toggle.setAttribute('aria-label', 'Show password');
+      toggle.setAttribute('title', 'Show password');
+      const eyeSvg = toggle.querySelector('svg[data-eye-svg]');
+      if (eyeSvg) eyeSvg.innerHTML = PROFILE_EYE_OPEN_SVG;
+    }
+  });
+}
+
+function closeClientProfileModal() {
+  const backdrop = document.getElementById('clientProfileModal');
+  if (!backdrop) return;
+  backdrop.classList.remove('is-open');
+  backdrop.setAttribute('aria-hidden', 'true');
+  resetProfilePasswordInputs(backdrop);
+  setProfileModalFeedback('', '');
+}
+window.closeClientProfileModal = closeClientProfileModal;
+
+function ensureClientProfileModal() {
+  let backdrop = document.getElementById('clientProfileModal');
+  if (backdrop) return backdrop;
+
+  backdrop = document.createElement('div');
+  backdrop.id = 'clientProfileModal';
+  backdrop.className = 'profile-modal-backdrop';
+  backdrop.setAttribute('role', 'dialog');
+  backdrop.setAttribute('aria-modal', 'true');
+  backdrop.setAttribute('aria-labelledby', 'profileModalTitle');
+  backdrop.setAttribute('aria-hidden', 'true');
+
+  backdrop.innerHTML = `
+    <div class="profile-modal-dialog">
+      <div class="profile-modal-header">
+        <div>
+          <h2 id="profileModalTitle" class="profile-modal-title">Edit Profile</h2>
+          <p class="profile-modal-subtitle">Update your account name, email address, or password.</p>
+        </div>
+        <button type="button" id="profileModalCloseBtn" class="profile-modal-close" aria-label="Close profile dialog" title="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="profile-modal-body">
+        <form id="clientProfileForm" novalidate>
+          <div class="profile-field">
+            <label for="profile-name">Full name</label>
+            <input id="profile-name" name="name" type="text" required minlength="2" maxlength="100" placeholder="Your full name" autocomplete="name">
+          </div>
+          <div class="profile-field">
+            <label for="profile-email">Email address</label>
+            <input id="profile-email" name="email" type="email" required maxlength="50" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <div class="profile-password-section">
+            <h3 class="profile-section-heading">Change Password (Optional)</h3>
+            <p class="profile-section-hint">Leave the password fields blank if you only want to update your name or email.</p>
+            ${buildProfilePasswordField('profile-current-password', 'current_password', 'Current password', 'Enter current password', 'current-password')}
+            ${buildProfilePasswordField('profile-new-password', 'new_password', 'New password', 'At least 6 characters', 'new-password')}
+            ${buildProfilePasswordField('profile-confirm-password', 'confirm_password', 'Confirm new password', 'Re-enter new password', 'new-password')}
+          </div>
+          <div id="profileModalFeedback" class="profile-modal-feedback" role="alert"></div>
+          <div class="profile-modal-actions">
+            <button type="button" id="profileModalCancelBtn" class="profile-cancel-btn">Cancel</button>
+            <button type="submit" id="profileModalSaveBtn" class="profile-submit-btn">Save changes →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(backdrop);
+
+  backdrop.addEventListener('click', e => {
+    if (e.target === backdrop) {
+      closeClientProfileModal();
+    }
+  });
+
+  backdrop.querySelector('#profileModalCloseBtn')?.addEventListener('click', closeClientProfileModal);
+  backdrop.querySelector('#profileModalCancelBtn')?.addEventListener('click', closeClientProfileModal);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && backdrop.classList.contains('is-open')) {
+      closeClientProfileModal();
+    }
+  });
+
+  const form = backdrop.querySelector('#clientProfileForm');
+  form?.addEventListener('submit', async e => {
+    e.preventDefault();
+    const nameInput = document.getElementById('profile-name');
+    const emailInput = document.getElementById('profile-email');
+    const curPassInput = document.getElementById('profile-current-password');
+    const newPassInput = document.getElementById('profile-new-password');
+    const confirmPassInput = document.getElementById('profile-confirm-password');
+    const saveBtn = document.getElementById('profileModalSaveBtn');
+
+    const name = nameInput ? nameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const currentPassword = curPassInput ? curPassInput.value : '';
+    const newPassword = newPassInput ? newPassInput.value : '';
+    const confirmPassword = confirmPassInput ? confirmPassInput.value : '';
+
+    if (name.length < 2) {
+      setProfileModalFeedback('error', 'Full name must be at least 2 characters long.');
+      nameInput?.focus();
+      return;
+    }
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setProfileModalFeedback('error', 'Please enter a valid email address.');
+      emailInput?.focus();
+      return;
+    }
+
+    const wantsPasswordChange = newPassword !== '' || confirmPassword !== '';
+    if (!wantsPasswordChange && currentPassword !== '') {
+      setProfileModalFeedback('error', 'Please enter and confirm a new password, or leave all password fields blank.');
+      newPassInput?.focus();
+      return;
+    }
+
+    const requiresCurrentPass = backdrop.dataset.hasPassword !== '0';
+    if (wantsPasswordChange) {
+      if (requiresCurrentPass && currentPassword === '') {
+        setProfileModalFeedback('error', 'Please enter your current password to set a new password.');
+        curPassInput?.focus();
+        return;
+      }
+      if (newPassword.length < 6) {
+        setProfileModalFeedback('error', 'New password must be at least 6 characters long.');
+        newPassInput?.focus();
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        setProfileModalFeedback('error', 'New password and confirmation password do not match.');
+        confirmPassInput?.focus();
+        return;
+      }
+    }
+
+    setProfileModalFeedback('', '');
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Saving...';
+    }
+
+    try {
+      const { status, data } = await requestProfileApi('POST', {
+        name,
+        email,
+        current_password: currentPassword,
+        new_password: newPassword,
+        confirm_password: confirmPassword
+      });
+
+      if (data && data.success && data.client) {
+        const updated = data.client;
+        if (updated.client_id) localStorage.setItem('sesco-client-id', String(updated.client_id));
+        if (updated.name) localStorage.setItem('sesco-client-name', String(updated.name));
+        if (updated.email) localStorage.setItem('sesco-client-email', String(updated.email));
+
+        if (nameInput) nameInput.value = updated.name || name;
+        if (emailInput) emailInput.value = updated.email || email;
+        backdrop.dataset.hasPassword = updated.has_password === false ? '0' : '1';
+        resetProfilePasswordInputs(backdrop);
+        updateHeaderAuth();
+
+        setProfileModalFeedback('success', data.message || 'Profile updated successfully.');
+        toast(data.message || 'Profile updated.');
+      } else {
+        const needsReauth = status === 401 && data && data.code === 'AUTH_REQUIRED';
+        setProfileModalFeedback(
+          'error',
+          (data && data.message) || 'Could not update your profile.',
+          needsReauth
+        );
+      }
+    } catch {
+      setProfileModalFeedback('error', 'Network error while saving your profile. Please try again.');
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save changes →';
+      }
+    }
+  });
+
+  return backdrop;
+}
+
+async function openClientProfileModal() {
+  const clientId = localStorage.getItem('sesco-client-id');
+  const clientName = localStorage.getItem('sesco-client-name');
+  if (!clientId || !clientName) {
+    location.href = 'login.html';
+    return;
+  }
+
+  const backdrop = ensureClientProfileModal();
+  const nameInput = document.getElementById('profile-name');
+  const emailInput = document.getElementById('profile-email');
+  const saveBtn = document.getElementById('profileModalSaveBtn');
+  const formInputs = backdrop.querySelectorAll('#clientProfileForm input');
+
+  resetProfilePasswordInputs(backdrop);
+  setProfileModalFeedback('info', 'Loading your account details...');
+  formInputs.forEach(inp => { inp.disabled = false; });
+
+  if (nameInput) nameInput.value = clientName.trim();
+  if (emailInput) emailInput.value = (localStorage.getItem('sesco-client-email') || '').trim();
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Loading...';
+  }
+
+  backdrop.classList.add('is-open');
+  backdrop.setAttribute('aria-hidden', 'false');
+
+  try {
+    const { status, data } = await requestProfileApi('GET');
+    if (data && data.success && data.client) {
+      const c = data.client;
+      if (nameInput) nameInput.value = c.name || '';
+      if (emailInput) emailInput.value = c.email || '';
+      backdrop.dataset.hasPassword = c.has_password === false ? '0' : '1';
+      if (c.name) localStorage.setItem('sesco-client-name', String(c.name));
+      if (c.email) localStorage.setItem('sesco-client-email', String(c.email));
+      updateHeaderAuth();
+
+      setProfileModalFeedback('', '');
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save changes →';
+      }
+      if (nameInput) nameInput.focus();
+    } else {
+      const authExpired = status === 401;
+      if (authExpired) {
+        formInputs.forEach(inp => { inp.disabled = true; });
+      }
+      if (saveBtn) {
+        saveBtn.disabled = authExpired;
+        saveBtn.textContent = 'Save changes →';
+      }
+      setProfileModalFeedback(
+        'error',
+        (data && data.message) || 'Unable to load your profile right now.',
+        authExpired
+      );
+    }
+  } catch {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save changes →';
+    }
+    setProfileModalFeedback('error', 'Network error while loading your profile. Please try again.');
+  }
+}
+window.openClientProfileModal = openClientProfileModal;
 
 window.addEventListener('resize', () => {
   const isLoggedIn = Boolean(localStorage.getItem('sesco-client-id') && localStorage.getItem('sesco-client-name'));
@@ -2093,15 +2970,18 @@ if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       initFooterYear();
       initAuthFormsValidation();
+      initForgotPasswordFlow();
       initAOSGlobal();
     });
   } else {
     initAuthFormsValidation();
+    initForgotPasswordFlow();
     initAOSGlobal();
   }
   window.addEventListener('load', () => {
     initFooterYear();
     initAuthFormsValidation();
+    initForgotPasswordFlow();
     initAOSGlobal();
   });
 }

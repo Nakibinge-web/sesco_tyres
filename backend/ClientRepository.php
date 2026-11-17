@@ -229,5 +229,210 @@ final readonly class ClientRepository
         unset($client['password']);
         return $client;
     }
+
+    /**
+     * Returns safe profile fields for an authenticated client without exposing password hashes.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function findPublicProfileById(int $clientId): ?array
+    {
+        $this->ensureSchema();
+        if ($clientId <= 0) {
+            return null;
+        }
+
+        $client = $this->findById($clientId);
+        if ($client === null) {
+            return null;
+        }
+
+        return [
+            'client_id'    => (int) $client['client_id'],
+            'name'         => (string) ($client['name'] ?? ''),
+            'email'        => (string) ($client['email'] ?? ''),
+            'telephone'    => (string) ($client['telephone'] ?? ''),
+            'address'      => (string) ($client['address'] ?? ''),
+            'has_password' => trim((string) ($client['password'] ?? '')) !== '',
+        ];
+    }
+
+    /**
+     * Updates an authenticated client's name, email, and (optionally) password
+     * under strict single-client isolation by $clientId.
+     *
+     * @return array{
+     *   client: array<string, mixed>,
+     *   email_changed: bool,
+     *   password_changed: bool
+     * }
+     */
+    public function updateClientProfile(
+        int $clientId,
+        string $name,
+        string $email,
+        string $currentPassword = '',
+        string $newPassword = '',
+        string $confirmPassword = ''
+    ): array {
+        $this->ensureSchema();
+        if ($clientId <= 0) {
+            throw new RuntimeException('Authentication required.', 401);
+        }
+
+        $cleanName  = trim($name);
+        $cleanEmail = strtolower(trim($email));
+
+        $nameLen = function_exists('mb_strlen') ? mb_strlen($cleanName, 'UTF-8') : strlen($cleanName);
+        if ($cleanName === '' || $nameLen < 2) {
+            throw new RuntimeException('Full name must be at least 2 characters long.', 422);
+        }
+        if ($nameLen > 100) {
+            throw new RuntimeException('Full name must not exceed 100 characters.', 422);
+        }
+
+        if ($cleanEmail === '' || !filter_var($cleanEmail, FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('Please enter a valid email address.', 422);
+        }
+        if (strlen($cleanEmail) > 50) {
+            throw new RuntimeException('Email address must not exceed 50 characters.', 422);
+        }
+
+        $wantsPasswordChange = ($newPassword !== '' || $confirmPassword !== '');
+        if (!$wantsPasswordChange && $currentPassword !== '') {
+            throw new RuntimeException('Please enter a new password to update your password, or leave all password fields blank.', 422);
+        }
+
+        if ($wantsPasswordChange) {
+            if (strlen($newPassword) < 6) {
+                throw new RuntimeException('New password must be at least 6 characters long.', 422);
+            }
+            if (strlen($newPassword) > 128) {
+                throw new RuntimeException('New password must not exceed 128 characters.', 422);
+            }
+            if (!hash_equals($newPassword, $confirmPassword)) {
+                throw new RuntimeException('New password and confirmation password do not match.', 422);
+            }
+        }
+
+        $this->pdo->beginTransaction();
+        try {
+            $lockStmt = $this->pdo->prepare(
+                'SELECT `client_id`, `name`, `email`, `telephone`, `address`, `password`
+                 FROM `client`
+                 WHERE `client_id` = :client_id
+                 LIMIT 1
+                 FOR UPDATE'
+            );
+            $lockStmt->bindValue(':client_id', $clientId, PDO::PARAM_INT);
+            $lockStmt->execute();
+            $currentRow = $lockStmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$currentRow) {
+                $this->pdo->rollBack();
+                throw new RuntimeException('Client account could not be found.', 404);
+            }
+
+            // Reject duplicate email belonging to any other client
+            $dupStmt = $this->pdo->prepare(
+                "SELECT `client_id`
+                 FROM `client`
+                 WHERE `client_id` <> :self_id
+                   AND `email` IS NOT NULL
+                   AND TRIM(`email`) <> ''
+                   AND LOWER(TRIM(`email`)) = :email
+                 LIMIT 1
+                 FOR UPDATE"
+            );
+            $dupStmt->execute([
+                ':self_id' => $clientId,
+                ':email'   => $cleanEmail,
+            ]);
+            if ($dupStmt->fetch(PDO::FETCH_ASSOC)) {
+                $this->pdo->rollBack();
+                throw new RuntimeException('An account with this email address already exists. Please use a different email.', 409);
+            }
+
+            $storedHash = (string) ($currentRow['password'] ?? '');
+            $passwordHashToSave = null;
+            if ($wantsPasswordChange) {
+                if ($storedHash !== '') {
+                    if ($currentPassword === '') {
+                        $this->pdo->rollBack();
+                        throw new RuntimeException('Please enter your current password to set a new password.', 422);
+                    }
+                    if (!password_verify($currentPassword, $storedHash)) {
+                        $this->pdo->rollBack();
+                        throw new RuntimeException('Current password is incorrect.', 401);
+                    }
+                }
+                $passwordHashToSave = password_hash($newPassword, PASSWORD_DEFAULT);
+            }
+
+            $oldEmail = strtolower(trim((string) ($currentRow['email'] ?? '')));
+            $emailChanged = $oldEmail !== $cleanEmail;
+
+            if ($passwordHashToSave !== null) {
+                $updStmt = $this->pdo->prepare(
+                    'UPDATE `client`
+                     SET `name` = :name, `email` = :email, `password` = :password
+                     WHERE `client_id` = :client_id
+                     LIMIT 1'
+                );
+                $updStmt->bindValue(':password', $passwordHashToSave, PDO::PARAM_STR);
+            } else {
+                $updStmt = $this->pdo->prepare(
+                    'UPDATE `client`
+                     SET `name` = :name, `email` = :email
+                     WHERE `client_id` = :client_id
+                     LIMIT 1'
+                );
+            }
+            $updStmt->bindValue(':name', $cleanName, PDO::PARAM_STR);
+            $updStmt->bindValue(':email', $cleanEmail, PDO::PARAM_STR);
+            $updStmt->bindValue(':client_id', $clientId, PDO::PARAM_INT);
+            $updStmt->execute();
+
+            if ($emailChanged || $wantsPasswordChange) {
+                $this->invalidateOpenResetCodesForClient($clientId);
+            }
+
+            $this->pdo->commit();
+
+            return [
+                'client' => [
+                    'client_id'    => $clientId,
+                    'name'         => $cleanName,
+                    'email'        => $cleanEmail,
+                    'telephone'    => (string) ($currentRow['telephone'] ?? ''),
+                    'address'      => (string) ($currentRow['address'] ?? ''),
+                    'has_password' => $wantsPasswordChange || $storedHash !== '',
+                ],
+                'email_changed'    => $emailChanged,
+                'password_changed' => $wantsPasswordChange,
+            ];
+        } catch (Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    private function invalidateOpenResetCodesForClient(int $clientId): void
+    {
+        try {
+            $stmt = $this->pdo->prepare(
+                'UPDATE `client_password_resets`
+                 SET `invalidated_at` = UTC_TIMESTAMP()
+                 WHERE `client_id` = :client_id
+                   AND `used_at` IS NULL
+                   AND `invalidated_at` IS NULL'
+            );
+            $stmt->execute([':client_id' => $clientId]);
+        } catch (Throwable) {
+            // Table may not exist yet if forgot-password has not been triggered
+        }
+    }
 }
 
